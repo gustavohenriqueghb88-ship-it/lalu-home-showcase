@@ -1,0 +1,133 @@
+import { Button } from '@/components/ui/button';
+import { 
+  Phone, 
+  Mail, 
+  MapPin, 
+  Facebook, 
+  Instagram, 
+  Linkedin,
+  ArrowUp 
+} from 'lucide-react';
+
+const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <footer className="bg-primary text-primary-foreground">
+      {/* Main Footer */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="lg:col-span-2">
+            <div className="text-3xl font-bold text-secondary mb-4">LALU</div>
+            <p className="text-primary-foreground/80 mb-6 leading-relaxed">
+              Incorporadora com quase 20 anos de experiência no Paraná e Santa Catarina. 
+              Especializada em soluções completas que unem inovação, segurança e valorização patrimonial.
+            </p>
+            
+            {/* Social Media */}
+            <div className="flex space-x-4">
+              <a href="#" className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center hover:bg-secondary hover:text-primary transition-smooth">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center hover:bg-secondary hover:text-primary transition-smooth">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center hover:bg-secondary hover:text-primary transition-smooth">
+                <Linkedin className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-semibold text-secondary mb-4">Navegação</h3>
+            <ul className="space-y-3">
+              {[
+                { name: 'Início', href: '/' },
+                { name: 'Empreendimentos', href: '/empreendimentos' },
+                { name: 'Portfólio', href: '/portfolio' },
+                { name: 'Sobre nós', href: '/sobre' },
+                { name: 'Contato', href: '/contato' }
+              ].map((link) => (
+                <li key={link.name}>
+                  <a 
+                    href={link.href}
+                    className="text-primary-foreground/80 hover:text-secondary transition-smooth"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-lg font-semibold text-secondary mb-4">Contato</h3>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <Phone className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                <div>
+                  <div className="text-primary-foreground/80">(41) 3333-4444</div>
+                  <div className="text-primary-foreground/60 text-sm">Seg à Sex: 8h às 18h</div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                <Mail className="w-5 h-5 text-secondary flex-shrink-0" />
+                <a 
+                  href="mailto:contato@lalu.com.br"
+                  className="text-primary-foreground/80 hover:text-secondary transition-smooth"
+                >
+                  contato@lalu.com.br
+                </a>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <MapPin className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
+                <div className="text-primary-foreground/80">
+                  Rua das Flores, 123<br />
+                  Centro, Curitiba - PR<br />
+                  CEP: 80010-000
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-primary-foreground/10">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="text-primary-foreground/60 text-sm mb-4 md:mb-0">
+              © 2024 Lalu Incorporadora. Todos os direitos reservados.
+            </div>
+            
+            <div className="flex items-center space-x-6">
+              <a href="#" className="text-primary-foreground/60 hover:text-secondary text-sm transition-smooth">
+                Política de Privacidade
+              </a>
+              <a href="#" className="text-primary-foreground/60 hover:text-secondary text-sm transition-smooth">
+                Termos de Uso
+              </a>
+              <Button 
+                variant="ghost" 
+                size="icon"
+                onClick={scrollToTop}
+                className="text-primary-foreground/60 hover:text-secondary hover:bg-secondary/10"
+              >
+                <ArrowUp className="w-5 h-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
