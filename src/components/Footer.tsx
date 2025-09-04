@@ -71,7 +71,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3">
                 <Phone className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
                 <div>
-                  <div className="text-primary-foreground/80">(41) 3333-4444</div>
+                  <div className="text-primary-foreground/80">(41) 98430-5403</div>
                   <div className="text-primary-foreground/60 text-sm">Seg à Sex: 8h às 18h</div>
                 </div>
               </div>
@@ -79,19 +79,19 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-secondary flex-shrink-0" />
                 <a 
-                  href="mailto:contato@lalu.com.br"
+                  href="mailto:contato@laluadm.com"
                   className="text-primary-foreground/80 hover:text-secondary transition-smooth"
                 >
-                  contato@lalu.com.br
+                  contato@laluadm.com
                 </a>
               </div>
               
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" />
                 <div className="text-primary-foreground/80">
-                  Rua das Flores, 123<br />
-                  Centro, Curitiba - PR<br />
-                  CEP: 80010-000
+                  R. Padre Anchieta, 2050 - sala 705<br />
+                  Bigorrilho, Curitiba - PR<br />
+                  CEP 80730-001
                 </div>
               </div>
             </div>
