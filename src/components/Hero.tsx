@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, MapPin, Award, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import heroImage from '@/assets/hero-building.jpg';
 
 const Hero = () => {
@@ -56,13 +57,17 @@ const Hero = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="hero" size="lg" className="group">
-              Ver Empreendimentos
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="outline" size="lg" className="bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-              Nosso Portfólio
-            </Button>
+            <Link to="/empreendimentos">
+              <Button variant="hero" size="lg" className="group">
+                Ver Empreendimentos
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Link to="/portfolio">
+              <Button variant="outline" size="lg" className="bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+                Nosso Portfólio
+              </Button>
+            </Link>
           </div>
 
           {/* Location */}

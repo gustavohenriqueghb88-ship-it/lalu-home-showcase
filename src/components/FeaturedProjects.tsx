@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, MapPin, Home, Building2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import apartmentInterior from '@/assets/apartment-interior.jpg';
 import commercialBuilding from '@/assets/commercial-building.jpg';
 
@@ -9,25 +10,25 @@ const FeaturedProjects = () => {
   const projects = [
     {
       id: 1,
-      title: "Residencial Vista Verde",
-      location: "Curitiba - PR",
-      type: "Residencial",
-      status: "Em Construção",
-      description: "Apartamentos de 2 e 3 dormitórios com área de lazer completa, localizado em uma das regiões mais valorizadas de Curitiba.",
-      image: apartmentInterior,
-      features: ["2 e 3 dormitórios", "Área de lazer", "Localização privilegiada"],
-      price: "A partir de R$ 350.000"
+      title: "Loteamento Rotas do Sol",
+      location: "Araquari - SC",
+      type: "Loteamento",
+      status: "Disponível",
+      description: "71 lotes prontos para construir a partir de 300m². Infraestrutura completa com ruas asfaltadas, iluminação pública, rede de água e esgoto.",
+      image: commercialBuilding,
+      features: ["71 lotes disponíveis", "A partir de 300m²", "Infraestrutura completa"],
+      price: "Entrada facilitada"
     },
     {
       id: 2,
-      title: "Complexo Empresarial Innovation",
-      location: "Florianópolis - SC",
-      type: "Comercial",
-      status: "Lançamento",
-      description: "Salas comerciais modernas com infraestrutura completa para empresas que buscam inovação e produtividade.",
-      image: commercialBuilding,
-      features: ["Salas comerciais", "Infraestrutura moderna", "Centro empresarial"],
-      price: "A partir de R$ 180.000"
+      title: "Condomínio Garden House Residence",
+      location: "Barra Velha - SC",
+      type: "Condomínio",
+      status: "Disponível",
+      description: "113 lotes prontos para construir em condomínio fechado de alto padrão. Próximo à praia e lagoa, localização estratégica.",
+      image: apartmentInterior,
+      features: ["113 lotes", "Condomínio fechado", "Próximo à praia"],
+      price: "Alto padrão"
     }
   ];
 
@@ -98,10 +99,12 @@ const FeaturedProjects = () => {
                   ))}
                 </div>
 
-                <Button variant="outline" className="w-full group">
-                  Saiba Mais
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <Link to="/empreendimentos" className="w-full">
+                  <Button variant="outline" className="w-full group">
+                    Saiba Mais
+                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
@@ -109,10 +112,12 @@ const FeaturedProjects = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <Button variant="hero" size="lg" className="group">
-            Ver Todos os Empreendimentos
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <Link to="/empreendimentos">
+            <Button variant="hero" size="lg" className="group">
+              Ver Todos os Empreendimentos
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

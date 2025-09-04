@@ -16,19 +16,19 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Telefone",
-      value: "(41) 3333-4444",
-      href: "tel:+554133334444"
+      value: "(41) 98430-5403",
+      href: "tel:+5541984305403"
     },
     {
       icon: Mail,
       title: "E-mail",
-      value: "contato@lalu.com.br",
-      href: "mailto:contato@lalu.com.br"
+      value: "contato@laluadm.com",
+      href: "mailto:contato@laluadm.com"
     },
     {
       icon: MapPin,
       title: "Endereço",
-      value: "Rua das Flores, 123 - Centro, Curitiba - PR",
+      value: "R. Padre Anchieta, 2050 - sala 705, Bigorrilho, Curitiba - PR, CEP 80730-001",
       href: "#"
     },
     {

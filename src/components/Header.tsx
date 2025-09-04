@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const Header = () => {
@@ -20,22 +21,22 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-2xl font-bold text-primary">
+            <Link to="/" className="text-2xl font-bold text-primary">
               LALU
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <div className="flex items-center space-x-8">
               {navigation.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className="text-foreground hover:text-secondary transition-smooth font-medium"
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </nav>
@@ -44,7 +45,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               <Phone size={16} />
-              <span>(41) 3333-4444</span>
+              <span>(41) 98430-5403</span>
             </div>
             <Button variant="cta" size="sm">
               Fale Conosco
@@ -70,14 +71,14 @@ const Header = () => {
         )}>
           <nav className="py-4 space-y-4">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="block text-foreground hover:text-secondary transition-smooth font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
             <div className="pt-4 border-t border-border">
               <Button variant="cta" className="w-full">
