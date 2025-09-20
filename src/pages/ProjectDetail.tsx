@@ -8,7 +8,7 @@ import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Home, Users, TreePine }
 import { Link } from 'react-router-dom';
 import rotasDoSol1 from '@/assets/rotas-do-sol-hero.jpg';
 import rotasDoSol2 from '@/assets/rotas-do-sol-2.jpg';
-import rotasDoSol3 from '@/assets/rotas-do-sol-3.jpg';
+import rotasDoSol3 from '@/assets/rotas-do-sol-logo.png';
 import gardenHouse1 from '@/assets/garden-house-1.jpg';
 import gardenHouse2 from '@/assets/garden-house-2.jpg';
 import gardenHouse3 from '@/assets/garden-house-3.jpg';
@@ -183,8 +183,8 @@ const ProjectDetail = () => {
                   />
                   <img 
                     src={project.images[2]}
-                    alt={`${project.title} - Imagem 3`}
-                    className="w-full h-44 object-cover rounded-lg shadow-lg invert"
+                    alt={`${project.title} - Logo`}
+                    className="w-full h-44 object-contain rounded-lg shadow-lg bg-white p-4"
                   />
                 </div>
               </div>
