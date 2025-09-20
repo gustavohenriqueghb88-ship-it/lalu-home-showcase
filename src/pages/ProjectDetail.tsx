@@ -184,7 +184,7 @@ const ProjectDetail = () => {
                   <img 
                     src={project.images[2]}
                     alt={`${project.title} - Imagem 3`}
-                    className="w-full h-44 object-cover rounded-lg shadow-lg"
+                    className="w-full h-44 object-cover rounded-lg shadow-lg invert"
                   />
                 </div>
               </div>
