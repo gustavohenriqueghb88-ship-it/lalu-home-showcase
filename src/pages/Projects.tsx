@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, MapPin, Home, Building2, Users, TreePine } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import rotasDoSol1 from '@/assets/rotas-do-sol-1.jpg';
+import rotasDoSol1 from '@/assets/rotas-do-sol-new.jpg';
 import gardenHouse1 from '@/assets/garden-house-1.jpg';
 
 const Projects = () => {
