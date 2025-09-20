@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Home, Users, TreePine } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import rotasDoSol1 from '@/assets/rotas-do-sol-1.jpg';
+import rotasDoSol1 from '@/assets/rotas-do-sol-hero.jpg';
 import rotasDoSol2 from '@/assets/rotas-do-sol-2.jpg';
 import rotasDoSol3 from '@/assets/rotas-do-sol-3.jpg';
 import gardenHouse1 from '@/assets/garden-house-1.jpg';
