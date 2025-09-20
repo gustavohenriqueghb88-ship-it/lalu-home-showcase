@@ -134,7 +134,12 @@ const Contact = () => {
                     Enviar Mensagem
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
-                  <Button variant="whatsapp" size="lg" className="flex-1">
+                  <Button 
+                    variant="whatsapp" 
+                    size="lg" 
+                    className="flex-1"
+                    onClick={() => window.open('https://wa.me/5541984305403', '_blank')}
+                  >
                     <MessageSquare className="w-5 h-5 mr-2" />
                     WhatsApp
                   </Button>

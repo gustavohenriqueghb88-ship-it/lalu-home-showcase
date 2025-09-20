@@ -255,7 +255,11 @@ const Portfolio = () => {
                       <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
                   </Link>
-                  <Button variant="whatsapp" size="lg">
+                  <Button 
+                    variant="whatsapp" 
+                    size="lg"
+                    onClick={() => window.open('https://wa.me/5541984305403', '_blank')}
+                  >
                     <span className="mr-2">📱</span>
                     WhatsApp
                   </Button>
