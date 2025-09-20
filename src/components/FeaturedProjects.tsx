@@ -3,20 +3,20 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, MapPin, Home, Building2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import apartmentInterior from '@/assets/apartment-interior.jpg';
-import commercialBuilding from '@/assets/commercial-building.jpg';
+import rotasDoSol1 from '@/assets/rotas-do-sol-1.jpg';
+import gardenHouse1 from '@/assets/garden-house-1.jpg';
 
 const FeaturedProjects = () => {
   const projects = [
     {
       id: 1,
       title: "Loteamento Rotas do Sol",
-      location: "Araquari - SC",
+      location: "Estr. Geral Barra do Itapocu, Araquari - SC",
       type: "Loteamento",
       status: "Disponível",
-      description: "71 lotes prontos para construir a partir de 300m². Infraestrutura completa com ruas asfaltadas, iluminação pública, rede de água e esgoto.",
-      image: commercialBuilding,
-      features: ["71 lotes disponíveis", "A partir de 300m²", "Infraestrutura completa"],
+      description: "Segundo loteamento na região da Barra do Itapocú, localizado em meio a paisagens naturais de tirar o fôlego. 71 lotes prontos para construir a partir de 300m² com infraestrutura completa.",
+      image: rotasDoSol1,
+      features: ["71 lotes disponíveis", "A partir de 300m²", "Infraestrutura completa", "Financiamento até 180 meses"],
       price: "Entrada facilitada"
     },
     {
@@ -25,9 +25,9 @@ const FeaturedProjects = () => {
       location: "Barra Velha - SC",
       type: "Condomínio",
       status: "Disponível",
-      description: "113 lotes prontos para construir em condomínio fechado de alto padrão. Próximo à praia e lagoa, localização estratégica.",
-      image: apartmentInterior,
-      features: ["113 lotes", "Condomínio fechado", "Próximo à praia"],
+      description: "O primeiro condomínio fechado de alto padrão perto da praia no centro de Barra Velha. 113 lotes prontos para construir em localização privilegiada, a 3 min da praia e 600m da lagoa.",
+      image: gardenHouse1,
+      features: ["113 lotes", "Condomínio fechado", "A 3 min da praia", "Segurança 24h"],
       price: "Alto padrão"
     }
   ];

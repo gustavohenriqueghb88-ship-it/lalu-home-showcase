@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, MapPin, Home, Building2, Users, TreePine } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import apartmentInterior from '@/assets/apartment-interior.jpg';
-import commercialBuilding from '@/assets/commercial-building.jpg';
+import rotasDoSol1 from '@/assets/rotas-do-sol-1.jpg';
+import gardenHouse1 from '@/assets/garden-house-1.jpg';
 
 const Projects = () => {
   const projects = [
@@ -17,16 +17,16 @@ const Projects = () => {
       location: "Estr. Geral Barra do Itapocu, Araquari-SC",
       type: "Loteamento",
       status: "Disponível",
-      description: "71 lotes prontos para construir a partir de 300m². Infraestrutura completa com ruas asfaltadas, iluminação pública, rede de água, rede de esgoto e galeria de águas pluviais.",
-      image: commercialBuilding,
-      features: ["71 lotes disponíveis", "A partir de 300m²", "Infraestrutura completa", "Entrada facilitada", "Financiamento até 180 meses"],
+      description: "Segundo loteamento na região da Barra do Itapocú, planejado para atender as expectativas de nossos clientes. Localizado em meio a paisagens naturais de tirar o fôlego, este será mais um empreendimento completo e de sucesso de vendas.",
+      image: rotasDoSol1,
+      features: ["71 lotes disponíveis", "A partir de 300m²", "Ruas asfaltadas", "Entrada facilitada", "Financiamento até 180 meses"],
       highlights: [
         "Ruas asfaltadas",
-        "Iluminação pública",
-        "Rede de água e esgoto",
+        "Iluminação pública", 
+        "Rede de água",
+        "Rede coletora de esgoto",
         "Galeria de águas pluviais",
-        "Paisagens naturais",
-        "Excelente localização"
+        "Paisagens naturais exuberantes"
       ]
     },
     {
@@ -36,15 +36,15 @@ const Projects = () => {
       location: "Barra Velha-SC",
       type: "Condomínio",
       status: "Disponível",
-      description: "113 lotes prontos para construir em condomínio fechado de alto padrão. Localização estratégica, próxima à praia e lagoa, perto das principais cidades do litoral catarinense.",
-      image: apartmentInterior,
-      features: ["113 lotes disponíveis", "Condomínio fechado", "Alto padrão", "Próximo à praia", "Localização estratégica"],
+      description: "O primeiro condomínio fechado de alto padrão perto da praia no centro de Barra Velha. Localizado em uma das regiões mais promissoras de Santa Catarina, próximo a belas praias e a uma lindíssima lagoa paralela ao mar.",
+      image: gardenHouse1,
+      features: ["113 lotes disponíveis", "Condomínio fechado", "Portal com segurança 24h", "A 3 min da praia", "A 600m da lagoa"],
       highlights: [
-        "Condomínio fechado",
-        "Alto padrão",
-        "Próximo à praia e lagoa",
-        "Segurança 24h",
-        "Área de lazer",
+        "Portal com segurança 24h",
+        "Muros com 2,30m de altura",
+        "Monitoramento por câmeras",
+        "A 3 min da praia",
+        "A 600m da lagoa",
         "Localização privilegiada"
       ]
     }

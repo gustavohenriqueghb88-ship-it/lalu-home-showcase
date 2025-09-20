@@ -6,9 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Home, Users, TreePine } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import apartmentInterior from '@/assets/apartment-interior.jpg';
-import commercialBuilding from '@/assets/commercial-building.jpg';
-import heroBuilding from '@/assets/hero-building.jpg';
+import rotasDoSol1 from '@/assets/rotas-do-sol-1.jpg';
+import rotasDoSol2 from '@/assets/rotas-do-sol-2.jpg';
+import rotasDoSol3 from '@/assets/rotas-do-sol-3.jpg';
+import gardenHouse1 from '@/assets/garden-house-1.jpg';
+import gardenHouse2 from '@/assets/garden-house-2.jpg';
+import gardenHouse3 from '@/assets/garden-house-3.jpg';
 
 const ProjectDetail = () => {
   const { slug } = useParams();
@@ -20,8 +23,8 @@ const ProjectDetail = () => {
       location: "Estr. Geral Barra do Itapocu, Araquari-SC",
       type: "Loteamento",
       status: "Disponível",
-      description: "O Loteamento Rotas do Sol oferece 71 lotes prontos para construir, a partir de 300m², com infraestrutura completa. Localizado em Araquari-SC, o empreendimento conta com ruas asfaltadas, iluminação pública, rede de água, rede de esgoto e galeria de águas pluviais. Condições especiais de pagamento com entrada facilitada e financiamento próprio até 180 meses.",
-      images: [commercialBuilding, heroBuilding, apartmentInterior],
+      description: "Segundo loteamento na região da Barra do Itapocú, planejado para atender as expectativas de nossos clientes. Localizado em meio a paisagens naturais de tirar o fôlego, este será mais um empreendimento completo e de sucesso de vendas. Com 71 lotes prontos para construir a partir de 300m², oferece infraestrutura completa e condições especiais de pagamento.",
+      images: [rotasDoSol1, rotasDoSol2, rotasDoSol3],
       features: [
         "71 lotes disponíveis",
         "Lotes a partir de 300m²",
@@ -54,30 +57,33 @@ const ProjectDetail = () => {
       location: "Barra Velha-SC",
       type: "Condomínio",
       status: "Disponível", 
-      description: "O Condomínio Garden House Residence é um empreendimento de alto padrão com 113 lotes prontos para construir. Localizado em Barra Velha-SC, oferece a exclusividade de um condomínio fechado próximo à praia e lagoa. Sua localização estratégica proporciona fácil acesso às principais cidades do litoral catarinense.",
-      images: [apartmentInterior, heroBuilding, commercialBuilding],
+      description: "O primeiro condomínio fechado de alto padrão perto da praia no centro de Barra Velha. Localizado em uma das regiões mais promissoras de Santa Catarina, próximo a belas praias, paisagens e a uma lindíssima lagoa paralela ao mar. Um lugar paradisíaco que une belezas naturais de forma única e está a minutos das cidades mais relevantes do litoral catarinense.",
+      images: [gardenHouse1, gardenHouse2, gardenHouse3],
       features: [
         "113 lotes disponíveis",
         "Condomínio fechado",
-        "Alto padrão",
-        "Próximo à praia",
-        "Próximo à lagoa",
-        "Segurança 24h",
-        "Área de lazer",
-        "Localização estratégica",
-        "Portaria controlada",
-        "Paisagismo planejado"
+        "Portal com segurança 24h",
+        "Muros com 2,30m de altura",
+        "Monitoramento por câmeras",
+        "Projeto de alto padrão",
+        "Localização privilegiada",
+        "No centro da cidade",
+        "A 3 min da praia",
+        "A 600m da lagoa",
+        "Local de alta valorização",
+        "Fácil acesso"
       ],
       highlights: [
-        "Condomínio fechado de alto padrão",
-        "A 5 min da praia",
-        "Próximo à lagoa",
-        "Região valorizada do litoral"
+        "Primeiro condomínio fechado de alto padrão da região",
+        "A 3 min da praia",
+        "A 600m da lagoa",
+        "Entre Joinville e Balneário Camboriú",
+        "Próximo a 2 aeroportos"
       ],
       details: {
         totalLotes: "113 lotes",
         seguranca: "24 horas",
-        localizacao: "Próximo à praia",
+        localizacao: "3 min da praia",
         padrao: "Alto padrão"
       }
     }
