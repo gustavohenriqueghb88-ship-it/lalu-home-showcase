@@ -10,24 +10,24 @@ All colors MUST be HSL.
   :root {
     /* Lalu Brand Colors */
     --background: 0 0% 100%;
-    --foreground: 158 70% 12%;
+    --foreground: 97 35% 20%;
     
     --card: 0 0% 100%;
-    --card-foreground: 158 70% 12%;
+    --card-foreground: 97 35% 20%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 158 70% 12%;
+    --popover-foreground: 97 35% 20%;
     
-    /* Verde escuro da Lalu como primária */
-    --primary: 158 70% 12%;
+    /* Verde escuro da Lalu como primária - tom fiel à imagem */
+    --primary: 97 35% 20%;
     --primary-foreground: 0 0% 100%;
     
     /* Dourado da Lalu */
     --secondary: 40 35% 62%;
-    --secondary-foreground: 158 70% 12%;
+    --secondary-foreground: 97 35% 20%;
     
-    --muted: 158 20% 95%;
-    --muted-foreground: 158 15% 40%;
+    --muted: 97 15% 95%;
+    --muted-foreground: 97 20% 40%;
     
     /* Verde esmeralda para acentos */
     --accent: 145 63% 49%;
@@ -36,20 +36,20 @@ All colors MUST be HSL.
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 158 20% 90%;
-    --input: 158 20% 90%;
-    --ring: 158 70% 12%;
+    --border: 97 15% 90%;
+    --input: 97 15% 90%;
+    --ring: 97 35% 20%;
     
     /* Custom Lalu tokens */
-    --lalu-green-dark: 158 70% 12%;
+    --lalu-green-dark: 97 35% 20%;
     --lalu-gold: 40 35% 62%;
     --lalu-emerald: 145 63% 49%;
     --lalu-white: 0 0% 100%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--lalu-green-dark)), hsl(158 50% 20%));
+    --gradient-primary: linear-gradient(135deg, hsl(var(--lalu-green-dark)), hsl(97 25% 25%));
     --gradient-gold: linear-gradient(135deg, hsl(var(--lalu-gold)), hsl(40 45% 70%));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--lalu-green-dark)) 0%, hsl(158 60% 15%) 50%, hsl(var(--lalu-gold) / 0.1) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--lalu-green-dark)) 0%, hsl(97 30% 22%) 50%, hsl(var(--lalu-gold) / 0.1) 100%);
     
     /* Shadows */
     --shadow-elegant: 0 10px 40px -10px hsl(var(--lalu-green-dark) / 0.3);
@@ -78,23 +78,23 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 158 70% 8%;
+    --background: 97 35% 8%;
     --foreground: 0 0% 98%;
     
-    --card: 158 50% 10%;
+    --card: 97 25% 10%;
     --card-foreground: 0 0% 98%;
     
-    --popover: 158 50% 10%;
+    --popover: 97 25% 10%;
     --popover-foreground: 0 0% 98%;
     
     --primary: 40 35% 62%;
-    --primary-foreground: 158 70% 12%;
+    --primary-foreground: 97 35% 20%;
     
-    --secondary: 158 30% 15%;
+    --secondary: 97 20% 15%;
     --secondary-foreground: 0 0% 98%;
     
-    --muted: 158 30% 15%;
-    --muted-foreground: 158 10% 70%;
+    --muted: 97 20% 15%;
+    --muted-foreground: 97 10% 70%;
     
     --accent: 145 63% 49%;
     --accent-foreground: 0 0% 100%;
@@ -102,8 +102,8 @@ All colors MUST be HSL.
     --destructive: 0 62% 45%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 158 30% 20%;
-    --input: 158 30% 20%;
+    --border: 97 20% 20%;
+    --input: 97 20% 20%;
     --ring: 40 35% 62%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
