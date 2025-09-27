@@ -25,7 +25,7 @@ const Header = () => {
               <img 
                 src="/src/assets/lalu-logo.png" 
                 alt="Lalu Incorporadora" 
-                className="h-8 w-auto"
+                className="h-24 w-auto"
               />
             </Link>
           </div>

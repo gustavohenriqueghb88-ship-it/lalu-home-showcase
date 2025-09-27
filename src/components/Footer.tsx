@@ -25,7 +25,7 @@ const Footer = () => {
               <img 
                 src="/src/assets/lalu-logo.png" 
                 alt="Lalu Incorporadora" 
-                className="h-12 w-auto"
+                className="h-36 w-auto bg-white/10 p-4 rounded-lg backdrop-blur-sm"
               />
             </div>
             <p className="text-primary-foreground/80 mb-6 leading-relaxed">
