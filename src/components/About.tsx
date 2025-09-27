@@ -1,6 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { 
   Award, 
   Users, 
@@ -78,10 +79,12 @@ const About = () => {
             </p>
 
             <div className="pt-6">
-              <Button variant="hero" size="lg" className="group">
-                Conheça Nossa História
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <Link to="/sobre">
+                <Button variant="hero" size="lg" className="group">
+                  Conheça Nossa História
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
             </div>
           </div>
 
