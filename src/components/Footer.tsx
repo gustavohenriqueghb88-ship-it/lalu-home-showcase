@@ -8,6 +8,7 @@ import {
   Linkedin,
   ArrowUp 
 } from 'lucide-react';
+import laluLogo from '@/assets/lalu-logo.png';
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -23,7 +24,7 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="mb-4">
               <img 
-                src="/src/assets/lalu-logo.png" 
+                src={laluLogo} 
                 alt="Lalu Incorporadora" 
                 className="h-36 w-auto bg-white/10 p-4 rounded-lg backdrop-blur-sm"
               />

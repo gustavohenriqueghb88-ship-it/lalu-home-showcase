@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import laluLogo from '@/assets/lalu-logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,7 +24,7 @@ const Header = () => {
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
               <img 
-                src="/src/assets/lalu-logo.png" 
+                src={laluLogo} 
                 alt="Lalu Incorporadora" 
                 className="h-24 w-auto"
               />
