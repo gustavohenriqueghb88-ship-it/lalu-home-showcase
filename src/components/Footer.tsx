@@ -21,7 +21,13 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <div className="text-3xl font-bold text-secondary mb-4">LALU</div>
+            <div className="mb-4">
+              <img 
+                src="/src/assets/lalu-logo.png" 
+                alt="Lalu Incorporadora" 
+                className="h-12 w-auto"
+              />
+            </div>
             <p className="text-primary-foreground/80 mb-6 leading-relaxed">
               Incorporadora com quase 20 anos de experiência no Paraná e Santa Catarina. 
               Especializada em soluções completas que unem inovação, segurança e valorização patrimonial.

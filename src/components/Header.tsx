@@ -21,8 +21,12 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-primary">
-              LALU
+            <Link to="/" className="flex items-center">
+              <img 
+                src="/src/assets/lalu-logo.png" 
+                alt="Lalu Incorporadora" 
+                className="h-8 w-auto"
+              />
             </Link>
           </div>
 
