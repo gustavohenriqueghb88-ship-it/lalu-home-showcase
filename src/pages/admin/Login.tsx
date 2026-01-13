@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,52 +14,60 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user, isAdmin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Redirect if already logged in and admin
+  useEffect(() => {
+    if (!authLoading && user && isAdmin) {
+      navigate('/admin', { replace: true });
+    }
+  }, [user, isAdmin, authLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    if (isSignUp) {
-      const { error } = await signUp(email, password);
+    try {
+      if (isSignUp) {
+        const { error } = await signUp(email, password);
+        if (error) {
+          toast({
+            title: 'Erro ao criar conta',
+            description: error.message,
+            variant: 'destructive',
+          });
+          return;
+        }
+        toast({
+          title: 'Conta criada com sucesso!',
+          description: 'Agora você pode fazer login. Aguarde a liberação do acesso admin.',
+        });
+        setIsSignUp(false);
+        return;
+      }
+
+      const { error } = await signIn(email, password);
+
       if (error) {
         toast({
-          title: 'Erro ao criar conta',
+          title: 'Erro ao fazer login',
           description: error.message,
           variant: 'destructive',
         });
-        setLoading(false);
         return;
       }
+
       toast({
-        title: 'Conta criada com sucesso!',
-        description: 'Agora você pode fazer login. Aguarde a liberação do acesso admin.',
+        title: 'Login realizado com sucesso',
+        description: 'Redirecionando para o painel...',
       });
-      setIsSignUp(false);
+
+      // Navigation will happen via useEffect when auth state updates
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const { error } = await signIn(email, password);
-
-    if (error) {
-      toast({
-        title: 'Erro ao fazer login',
-        description: error.message,
-        variant: 'destructive',
-      });
-      setLoading(false);
-      return;
-    }
-
-    toast({
-      title: 'Login realizado com sucesso',
-      description: 'Redirecionando para o painel...',
-    });
-
-    navigate('/admin');
   };
 
   return (

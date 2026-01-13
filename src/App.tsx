@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Projects from "./pages/Projects";
 import Portfolio from "./pages/Portfolio";
@@ -23,34 +24,36 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/empreendimentos" element={<Projects />} />
-          <Route path="/empreendimentos/:slug" element={<ProjectDetail />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/portfolio/:slug" element={<PropertyDetail />} />
-          <Route path="/sobre" element={<About />} />
-          <Route path="/contato" element={<Contact />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/admin/empreendimentos" element={<ProtectedRoute><ProjectsList /></ProtectedRoute>} />
-          <Route path="/admin/empreendimentos/novo" element={<ProtectedRoute><ProjectForm /></ProtectedRoute>} />
-          <Route path="/admin/empreendimentos/:slug" element={<ProtectedRoute><ProjectForm /></ProtectedRoute>} />
-          <Route path="/admin/imoveis" element={<ProtectedRoute><PropertiesList /></ProtectedRoute>} />
-          <Route path="/admin/imoveis/novo" element={<ProtectedRoute><PropertyForm /></ProtectedRoute>} />
-          <Route path="/admin/imoveis/:slug" element={<ProtectedRoute><PropertyForm /></ProtectedRoute>} />
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/empreendimentos" element={<Projects />} />
+            <Route path="/empreendimentos/:slug" element={<ProjectDetail />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/portfolio/:slug" element={<PropertyDetail />} />
+            <Route path="/sobre" element={<About />} />
+            <Route path="/contato" element={<Contact />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/empreendimentos" element={<ProtectedRoute><ProjectsList /></ProtectedRoute>} />
+            <Route path="/admin/empreendimentos/novo" element={<ProtectedRoute><ProjectForm /></ProtectedRoute>} />
+            <Route path="/admin/empreendimentos/:slug" element={<ProtectedRoute><ProjectForm /></ProtectedRoute>} />
+            <Route path="/admin/imoveis" element={<ProtectedRoute><PropertiesList /></ProtectedRoute>} />
+            <Route path="/admin/imoveis/novo" element={<ProtectedRoute><PropertyForm /></ProtectedRoute>} />
+            <Route path="/admin/imoveis/:slug" element={<ProtectedRoute><PropertyForm /></ProtectedRoute>} />
+            
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
