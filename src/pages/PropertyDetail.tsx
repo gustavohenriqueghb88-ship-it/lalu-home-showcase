@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -310,16 +311,10 @@ const PropertyDetail = () => {
                     </div>
                   </div>
 
-                  {/* Map Placeholder */}
+                  {/* Map */}
                   <div>
                     <h3 className="text-xl font-bold text-primary mb-4">Localização</h3>
-                    <Card className="bg-muted/50">
-                      <CardContent className="p-8 text-center">
-                        <MapPin className="w-16 h-16 text-secondary mx-auto mb-4" />
-                        <p className="text-muted-foreground mb-2">{property.location}</p>
-                        <p className="text-sm text-muted-foreground">Mapa interativo em breve</p>
-                      </CardContent>
-                    </Card>
+                    <GoogleMap address={property.location} height="350px" />
                   </div>
                 </div>
 
