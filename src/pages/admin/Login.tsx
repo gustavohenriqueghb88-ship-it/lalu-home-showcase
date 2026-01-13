@@ -13,13 +13,34 @@ const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const [isSignUp, setIsSignUp] = useState(false);
+  const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    if (isSignUp) {
+      const { error } = await signUp(email, password);
+      if (error) {
+        toast({
+          title: 'Erro ao criar conta',
+          description: error.message,
+          variant: 'destructive',
+        });
+        setLoading(false);
+        return;
+      }
+      toast({
+        title: 'Conta criada com sucesso!',
+        description: 'Agora você pode fazer login. Aguarde a liberação do acesso admin.',
+      });
+      setIsSignUp(false);
+      setLoading(false);
+      return;
+    }
 
     const { error } = await signIn(email, password);
 
@@ -48,9 +69,11 @@ const AdminLogin = () => {
           <div className="flex justify-center mb-4">
             <img src={laluLogo} alt="Lalu Adm" className="h-16" />
           </div>
-          <CardTitle className="text-2xl font-bold">Painel Administrativo</CardTitle>
+        <CardTitle className="text-2xl font-bold">Painel Administrativo</CardTitle>
           <CardDescription>
-            Entre com suas credenciais para acessar o painel
+            {isSignUp 
+              ? 'Crie sua conta para solicitar acesso ao painel' 
+              : 'Entre com suas credenciais para acessar o painel'}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -83,8 +106,33 @@ const AdminLogin = () => {
               ) : (
                 <Lock className="h-4 w-4 mr-2" />
               )}
-              Entrar
+              {isSignUp ? 'Criar Conta' : 'Entrar'}
             </Button>
+            <div className="text-center text-sm">
+              {isSignUp ? (
+                <span>
+                  Já tem uma conta?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setIsSignUp(false)}
+                    className="text-primary hover:underline font-medium"
+                  >
+                    Fazer login
+                  </button>
+                </span>
+              ) : (
+                <span>
+                  Não tem uma conta?{' '}
+                  <button
+                    type="button"
+                    onClick={() => setIsSignUp(true)}
+                    className="text-primary hover:underline font-medium"
+                  >
+                    Criar conta
+                  </button>
+                </span>
+              )}
+            </div>
           </form>
         </CardContent>
       </Card>
