@@ -1,98 +1,54 @@
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Home, Users, TreePine } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import rotasDoSol1 from '@/assets/rotas-do-sol-hero.jpg';
-import rotasDoSol2 from '@/assets/rotas-do-sol-2.jpg';
-import rotasDoSol3 from '@/assets/rotas-do-sol-logo.png';
-import gardenHouse1 from '@/assets/garden-house-1.jpg';
-import gardenHouse2 from '@/assets/garden-house-2.jpg';
-import gardenHouse3 from '@/assets/garden-house-3.jpg';
+import { supabase } from '@/integrations/supabase/client';
 
 const ProjectDetail = () => {
   const { slug } = useParams();
 
-  const projects = {
-    'loteamento-rotas-do-sol': {
-      id: 1,
-      title: "Loteamento Rotas do Sol",
-      location: "Estr. Geral Barra do Itapocu, Araquari-SC",
-      type: "Loteamento",
-      status: "Disponível",
-      description: "Segundo loteamento na região da Barra do Itapocú, planejado para atender as expectativas de nossos clientes. Localizado em meio a paisagens naturais de tirar o fôlego, este será mais um empreendimento completo e de sucesso de vendas. Com 71 lotes prontos para construir a partir de 300m², oferece infraestrutura completa e condições especiais de pagamento.",
-      images: [rotasDoSol1, rotasDoSol2, rotasDoSol3],
-      features: [
-        "71 lotes disponíveis",
-        "Lotes a partir de 300m²",
-        "Ruas asfaltadas",
-        "Iluminação pública",
-        "Rede de água",
-        "Rede de esgoto",
-        "Galeria de águas pluviais",
-        "Paisagens naturais",
-        "Excelente localização",
-        "Entrada facilitada",
-        "Financiamento até 180 meses"
-      ],
-      highlights: [
-        "Infraestrutura completa pronta",
-        "Financiamento próprio facilitado",
-        "Região em desenvolvimento",
-        "Próximo à BR-101"
-      ],
-      details: {
-        totalLotes: "71 lotes",
-        areaMinima: "300m²",
-        infraestrutura: "Completa",
-        financiamento: "Até 180 meses"
-      }
+  const { data: project, isLoading, error } = useQuery({
+    queryKey: ['project', slug],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('slug', slug)
+        .eq('is_active', true)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
     },
-    'condominio-garden-house-residence': {
-      id: 2,
-      title: "Condomínio Garden House Residence",
-      location: "Barra Velha-SC",
-      type: "Condomínio",
-      status: "Disponível", 
-      description: "O primeiro condomínio fechado de alto padrão perto da praia no centro de Barra Velha. Localizado em uma das regiões mais promissoras de Santa Catarina, próximo a belas praias, paisagens e a uma lindíssima lagoa paralela ao mar. Um lugar paradisíaco que une belezas naturais de forma única e está a minutos das cidades mais relevantes do litoral catarinense.",
-      images: [gardenHouse1, gardenHouse2, gardenHouse3],
-      features: [
-        "113 lotes disponíveis",
-        "Condomínio fechado",
-        "Portal com segurança 24h",
-        "Muros com 2,30m de altura",
-        "Monitoramento por câmeras",
-        "Projeto de alto padrão",
-        "Localização privilegiada",
-        "No centro da cidade",
-        "A 3 min da praia",
-        "A 600m da lagoa",
-        "Local de alta valorização",
-        "Fácil acesso"
-      ],
-      highlights: [
-        "Primeiro condomínio fechado de alto padrão da região",
-        "A 3 min da praia",
-        "A 600m da lagoa",
-        "Entre Joinville e Balneário Camboriú",
-        "Próximo a 2 aeroportos"
-      ],
-      details: {
-        totalLotes: "113 lotes",
-        seguranca: "24 horas",
-        localizacao: "3 min da praia",
-        padrao: "Alto padrão"
-      }
-    }
+    enabled: !!slug
+  });
+
+  const getImageUrl = (imagePath: string | null) => {
+    if (!imagePath) return '/placeholder.svg';
+    if (imagePath.startsWith('http')) return imagePath;
+    return supabase.storage.from('property-images').getPublicUrl(imagePath).data.publicUrl;
   };
 
-  const project = projects[slug as keyof typeof projects];
+  if (isLoading) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="py-20">
+          <div className="container mx-auto px-4 flex justify-center items-center min-h-[50vh]">
+            <Loader2 className="w-8 h-8 animate-spin text-secondary" />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
-  if (!project) {
+  if (error || !project) {
     return (
       <div className="min-h-screen">
         <Header />
@@ -108,6 +64,11 @@ const ProjectDetail = () => {
       </div>
     );
   }
+
+  const images = project.images || [];
+  const features = project.features || [];
+  const highlights = project.highlights || [];
+  const details = (project.details as Record<string, string | number>) || {};
 
   return (
     <div className="min-h-screen">
@@ -175,20 +136,20 @@ const ProjectDetail = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
                   <img 
-                    src={project.images[0]}
+                    src={getImageUrl(images[0] || null)}
                     alt={project.title}
                     className="w-full h-96 object-cover rounded-lg shadow-elegant"
                   />
                 </div>
                 <div className="grid grid-rows-2 gap-4">
                   <img 
-                    src={project.images[1]}
+                    src={getImageUrl(images[1] || null)}
                     alt={`${project.title} - Imagem 2`}
                     className="w-full h-44 object-cover rounded-lg shadow-lg"
                   />
                   <img 
-                    src={project.images[2]}
-                    alt={`${project.title} - Logo`}
+                    src={getImageUrl(images[2] || null)}
+                    alt={`${project.title} - Imagem 3`}
                     className="w-full h-44 object-contain rounded-lg shadow-lg bg-white p-4"
                   />
                 </div>
@@ -213,34 +174,38 @@ const ProjectDetail = () => {
                   </div>
 
                   {/* Features */}
-                  <div>
-                    <h3 className="text-xl font-bold text-primary mb-4">Características</h3>
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {project.features.map((feature, index) => (
-                        <div key={index} className="flex items-center">
-                          <Check className="w-5 h-5 text-accent mr-3 flex-shrink-0" />
-                          <span className="text-muted-foreground">{feature}</span>
-                        </div>
-                      ))}
+                  {features.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold text-primary mb-4">Características</h3>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {features.map((feature, index) => (
+                          <div key={index} className="flex items-center">
+                            <Check className="w-5 h-5 text-accent mr-3 flex-shrink-0" />
+                            <span className="text-muted-foreground">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Highlights */}
-                  <div>
-                    <h3 className="text-xl font-bold text-primary mb-4">Principais Diferenciais</h3>
-                    <div className="grid gap-4">
-                      {project.highlights.map((highlight, index) => (
-                        <Card key={index} className="border-l-4 border-l-secondary">
-                          <CardContent className="p-4">
-                            <div className="flex items-center">
-                              <div className="w-2 h-2 bg-secondary rounded-full mr-3" />
-                              <span className="font-medium text-primary">{highlight}</span>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                  {highlights.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold text-primary mb-4">Principais Diferenciais</h3>
+                      <div className="grid gap-4">
+                        {highlights.map((highlight, index) => (
+                          <Card key={index} className="border-l-4 border-l-secondary">
+                            <CardContent className="p-4">
+                              <div className="flex items-center">
+                                <div className="w-2 h-2 bg-secondary rounded-full mr-3" />
+                                <span className="font-medium text-primary">{highlight}</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Map */}
                   <div>
@@ -258,12 +223,18 @@ const ProjectDetail = () => {
                       <CardTitle className="text-primary">Informações do Projeto</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {Object.entries(project.details).map(([key, value]) => (
+                      {Object.entries(details).map(([key, value]) => (
                         <div key={key} className="flex justify-between items-center py-2 border-b border-border last:border-b-0">
                           <span className="text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>
                           <span className="font-medium text-primary">{value}</span>
                         </div>
                       ))}
+                      {project.price && (
+                        <div className="flex justify-between items-center py-2 border-b border-border last:border-b-0">
+                          <span className="text-muted-foreground">Preço</span>
+                          <span className="font-medium text-primary">{project.price}</span>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
 

@@ -1,149 +1,64 @@
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Home, Bed, Bath, Car, Square } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import apartmentInterior from '@/assets/apartment-interior.jpg';
-import commercialBuilding from '@/assets/commercial-building.jpg';
-import heroBuilding from '@/assets/hero-building.jpg';
+import { supabase } from '@/integrations/supabase/client';
 
 const PropertyDetail = () => {
   const { slug } = useParams();
 
-  const properties = {
-    'apartamento-centro-curitiba': {
-      id: 1,
-      title: "Apartamento Centro",
-      location: "Centro, Curitiba - PR",
-      type: "locacao",
-      category: "Residencial",
-      price: "R$ 2.500",
-      period: "/mês",
-      description: "Apartamento mobiliado localizado no coração de Curitiba, oferecendo praticidade e conforto. Próximo ao transporte público, comércio e principais pontos da cidade. Ideal para profissionais que buscam localização central.",
-      images: [apartmentInterior, heroBuilding, commercialBuilding],
-      features: [
-        "Apartamento mobiliado",
-        "2 dormitórios",
-        "1 banheiro",
-        "1 vaga de garagem",
-        "Cozinha equipada",
-        "Área de serviço",
-        "Próximo ao transporte público",
-        "Comércio na região",
-        "Internet fibra",
-        "Portaria 24h"
-      ],
-      details: {
-        area: "65m²",
-        bedrooms: 2,
-        bathrooms: 1,
-        parking: 1,
-        furnished: "Sim",
-        floor: "5º andar"
-      }
+  const { data: property, isLoading, error } = useQuery({
+    queryKey: ['property', slug],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('slug', slug)
+        .eq('is_active', true)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
     },
-    'casa-jardim-botanico': {
-      id: 2,
-      title: "Casa Jardim Botânico",
-      location: "Jardim Botânico, Curitiba - PR",
-      type: "venda",
-      category: "Residencial", 
-      price: "R$ 650.000",
-      period: "",
-      description: "Casa em condomínio fechado no nobre bairro Jardim Botânico. Propriedade com excelente localização, próxima ao Jardim Botânico de Curitiba e com fácil acesso às principais vias da cidade. Ideal para famílias que buscam qualidade de vida.",
-      images: [heroBuilding, apartmentInterior, commercialBuilding],
-      features: [
-        "Casa em condomínio",
-        "3 dormitórios",
-        "2 banheiros",
-        "2 vagas de garagem",
-        "Jardim privativo",
-        "Área gourmet",
-        "Segurança 24h",
-        "Área de lazer completa",
-        "Próximo ao Jardim Botânico",
-        "Localização nobre"
-      ],
-      details: {
-        area: "150m²",
-        bedrooms: 3,
-        bathrooms: 2,
-        parking: 2,
-        garden: "Sim",
-        condominium: "Fechado"
-      }
-    },
-    'sala-comercial-batel': {
-      id: 3,
-      title: "Sala Comercial Batel",
-      location: "Batel, Curitiba - PR",
-      type: "locacao", 
-      category: "Comercial",
-      price: "R$ 3.800",
-      period: "/mês",
-      description: "Sala comercial em edifício moderno e conceituado no Batel, uma das regiões mais valorizadas de Curitiba. Ideal para escritórios, consultorias e empresas que buscam localização estratégica e infraestrutura de qualidade.",
-      images: [commercialBuilding, heroBuilding, apartmentInterior],
-      features: [
-        "Edifício moderno",
-        "50m² de área útil",
-        "1 banheiro",
-        "1 vaga de garagem",
-        "Ar condicionado",
-        "Recepção",
-        "Elevadores",
-        "Segurança",
-        "Localização premium",
-        "Fácil acesso"
-      ],
-      details: {
-        area: "50m²",
-        bathrooms: 1,
-        parking: 1,
-        airConditioning: "Sim",
-        building: "Comercial",
-        floor: "8º andar"
-      }
-    },
-    'cobertura-agua-verde': {
-      id: 4,
-      title: "Cobertura Água Verde",
-      location: "Água Verde, Curitiba - PR",
-      type: "venda",
-      category: "Residencial",
-      price: "R$ 950.000",
-      period: "",
-      description: "Cobertura duplex com vista panorâmica da cidade de Curitiba. Acabamento de alto padrão, terraço amplo e localização privilegiada no Água Verde. Propriedade única para quem busca sofisticação e exclusividade.",
-      images: [apartmentInterior, commercialBuilding, heroBuilding],
-      features: [
-        "Cobertura duplex",
-        "4 dormitórios",
-        "3 banheiros",
-        "3 vagas de garagem",
-        "Terraço amplo",
-        "Vista panorâmica",
-        "Acabamento alto padrão",
-        "Área gourmet",
-        "Localização privilegiada",
-        "Exclusividade"
-      ],
-      details: {
-        area: "200m²",
-        bedrooms: 4,
-        bathrooms: 3,
-        parking: 3,
-        terrace: "Sim",
-        view: "Panorâmica"
-      }
-    }
+    enabled: !!slug
+  });
+
+  const getImageUrl = (imagePath: string | null) => {
+    if (!imagePath) return '/placeholder.svg';
+    if (imagePath.startsWith('http')) return imagePath;
+    return supabase.storage.from('property-images').getPublicUrl(imagePath).data.publicUrl;
   };
 
-  const property = properties[slug as keyof typeof properties];
+  const formatPrice = (price: number | null, type: string) => {
+    if (!price) return 'Consulte';
+    const formatted = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 0
+    }).format(price);
+    return formatted;
+  };
 
-  if (!property) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="py-20">
+          <div className="container mx-auto px-4 flex justify-center items-center min-h-[50vh]">
+            <Loader2 className="w-8 h-8 animate-spin text-secondary" />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error || !property) {
     return (
       <div className="min-h-screen">
         <Header />
@@ -159,6 +74,10 @@ const PropertyDetail = () => {
       </div>
     );
   }
+
+  const images = property.images || [];
+  const features = property.features || [];
+  const details = (property.details as Record<string, string | number>) || {};
 
   return (
     <div className="min-h-screen">
@@ -201,8 +120,10 @@ const PropertyDetail = () => {
                     <Badge variant="outline">{property.category}</Badge>
                   </div>
                   <div className="text-3xl font-bold text-secondary">
-                    {property.price}
-                    <span className="text-lg font-normal text-muted-foreground">{property.period}</span>
+                    {formatPrice(property.price, property.type)}
+                    {property.type === 'locacao' && property.period && (
+                      <span className="text-lg font-normal text-muted-foreground">{property.period}</span>
+                    )}
                   </div>
                 </div>
                 
@@ -232,19 +153,19 @@ const PropertyDetail = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="md:col-span-2">
                   <img 
-                    src={property.images[0]}
+                    src={getImageUrl(images[0] || null)}
                     alt={property.title}
                     className="w-full h-96 object-cover rounded-lg shadow-elegant"
                   />
                 </div>
                 <div className="grid grid-rows-2 gap-4">
                   <img 
-                    src={property.images[1]}
+                    src={getImageUrl(images[1] || null)}
                     alt={`${property.title} - Imagem 2`}
                     className="w-full h-44 object-cover rounded-lg shadow-lg"
                   />
                   <img 
-                    src={property.images[2]}
+                    src={getImageUrl(images[2] || null)}
                     alt={`${property.title} - Imagem 3`}
                     className="w-full h-44 object-cover rounded-lg shadow-lg"
                   />
@@ -273,43 +194,51 @@ const PropertyDetail = () => {
                   <div>
                     <h3 className="text-xl font-bold text-primary mb-4">Características</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      <Card className="text-center p-4">
-                        <Square className="w-8 h-8 text-secondary mx-auto mb-2" />
-                        <div className="text-lg font-bold text-primary">{property.details.area}</div>
-                        <div className="text-sm text-muted-foreground">Área</div>
-                      </Card>
-                      {'bedrooms' in property.details && property.details.bedrooms && property.details.bedrooms > 0 && (
+                      {property.area && (
+                        <Card className="text-center p-4">
+                          <Square className="w-8 h-8 text-secondary mx-auto mb-2" />
+                          <div className="text-lg font-bold text-primary">{property.area}</div>
+                          <div className="text-sm text-muted-foreground">Área</div>
+                        </Card>
+                      )}
+                      {property.bedrooms && property.bedrooms > 0 && (
                         <Card className="text-center p-4">
                           <Bed className="w-8 h-8 text-secondary mx-auto mb-2" />
-                          <div className="text-lg font-bold text-primary">{property.details.bedrooms}</div>
+                          <div className="text-lg font-bold text-primary">{property.bedrooms}</div>
                           <div className="text-sm text-muted-foreground">Quartos</div>
                         </Card>
                       )}
-                      <Card className="text-center p-4">
-                        <Bath className="w-8 h-8 text-secondary mx-auto mb-2" />
-                        <div className="text-lg font-bold text-primary">{property.details.bathrooms}</div>
-                        <div className="text-sm text-muted-foreground">Banheiros</div>
-                      </Card>
-                      <Card className="text-center p-4">
-                        <Car className="w-8 h-8 text-secondary mx-auto mb-2" />
-                        <div className="text-lg font-bold text-primary">{property.details.parking}</div>
-                        <div className="text-sm text-muted-foreground">Vagas</div>
-                      </Card>
+                      {property.bathrooms && property.bathrooms > 0 && (
+                        <Card className="text-center p-4">
+                          <Bath className="w-8 h-8 text-secondary mx-auto mb-2" />
+                          <div className="text-lg font-bold text-primary">{property.bathrooms}</div>
+                          <div className="text-sm text-muted-foreground">Banheiros</div>
+                        </Card>
+                      )}
+                      {property.parking && property.parking > 0 && (
+                        <Card className="text-center p-4">
+                          <Car className="w-8 h-8 text-secondary mx-auto mb-2" />
+                          <div className="text-lg font-bold text-primary">{property.parking}</div>
+                          <div className="text-sm text-muted-foreground">Vagas</div>
+                        </Card>
+                      )}
                     </div>
                   </div>
 
                   {/* Features */}
-                  <div>
-                    <h3 className="text-xl font-bold text-primary mb-4">Comodidades e Características</h3>
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {property.features.map((feature, index) => (
-                        <div key={index} className="flex items-center">
-                          <Check className="w-5 h-5 text-accent mr-3 flex-shrink-0" />
-                          <span className="text-muted-foreground">{feature}</span>
-                        </div>
-                      ))}
+                  {features.length > 0 && (
+                    <div>
+                      <h3 className="text-xl font-bold text-primary mb-4">Comodidades e Características</h3>
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {features.map((feature, index) => (
+                          <div key={index} className="flex items-center">
+                            <Check className="w-5 h-5 text-accent mr-3 flex-shrink-0" />
+                            <span className="text-muted-foreground">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Map */}
                   <div>
@@ -327,7 +256,31 @@ const PropertyDetail = () => {
                       <CardTitle className="text-primary">Informações do Imóvel</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {Object.entries(property.details).map(([key, value]) => (
+                      {property.area && (
+                        <div className="flex justify-between items-center py-2 border-b border-border">
+                          <span className="text-muted-foreground">Área</span>
+                          <span className="font-medium text-primary">{property.area}</span>
+                        </div>
+                      )}
+                      {property.bedrooms !== null && property.bedrooms > 0 && (
+                        <div className="flex justify-between items-center py-2 border-b border-border">
+                          <span className="text-muted-foreground">Quartos</span>
+                          <span className="font-medium text-primary">{property.bedrooms}</span>
+                        </div>
+                      )}
+                      {property.bathrooms !== null && property.bathrooms > 0 && (
+                        <div className="flex justify-between items-center py-2 border-b border-border">
+                          <span className="text-muted-foreground">Banheiros</span>
+                          <span className="font-medium text-primary">{property.bathrooms}</span>
+                        </div>
+                      )}
+                      {property.parking !== null && property.parking > 0 && (
+                        <div className="flex justify-between items-center py-2 border-b border-border">
+                          <span className="text-muted-foreground">Vagas</span>
+                          <span className="font-medium text-primary">{property.parking}</span>
+                        </div>
+                      )}
+                      {Object.entries(details).map(([key, value]) => (
                         <div key={key} className="flex justify-between items-center py-2 border-b border-border last:border-b-0">
                           <span className="text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>
                           <span className="font-medium text-primary">{value}</span>
@@ -408,7 +361,7 @@ const PropertyDetail = () => {
               <div className="text-center">
                 <Link to="/portfolio">
                   <Button variant="outline" size="lg" className="group">
-                    Ver Todo o Portfólio
+                    Ver Todos os Imóveis
                     <ArrowLeft className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform rotate-180" />
                   </Button>
                 </Link>
