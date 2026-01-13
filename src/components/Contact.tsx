@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import GoogleMap from '@/components/GoogleMap';
 import { 
   Phone, 
   Mail, 
@@ -182,13 +183,26 @@ const Contact = () => {
                 <p className="mb-4 opacity-90">
                   Precisa de informações urgentes? Fale diretamente conosco.
                 </p>
-                <Button variant="outline" className="w-full bg-background/10 border-background/20 text-secondary-foreground hover:bg-background hover:text-primary">
+                <Button 
+                  variant="outline" 
+                  className="w-full bg-background/10 border-background/20 text-secondary-foreground hover:bg-background hover:text-primary"
+                  onClick={() => window.open('tel:+5541984305403')}
+                >
                   <Phone className="w-4 h-4 mr-2" />
                   Ligar Agora
                 </Button>
               </CardContent>
             </Card>
           </div>
+        </div>
+
+        {/* Map Section */}
+        <div className="mt-12 animate-slide-up" style={{animationDelay: '300ms'}}>
+          <h3 className="text-2xl font-bold text-primary mb-6 text-center">Nossa Localização</h3>
+          <GoogleMap 
+            address="R. Padre Anchieta, 2050, Bigorrilho, Curitiba, PR" 
+            height="400px" 
+          />
         </div>
       </div>
     </section>

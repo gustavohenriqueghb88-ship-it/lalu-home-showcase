@@ -1,5 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -211,19 +212,17 @@ const About = () => {
                       <div className="mt-6">
                         <Link to="/contato">
                           <Button variant="outline" className="group">
-                            Como Chegar
+                            Entre em Contato
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                           </Button>
                         </Link>
                       </div>
                     </div>
                     
-                    <div className="bg-muted/50 rounded-lg p-8 text-center">
-                      <Building2 className="w-16 h-16 text-secondary mx-auto mb-4" />
-                      <p className="text-muted-foreground">
-                        Mapa de localização disponível na página de contato
-                      </p>
-                    </div>
+                    <GoogleMap 
+                      address="R. Padre Anchieta, 2050, Bigorrilho, Curitiba, PR" 
+                      height="250px" 
+                    />
                   </div>
                 </CardContent>
               </Card>
