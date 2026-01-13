@@ -3,52 +3,32 @@ import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, MapPin, Home, Building2, Users, TreePine } from 'lucide-react';
+import { ArrowRight, MapPin, Building2, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import rotasDoSol1 from '@/assets/rotas-do-sol-new.jpg';
-import gardenHouse1 from '@/assets/garden-house-1.jpg';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import placeholderImage from '@/assets/rotas-do-sol-new.jpg';
 
 const Projects = () => {
-  const projects = [
-    {
-      id: 1,
-      slug: 'loteamento-rotas-do-sol',
-      title: "Loteamento Rotas do Sol",
-      location: "Estr. Geral Barra do Itapocu, Araquari-SC",
-      type: "Loteamento",
-      status: "Disponível",
-      description: "Segundo loteamento na região da Barra do Itapocú, planejado para atender as expectativas de nossos clientes. Localizado em meio a paisagens naturais de tirar o fôlego, este será mais um empreendimento completo e de sucesso de vendas.",
-      image: rotasDoSol1,
-      features: ["71 lotes disponíveis", "A partir de 300m²", "Ruas asfaltadas", "Entrada facilitada", "Financiamento até 180 meses"],
-      highlights: [
-        "Ruas asfaltadas",
-        "Iluminação pública", 
-        "Rede de água",
-        "Rede coletora de esgoto",
-        "Galeria de águas pluviais",
-        "Paisagens naturais exuberantes"
-      ]
-    },
-    {
-      id: 2,
-      slug: 'condominio-garden-house-residence',
-      title: "Condomínio Garden House Residence",
-      location: "Barra Velha-SC",
-      type: "Condomínio",
-      status: "Disponível",
-      description: "O primeiro condomínio fechado de alto padrão perto da praia no centro de Barra Velha. Localizado em uma das regiões mais promissoras de Santa Catarina, próximo a belas praias e a uma lindíssima lagoa paralela ao mar.",
-      image: gardenHouse1,
-      features: ["113 lotes disponíveis", "Condomínio fechado", "Portal com segurança 24h", "A 3 min da praia", "A 600m da lagoa"],
-      highlights: [
-        "Portal com segurança 24h",
-        "Muros com 2,30m de altura",
-        "Monitoramento por câmeras",
-        "A 3 min da praia",
-        "A 600m da lagoa",
-        "Localização privilegiada"
-      ]
+  const { data: projects, isLoading } = useQuery({
+    queryKey: ['projects'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return data;
     }
-  ];
+  });
+
+  const getImageUrl = (images: string[] | null) => {
+    if (!images || images.length === 0) return placeholderImage;
+    const firstImage = images[0];
+    if (firstImage.startsWith('http')) return firstImage;
+    return supabase.storage.from('property-images').getPublicUrl(firstImage).data.publicUrl;
+  };
 
   return (
     <div className="min-h-screen">
@@ -80,72 +60,90 @@ const Projects = () => {
         {/* Projects Grid */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-8">
-              {projects.map((project, index) => (
-                <Card key={project.id} className="group hover:shadow-elegant transition-all duration-500 bg-card border-border animate-slide-up" style={{animationDelay: `${index * 200}ms`}}>
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img 
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-4 left-4">
-                      <Badge variant="default" className="bg-primary text-primary-foreground">
-                        {project.type}
-                      </Badge>
+            {isLoading ? (
+              <div className="flex justify-center items-center py-20">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-8">
+                {projects?.map((project, index) => (
+                  <Card key={project.id} className="group hover:shadow-elegant transition-all duration-500 bg-card border-border animate-slide-up" style={{animationDelay: `${index * 200}ms`}}>
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img 
+                        src={getImageUrl(project.images)}
+                        alt={project.title}
+                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <Badge variant="default" className="bg-primary text-primary-foreground">
+                          {project.type}
+                        </Badge>
+                      </div>
+                      <div className="absolute top-4 right-4">
+                        <Badge variant="outline" className="bg-background/80">
+                          {project.status}
+                        </Badge>
+                      </div>
                     </div>
-                    <div className="absolute top-4 right-4">
-                      <Badge variant="outline" className="bg-background/80">
-                        {project.status}
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-2xl font-bold text-primary mb-2">{project.title}</h3>
-                        <div className="flex items-center text-muted-foreground mb-4">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          <span className="text-sm">{project.location}</span>
+                    
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h3 className="text-2xl font-bold text-primary mb-2">{project.title}</h3>
+                          <div className="flex items-center text-muted-foreground mb-4">
+                            <MapPin className="w-4 h-4 mr-1" />
+                            <span className="text-sm">{project.location}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardHeader>
+                    </CardHeader>
 
-                  <CardContent>
-                    <p className="text-muted-foreground mb-4">{project.description}</p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.features.map((feature, idx) => (
-                        <Badge key={idx} variant="outline" className="text-xs">
-                          {feature}
-                        </Badge>
-                      ))}
-                    </div>
+                    <CardContent>
+                      <p className="text-muted-foreground mb-4 line-clamp-3">{project.description}</p>
+                      
+                      {project.features && project.features.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-6">
+                          {project.features.map((feature, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              {feature}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
 
-                    <div className="space-y-3 mb-6">
-                      <h4 className="font-semibold text-primary">Principais características:</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        {project.highlights.slice(0, 4).map((highlight, idx) => (
-                          <div key={idx} className="flex items-center text-sm text-muted-foreground">
-                            <div className="w-2 h-2 bg-secondary rounded-full mr-2 flex-shrink-0" />
-                            {highlight}
+                      {project.highlights && project.highlights.length > 0 && (
+                        <div className="space-y-3 mb-6">
+                          <h4 className="font-semibold text-primary">Principais características:</h4>
+                          <div className="grid grid-cols-2 gap-2">
+                            {project.highlights.slice(0, 4).map((highlight, idx) => (
+                              <div key={idx} className="flex items-center text-sm text-muted-foreground">
+                                <div className="w-2 h-2 bg-secondary rounded-full mr-2 flex-shrink-0" />
+                                {highlight}
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </div>
+                        </div>
+                      )}
 
-                    <Link to={`/empreendimentos/${project.slug}`}>
-                      <Button variant="outline" className="w-full group">
-                        Ver Detalhes
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                      <Link to={`/empreendimentos/${project.slug}`}>
+                        <Button variant="outline" className="w-full group">
+                          Ver Detalhes
+                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+
+            {!isLoading && (!projects || projects.length === 0) && (
+              <div className="text-center py-12">
+                <Building2 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-primary mb-2">Nenhum empreendimento encontrado</h3>
+                <p className="text-muted-foreground">Em breve novos projetos serão adicionados.</p>
+              </div>
+            )}
 
             {/* CTA Section */}
             <div className="text-center mt-16">
