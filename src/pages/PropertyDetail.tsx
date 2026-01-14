@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
@@ -17,7 +17,6 @@ const PropertyDetail = () => {
   const { slug } = useParams();
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
 
   const { data: property, isLoading, error } = useQuery({
     queryKey: ['property', slug],
@@ -84,71 +83,6 @@ const PropertyDetail = () => {
   const images = property.images || [];
   const features = property.features || [];
   const details = (property.details as Record<string, string | number>) || {};
-
-  // Rastrear a imagem atual do carousel
-  useEffect(() => {
-    if (!api) return;
-
-    const updateCurrent = () => {
-      try {
-        if (api) {
-          // Usa selectedScrollSnap() se for função, senão tenta acessar como propriedade
-          const index = typeof api.selectedScrollSnap === 'function' 
-            ? api.selectedScrollSnap() 
-            : (api as any).selectedScrollSnap ?? 0;
-          setCurrent(index);
-        }
-      } catch (error) {
-        // Ignora erros silenciosamente
-      }
-    };
-
-    try {
-      if (api && typeof api.on === 'function') {
-        api.on('select', updateCurrent);
-        updateCurrent();
-      }
-    } catch (error) {
-      // Ignora erros silenciosamente
-    }
-
-    return () => {
-      try {
-        if (api && typeof api.off === 'function') {
-          api.off('select', updateCurrent);
-        }
-      } catch (error) {
-        // Ignora erros na limpeza
-      }
-    };
-  }, [api]);
-
-  // Reinicializar o carousel quando o Dialog abrir
-  useEffect(() => {
-    if (!galleryOpen) {
-      setCurrent(0);
-      return;
-    }
-    
-    if (!api) return;
-    
-    // Delay para garantir que o Dialog esteja totalmente renderizado e visível
-    const timer = setTimeout(() => {
-      try {
-        // Força o recálculo das dimensões do carousel usando scrollTo
-        // Isso força o Embla a recalcular as dimensões
-        if (api && typeof api.scrollTo === 'function') {
-          api.scrollTo(0);
-          setCurrent(0);
-        }
-      } catch (error) {
-        // Ignora erros silenciosamente para não quebrar a página
-        console.warn('Aviso ao reinicializar carousel:', error);
-      }
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, [galleryOpen, api]);
 
   return (
     <div className="min-h-screen">
@@ -515,7 +449,7 @@ const PropertyDetail = () => {
                 
                 {/* Indicador de página */}
                 <div className="text-center py-3 text-sm text-muted-foreground font-medium">
-                  Foto {current + 1} de {images.length}
+                  {images.length > 0 ? `Total: ${images.length} fotos` : 'Nenhuma foto'}
                 </div>
               </div>
             ) : (
