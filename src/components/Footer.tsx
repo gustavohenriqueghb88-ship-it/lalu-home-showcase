@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Phone, 
@@ -9,8 +10,13 @@ import {
   ArrowUp 
 } from 'lucide-react';
 import laluLogo from '@/assets/lalu-logo.png';
+import PrivacyPolicyModal from '@/components/PrivacyPolicyModal';
+import TermsOfUseModal from '@/components/TermsOfUseModal';
 
 const Footer = () => {
+  const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
+  const [termsOfUseOpen, setTermsOfUseOpen] = useState(false);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -115,12 +121,18 @@ const Footer = () => {
             </div>
             
             <div className="flex items-center space-x-6">
-              <a href="#" className="text-primary-foreground/60 hover:text-secondary text-sm transition-smooth">
+              <button 
+                onClick={() => setPrivacyPolicyOpen(true)}
+                className="text-primary-foreground/60 hover:text-secondary text-sm transition-smooth cursor-pointer"
+              >
                 Política de Privacidade
-              </a>
-              <a href="#" className="text-primary-foreground/60 hover:text-secondary text-sm transition-smooth">
+              </button>
+              <button 
+                onClick={() => setTermsOfUseOpen(true)}
+                className="text-primary-foreground/60 hover:text-secondary text-sm transition-smooth cursor-pointer"
+              >
                 Termos de Uso
-              </a>
+              </button>
               <Button 
                 variant="ghost" 
                 size="icon"
@@ -133,6 +145,15 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      <PrivacyPolicyModal 
+        open={privacyPolicyOpen} 
+        onOpenChange={setPrivacyPolicyOpen} 
+      />
+      <TermsOfUseModal 
+        open={termsOfUseOpen} 
+        onOpenChange={setTermsOfUseOpen} 
+      />
     </footer>
   );
 };

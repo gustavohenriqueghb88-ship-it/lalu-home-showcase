@@ -237,30 +237,30 @@ const PropertyDetail = () => {
                   {/* Property Specs */}
                   <div>
                     <h3 className="text-xl font-bold text-primary mb-4">Características</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div className="flex flex-wrap gap-4 mb-6">
                       {property.area && (
-                        <Card className="text-center p-4">
+                        <Card className="text-center p-4 flex-1 min-w-[140px]">
                           <Square className="w-8 h-8 text-secondary mx-auto mb-2" />
                           <div className="text-lg font-bold text-primary">{property.area}</div>
                           <div className="text-sm text-muted-foreground">Área</div>
                         </Card>
                       )}
-                      {property.bedrooms && property.bedrooms > 0 && (
-                        <Card className="text-center p-4">
+                      {(property.bedrooms != null && Number(property.bedrooms) > 0) && (
+                        <Card className="text-center p-4 flex-1 min-w-[140px]">
                           <Bed className="w-8 h-8 text-secondary mx-auto mb-2" />
                           <div className="text-lg font-bold text-primary">{property.bedrooms}</div>
                           <div className="text-sm text-muted-foreground">Quartos</div>
                         </Card>
                       )}
-                      {property.bathrooms && property.bathrooms > 0 && (
-                        <Card className="text-center p-4">
+                      {(property.bathrooms != null && Number(property.bathrooms) > 0) && (
+                        <Card className="text-center p-4 flex-1 min-w-[140px]">
                           <Bath className="w-8 h-8 text-secondary mx-auto mb-2" />
                           <div className="text-lg font-bold text-primary">{property.bathrooms}</div>
                           <div className="text-sm text-muted-foreground">Banheiros</div>
                         </Card>
                       )}
-                      {property.parking && property.parking > 0 && (
-                        <Card className="text-center p-4">
+                      {(property.parking != null && Number(property.parking) > 0) && (
+                        <Card className="text-center p-4 flex-1 min-w-[140px]">
                           <Car className="w-8 h-8 text-secondary mx-auto mb-2" />
                           <div className="text-lg font-bold text-primary">{property.parking}</div>
                           <div className="text-sm text-muted-foreground">Vagas</div>
@@ -324,12 +324,20 @@ const PropertyDetail = () => {
                           <span className="font-medium text-primary">{property.parking}</span>
                         </div>
                       )}
-                      {Object.entries(details).map(([key, value]) => (
-                        <div key={key} className="flex justify-between items-center py-2 border-b border-border last:border-b-0">
-                          <span className="text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>
-                          <span className="font-medium text-primary">{value}</span>
-                        </div>
-                      ))}
+                      {Object.entries(details)
+                        .filter(([key, value]) => {
+                          // Não exibe valores 0, null, undefined ou strings vazias
+                          if (value === null || value === undefined || value === '') return false;
+                          if (typeof value === 'number' && value === 0) return false;
+                          if (typeof value === 'string' && value.trim() === '0') return false;
+                          return true;
+                        })
+                        .map(([key, value]) => (
+                          <div key={key} className="flex justify-between items-center py-2 border-b border-border last:border-b-0">
+                            <span className="text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1').toLowerCase()}</span>
+                            <span className="font-medium text-primary">{value}</span>
+                          </div>
+                        ))}
                     </CardContent>
                   </Card>
 

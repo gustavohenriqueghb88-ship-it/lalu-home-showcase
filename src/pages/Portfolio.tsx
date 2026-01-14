@@ -50,8 +50,8 @@ const Portfolio = () => {
       
       <main>
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-primary text-primary-foreground">
-          <div className="container mx-auto px-4">
+        <section className="relative pt-20 pb-0 bg-gradient-primary text-primary-foreground">
+          <div className="container mx-auto px-4 py-10">
             <div className="max-w-4xl mx-auto text-center animate-fade-in">
               <Badge variant="outline" className="mb-6 bg-secondary/20 text-secondary border-secondary/30">
                 <Home className="w-4 h-4 mr-2" />

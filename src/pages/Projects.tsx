@@ -36,8 +36,8 @@ const Projects = () => {
       
       <main>
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-primary text-primary-foreground">
-          <div className="container mx-auto px-4">
+        <section className="relative pt-10 pb-0 bg-gradient-primary text-primary-foreground">
+          <div className="container mx-auto px-4" style={{ paddingTop: '80px', paddingBottom: '20px' }}>
             <div className="max-w-4xl mx-auto text-center animate-fade-in">
               <Badge variant="outline" className="mb-6 bg-secondary/20 text-secondary border-secondary/30">
                 <Building2 className="w-4 h-4 mr-2" />
