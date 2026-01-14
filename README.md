@@ -50,6 +50,26 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
+## Configuration
+
+### Google Maps API
+
+Para que os mapas apareçam nas seções de Localização, você precisa configurar a chave da API do Google Maps:
+
+1. Crie um arquivo `.env` na raiz do projeto
+2. Adicione a seguinte linha:
+   ```
+   VITE_GOOGLE_MAPS_API_KEY=sua_chave_api_aqui
+   ```
+3. Para obter uma chave da API:
+   - Acesse: https://console.cloud.google.com/
+   - Crie um novo projeto ou selecione um existente
+   - Ative a API "Maps Embed API"
+   - Vá em "Credenciais" e crie uma chave de API
+   - Cole a chave no arquivo `.env`
+
+**Nota:** O mapa funcionará mesmo sem a chave da API, mas com funcionalidades limitadas. Recomenda-se configurar a chave para melhor experiência.
+
 ## What technologies are used for this project?
 
 This project is built with:
