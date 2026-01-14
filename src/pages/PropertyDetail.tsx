@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -16,6 +16,8 @@ import { supabase } from '@/integrations/supabase/client';
 const PropertyDetail = () => {
   const { slug } = useParams();
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
 
   const { data: property, isLoading, error } = useQuery({
     queryKey: ['property', slug],
@@ -82,6 +84,44 @@ const PropertyDetail = () => {
   const images = property.images || [];
   const features = property.features || [];
   const details = (property.details as Record<string, string | number>) || {};
+
+  // Rastrear a imagem atual do carousel
+  useEffect(() => {
+    if (!api) return;
+
+    const updateCurrent = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
+
+    api.on('select', updateCurrent);
+    updateCurrent();
+
+    return () => {
+      api.off('select', updateCurrent);
+    };
+  }, [api]);
+
+  // Reinicializar o carousel quando o Dialog abrir
+  useEffect(() => {
+    if (!galleryOpen || !api) return;
+    
+    // Delay para garantir que o Dialog esteja totalmente renderizado e visível
+    const timer = setTimeout(() => {
+      try {
+        // Força o recálculo das dimensões do carousel usando scrollTo
+        // Isso força o Embla a recalcular as dimensões
+        if (api && typeof api.scrollTo === 'function') {
+          api.scrollTo(0);
+          setCurrent(0);
+        }
+      } catch (error) {
+        // Ignora erros silenciosamente para não quebrar a página
+        console.warn('Aviso ao reinicializar carousel:', error);
+      }
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [galleryOpen, api]);
 
   return (
     <div className="min-h-screen">
@@ -422,26 +462,32 @@ const PropertyDetail = () => {
           <DialogHeader className="px-6 pt-6 pb-4 flex-shrink-0">
             <DialogTitle className="text-2xl">{property.title} - Galeria de Fotos ({images.length})</DialogTitle>
           </DialogHeader>
-          <div className="px-6 pb-6" style={{ height: 'calc(90vh - 120px)', minHeight: '400px' }}>
+          <div className="px-6 pb-6 flex-1 overflow-hidden">
             {images.length > 0 ? (
-              <div className="relative w-full h-full">
-                <Carousel className="w-full h-full">
-                  <CarouselContent className="-ml-0">
+              <div className="relative w-full h-full flex flex-col">
+                <Carousel setApi={setApi} className="flex-1">
+                  <CarouselContent className="h-full">
                     {images.map((image, index) => (
-                      <CarouselItem key={index} className="pl-0">
-                        <div className="flex items-center justify-center w-full h-full" style={{ minHeight: '400px' }}>
+                      <CarouselItem key={index} className="h-full">
+                        <div className="flex items-center justify-center w-full h-full p-4">
                           <img
                             src={getImageUrl(image)}
                             alt={`${property.title} - Foto ${index + 1}`}
-                            className="max-h-full max-w-full object-contain rounded-lg"
+                            className="max-h-[600px] max-w-full object-contain rounded-lg"
+                            loading="eager"
                           />
                         </div>
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="left-4" />
-                  <CarouselNext className="right-4" />
+                  <CarouselPrevious className="left-2 lg:left-4 bg-background/80 hover:bg-background" />
+                  <CarouselNext className="right-2 lg:right-4 bg-background/80 hover:bg-background" />
                 </Carousel>
+                
+                {/* Indicador de página */}
+                <div className="text-center py-3 text-sm text-muted-foreground font-medium">
+                  Foto {current + 1} de {images.length}
+                </div>
               </div>
             ) : (
               <div className="flex items-center justify-center h-full text-muted-foreground">
