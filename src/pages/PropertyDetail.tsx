@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
@@ -6,12 +7,15 @@ import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 const PropertyDetail = () => {
   const { slug } = useParams();
+  const [galleryOpen, setGalleryOpen] = useState(false);
 
   const { data: property, isLoading, error } = useQuery({
     queryKey: ['property', slug],
@@ -151,26 +155,65 @@ const PropertyDetail = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 relative group">
                   <img 
                     src={getImageUrl(images[0] || null)}
                     alt={property.title}
-                    className="w-full h-96 object-cover rounded-lg shadow-elegant"
+                    className="w-full h-96 object-cover rounded-lg shadow-elegant cursor-pointer"
+                    onClick={() => images.length > 0 && setGalleryOpen(true)}
                   />
+                  {images.length > 3 && (
+                    <div className="absolute top-4 right-4">
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => setGalleryOpen(true)}
+                        className="bg-background/90 hover:bg-background"
+                      >
+                        <Images className="w-4 h-4 mr-2" />
+                        Ver todas ({images.length})
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 <div className="grid grid-rows-2 gap-4">
-                  <img 
-                    src={getImageUrl(images[1] || null)}
-                    alt={`${property.title} - Imagem 2`}
-                    className="w-full h-44 object-cover rounded-lg shadow-lg"
-                  />
-                  <img 
-                    src={getImageUrl(images[2] || null)}
-                    alt={`${property.title} - Imagem 3`}
-                    className="w-full h-44 object-cover rounded-lg shadow-lg"
-                  />
+                  {images[1] && (
+                    <img 
+                      src={getImageUrl(images[1])}
+                      alt={`${property.title} - Imagem 2`}
+                      className="w-full h-44 object-cover rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
+                      onClick={() => setGalleryOpen(true)}
+                    />
+                  )}
+                  {images[2] ? (
+                    <div className="relative">
+                      <img 
+                        src={getImageUrl(images[2])}
+                        alt={`${property.title} - Imagem 3`}
+                        className="w-full h-44 object-cover rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
+                        onClick={() => setGalleryOpen(true)}
+                      />
+                      {images.length > 3 && (
+                        <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors" onClick={() => setGalleryOpen(true)}>
+                          <span className="text-white font-bold text-lg">+{images.length - 3}</span>
+                        </div>
+                      )}
+                    </div>
+                  ) : null}
                 </div>
               </div>
+              {images.length > 3 && (
+                <div className="mt-4 text-center">
+                  <Button
+                    variant="outline"
+                    onClick={() => setGalleryOpen(true)}
+                    className="group"
+                  >
+                    <Images className="w-4 h-4 mr-2" />
+                    Ver todas as {images.length} fotos
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -372,6 +415,42 @@ const PropertyDetail = () => {
       </main>
 
       <Footer />
+
+      {/* Image Gallery Dialog */}
+      <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
+        <DialogContent className="max-w-6xl w-full p-0 flex flex-col" style={{ maxHeight: '90vh' }}>
+          <DialogHeader className="px-6 pt-6 pb-4 flex-shrink-0">
+            <DialogTitle className="text-2xl">{property.title} - Galeria de Fotos ({images.length})</DialogTitle>
+          </DialogHeader>
+          <div className="px-6 pb-6" style={{ height: 'calc(90vh - 120px)', minHeight: '400px' }}>
+            {images.length > 0 ? (
+              <div className="relative w-full h-full">
+                <Carousel className="w-full h-full">
+                  <CarouselContent className="-ml-0">
+                    {images.map((image, index) => (
+                      <CarouselItem key={index} className="pl-0">
+                        <div className="flex items-center justify-center w-full h-full" style={{ minHeight: '400px' }}>
+                          <img
+                            src={getImageUrl(image)}
+                            alt={`${property.title} - Foto ${index + 1}`}
+                            className="max-h-full max-w-full object-contain rounded-lg"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-4" />
+                  <CarouselNext className="right-4" />
+                </Carousel>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full text-muted-foreground">
+                Nenhuma imagem disponível
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
