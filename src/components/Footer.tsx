@@ -4,9 +4,6 @@ import {
   Phone, 
   Mail, 
   MapPin, 
-  Facebook, 
-  Instagram, 
-  Linkedin,
   ArrowUp 
 } from 'lucide-react';
 import laluLogo from '@/assets/lalu-logo.png';
@@ -24,7 +21,7 @@ const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground">
       {/* Main Footer */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-[44px]">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-2">
@@ -39,19 +36,6 @@ const Footer = () => {
               Incorporadora com quase 20 anos de experiência no Paraná e Santa Catarina. 
               Especializada em soluções completas que unem inovação, segurança e valorização patrimonial.
             </p>
-            
-            {/* Social Media */}
-            <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center hover:bg-secondary hover:text-primary transition-smooth">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center hover:bg-secondary hover:text-primary transition-smooth">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center hover:bg-secondary hover:text-primary transition-smooth">
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
