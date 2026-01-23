@@ -9,14 +9,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
-import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { maskPhone, maskName, submitToGoogleSheets } from '@/utils/formUtils';
 
 const PropertyDetail = () => {
   const { slug } = useParams();
+  const { toast } = useToast();
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [api, setApi] = useState<CarouselApi>();
+  const [formLoading, setFormLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    telefone: ''
+  });
 
   const { data: property, isLoading, error } = useQuery({
     queryKey: ['property', slug],
@@ -350,26 +359,101 @@ const PropertyDetail = () => {
                       <p className="text-secondary-foreground/90">
                         {property.type === 'locacao' ? 'Agende uma visita' : 'Solicite mais informações'} sobre este imóvel.
                       </p>
-                      <div className="space-y-3">
-                        <input 
-                          type="text" 
-                          placeholder="Seu nome"
-                          className="w-full px-4 py-3 rounded-lg border border-secondary-foreground/20 bg-background/10 text-secondary-foreground placeholder:text-secondary-foreground/60 focus:ring-2 focus:ring-secondary-foreground/20 focus:border-transparent"
-                        />
-                        <input 
-                          type="email" 
-                          placeholder="Seu e-mail"
-                          className="w-full px-4 py-3 rounded-lg border border-secondary-foreground/20 bg-background/10 text-secondary-foreground placeholder:text-secondary-foreground/60 focus:ring-2 focus:ring-secondary-foreground/20 focus:border-transparent"
-                        />
-                        <input 
-                          type="tel" 
-                          placeholder="Seu telefone"
-                          className="w-full px-4 py-3 rounded-lg border border-secondary-foreground/20 bg-background/10 text-secondary-foreground placeholder:text-secondary-foreground/60 focus:ring-2 focus:ring-secondary-foreground/20 focus:border-transparent"
-                        />
-                        <Button variant="outline" className="w-full bg-background/10 border-background/20 text-secondary-foreground hover:bg-background hover:text-primary">
-                          {property.type === 'locacao' ? 'Agendar Visita' : 'Solicitar Informações'}
-                        </Button>
-                      </div>
+                      <form onSubmit={async (e) => {
+                        e.preventDefault();
+                        
+                        // Validação
+                        if (!formData.nome.trim() || !formData.email.trim() || !formData.telefone.trim()) {
+                          toast({
+                            title: 'Campos obrigatórios',
+                            description: 'Por favor, preencha todos os campos.',
+                            variant: 'destructive',
+                          });
+                          return;
+                        }
+
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(formData.email)) {
+                          toast({
+                            title: 'E-mail inválido',
+                            description: 'Por favor, insira um e-mail válido.',
+                            variant: 'destructive',
+                          });
+                          return;
+                        }
+
+                        setFormLoading(true);
+
+                        const success = await submitToGoogleSheets({
+                          nome: formData.nome,
+                          email: formData.email,
+                          telefone: formData.telefone,
+                          interesse: property.title,
+                          mensagem: 'Estou interessado'
+                        });
+
+                        if (success) {
+                          toast({
+                            title: 'Mensagem enviada!',
+                            description: 'Obrigado pelo interesse. Nossa equipe entrará em contato em breve.',
+                          });
+                          setFormData({ nome: '', email: '', telefone: '' });
+                        } else {
+                          toast({
+                            title: 'Erro ao enviar',
+                            description: 'Ocorreu um erro ao enviar sua mensagem. Tente novamente ou entre em contato pelo WhatsApp.',
+                            variant: 'destructive',
+                          });
+                        }
+
+                        setFormLoading(false);
+                      }}>
+                        <div className="space-y-3">
+                          <input 
+                            type="text" 
+                            placeholder="Seu nome"
+                            value={formData.nome}
+                            onChange={(e) => setFormData(prev => ({ ...prev, nome: maskName(e.target.value) }))}
+                            className="w-full px-4 py-3 rounded-lg border border-secondary-foreground/20 bg-background/10 text-secondary-foreground placeholder:text-secondary-foreground/60 focus:ring-2 focus:ring-secondary-foreground/20 focus:border-transparent"
+                            required
+                          />
+                          <input 
+                            type="email" 
+                            placeholder="Seu e-mail"
+                            value={formData.email}
+                            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                            className="w-full px-4 py-3 rounded-lg border border-secondary-foreground/20 bg-background/10 text-secondary-foreground placeholder:text-secondary-foreground/60 focus:ring-2 focus:ring-secondary-foreground/20 focus:border-transparent"
+                            required
+                          />
+                          <input 
+                            type="tel" 
+                            placeholder="Seu telefone"
+                            value={formData.telefone}
+                            onChange={(e) => setFormData(prev => ({ ...prev, telefone: maskPhone(e.target.value) }))}
+                            maxLength={15}
+                            className="w-full px-4 py-3 rounded-lg border border-secondary-foreground/20 bg-background/10 text-secondary-foreground placeholder:text-secondary-foreground/60 focus:ring-2 focus:ring-secondary-foreground/20 focus:border-transparent"
+                            required
+                          />
+                          <Button 
+                            type="submit"
+                            variant="outline" 
+                            className="w-full bg-background/10 border-background/20 text-secondary-foreground hover:bg-background hover:text-primary"
+                            disabled={formLoading}
+                          >
+                            {formLoading ? (
+                              <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                Enviando...
+                              </>
+                            ) : (
+                              <>
+                                <Send className="w-4 h-4 mr-2" />
+                                Enviar
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </form>
                     </CardContent>
                   </Card>
 

@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import GoogleMap from '@/components/GoogleMap';
+import { useToast } from '@/hooks/use-toast';
+import { maskPhone, maskName, submitToGoogleSheets } from '@/utils/formUtils';
 import { 
   Phone, 
   Mail, 
@@ -9,10 +12,103 @@ import {
   MessageSquare, 
   Send,
   Clock,
-  ArrowRight 
+  ArrowRight,
+  Loader2
 } from 'lucide-react';
 
 const Contact = () => {
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    telefone: '',
+    interesse: 'Empreendimentos',
+    mensagem: ''
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    if (field === 'telefone') {
+      setFormData(prev => ({ ...prev, telefone: maskPhone(value) }));
+    } else if (field === 'nome') {
+      setFormData(prev => ({ ...prev, nome: maskName(value) }));
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validação básica
+    if (!formData.nome.trim() || !formData.email.trim() || !formData.telefone.trim()) {
+      toast({
+        title: 'Campos obrigatórios',
+        description: 'Por favor, preencha todos os campos obrigatórios.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Validação de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: 'E-mail inválido',
+        description: 'Por favor, insira um e-mail válido.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!GOOGLE_SCRIPT_URL) {
+      toast({
+        title: 'Configuração necessária',
+        description: 'O formulário ainda não está configurado. Entre em contato com o administrador.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const success = await submitToGoogleSheets({
+        nome: formData.nome,
+        email: formData.email,
+        telefone: formData.telefone,
+        interesse: formData.interesse,
+        mensagem: formData.mensagem,
+      });
+      
+      if (success) {
+        toast({
+          title: 'Mensagem enviada!',
+          description: 'Obrigado pelo contato. Nossa equipe entrará em contato em breve.',
+        });
+
+        // Limpar formulário
+        setFormData({
+          nome: '',
+          email: '',
+          telefone: '',
+          interesse: 'Empreendimentos',
+          mensagem: ''
+        });
+      } else {
+        throw new Error('Falha ao enviar');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error);
+      toast({
+        title: 'Erro ao enviar',
+        description: 'Ocorreu um erro ao enviar sua mensagem. Tente novamente ou entre em contato pelo WhatsApp.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   const contactInfo = [
     {
       icon: Phone,
@@ -70,6 +166,7 @@ const Contact = () => {
                 </p>
               </CardHeader>
               <CardContent className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
@@ -77,6 +174,8 @@ const Contact = () => {
                     </label>
                     <input 
                       type="text" 
+                      value={formData.nome}
+                      onChange={(e) => handleInputChange('nome', e.target.value)}
                       className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-smooth"
                       placeholder="Seu nome completo"
                     />
@@ -87,6 +186,8 @@ const Contact = () => {
                     </label>
                     <input 
                       type="email" 
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                       className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-smooth"
                       placeholder="seu@email.com"
                     />
@@ -100,6 +201,9 @@ const Contact = () => {
                     </label>
                     <input 
                       type="tel" 
+                      value={formData.telefone}
+                      onChange={(e) => handleInputChange('telefone', e.target.value)}
+                      maxLength={15}
                       className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-smooth"
                       placeholder="(41) 99999-9999"
                     />
@@ -108,7 +212,11 @@ const Contact = () => {
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Interesse
                     </label>
-                    <select className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-smooth">
+                    <select 
+                      value={formData.interesse}
+                      onChange={(e) => handleInputChange('interesse', e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-smooth"
+                    >
                       <option>Empreendimentos</option>
                       <option>Locação</option>
                       <option>Venda</option>
@@ -124,27 +232,47 @@ const Contact = () => {
                   </label>
                   <textarea 
                     rows={4}
+                    value={formData.mensagem}
+                    onChange={(e) => handleInputChange('mensagem', e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-smooth resize-none"
                     placeholder="Conte-nos mais sobre seu interesse..."
                   />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button variant="hero" size="lg" className="flex-1 group">
-                    <Send className="w-5 h-5 mr-2" />
-                    Enviar Mensagem
-                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  <Button 
+                    type="submit"
+                    variant="hero" 
+                    size="lg" 
+                    className="flex-1 group"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5 mr-2" />
+                        Enviar Mensagem
+                        <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </Button>
                   <Button 
+                    type="button"
                     variant="whatsapp" 
                     size="lg" 
                     className="flex-1"
                     onClick={() => window.open('https://wa.me/5541984305403', '_blank')}
+                    disabled={loading}
                   >
                     <MessageSquare className="w-5 h-5 mr-2" />
                     WhatsApp
                   </Button>
                 </div>
+                </form>
               </CardContent>
             </Card>
           </div>
@@ -176,23 +304,6 @@ const Contact = () => {
               </Card>
             ))}
 
-            {/* Quick Actions */}
-            <Card className="p-6 bg-gradient-gold text-secondary-foreground border-0">
-              <CardContent className="p-0 text-center">
-                <h3 className="text-xl font-bold mb-3">Atendimento Rápido</h3>
-                <p className="mb-4 opacity-90">
-                  Precisa de informações urgentes? Fale diretamente conosco.
-                </p>
-                <Button 
-                  variant="outline" 
-                  className="w-full bg-background/10 border-background/20 text-secondary-foreground hover:bg-background hover:text-primary"
-                  onClick={() => window.open('tel:+5541984305403')}
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  Ligar Agora
-                </Button>
-              </CardContent>
-            </Card>
           </div>
         </div>
 

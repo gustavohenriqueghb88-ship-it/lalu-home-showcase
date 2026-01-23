@@ -75,7 +75,7 @@ const About = () => {
             
             <p className="text-lg text-muted-foreground leading-relaxed">
               Nosso diferencial está na <span className="text-secondary font-semibold">experiência da equipe</span> e no 
-              cuidado com cada projeto — construímos confiança e desenvolvimento por onde passamos.
+              cuidado com cada projeto. Construímos confiança e desenvolvimento por onde passamos.
             </p>
 
             <div className="pt-6">
