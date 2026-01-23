@@ -24,12 +24,13 @@ const GoogleMap = ({ address, className = "", height = "300px" }: GoogleMapProps
       <iframe
         width="100%"
         height={height}
-        style={{ border: 0 }}
+        style={{ border: 0, minHeight: '250px' }}
         loading="lazy"
         allowFullScreen
         referrerPolicy="no-referrer-when-downgrade"
         src={mapUrl}
         title={`Mapa de ${address}`}
+        className="w-full"
       />
     </div>
   );

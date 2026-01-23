@@ -47,7 +47,7 @@ const FeaturedProjects = () => {
   };
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="py-12 sm:py-16 md:py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
@@ -55,11 +55,11 @@ const FeaturedProjects = () => {
             <Building2 className="w-4 h-4 mr-2" />
             Empreendimentos em Destaque
           </Badge>
-          <h2 className="text-3xl md:text-5xl font-bold text-primary mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 sm:mb-6 px-2">
             Nossos Principais
             <span className="text-secondary block">Empreendimentos</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             Conheça os projetos que demonstram nossa excelência em incorporação 
             e desenvolvimento imobiliário.
           </p>
@@ -71,7 +71,7 @@ const FeaturedProjects = () => {
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {projects?.map((project, index) => (
               <Card key={project.id} className={`group hover:shadow-elegant transition-all duration-500 bg-card border-border animate-slide-up`} style={{animationDelay: `${index * 200}ms`}}>
                 <div className="relative overflow-hidden rounded-t-lg">

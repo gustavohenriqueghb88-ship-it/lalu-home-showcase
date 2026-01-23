@@ -6,7 +6,7 @@ import heroImage from '@/assets/hero-building.jpg';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -27,20 +27,20 @@ const Hero = () => {
           </Badge>
 
           {/* Main Heading */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-primary-foreground mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-primary-foreground mb-4 sm:mb-6 leading-tight px-2">
             Incorporação e 
             <span className="text-secondary block">Administração</span>
             de Imóveis
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary-foreground/90 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
             Soluções completas em desenvolvimento imobiliário no Paraná e Santa Catarina. 
             Da incorporação à gestão, transformamos ideias em realidade.
           </p>
 
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-8 mb-12 animate-slide-up">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 mb-8 sm:mb-12 animate-slide-up px-4">
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-secondary">20</div>
               <div className="text-primary-foreground/80">Anos de Experiência</div>
@@ -71,9 +71,9 @@ const Hero = () => {
           </div>
 
           {/* Location */}
-          <div className="flex items-center justify-center mt-8 text-primary-foreground/80">
-            <MapPin className="w-5 h-5 mr-2" />
-            <span>Curitiba - PR | Atuação no PR e SC</span>
+          <div className="flex items-center justify-center mt-6 sm:mt-8 text-primary-foreground/80 text-sm sm:text-base px-4">
+            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" />
+            <span className="text-center">Curitiba - PR | Atuação no PR e SC</span>
           </div>
         </div>
       </div>

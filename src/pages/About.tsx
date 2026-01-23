@@ -56,20 +56,20 @@ const About = () => {
       
       <main>
         {/* Hero Section */}
-        <section className="relative pt-20 pb-0 bg-gradient-primary text-primary-foreground">
-          <div className="container mx-auto px-4 pt-10 pb-5">
+        <section className="relative pt-16 sm:pt-20 pb-0 bg-gradient-primary text-primary-foreground">
+          <div className="container mx-auto px-4 pt-16 sm:pt-20 md:pt-24 pb-4 sm:pb-6 md:pb-8">
             <div className="max-w-4xl mx-auto text-center animate-fade-in">
               <Badge variant="outline" className="mb-6 bg-secondary/20 text-secondary border-secondary/30">
                 <Building2 className="w-4 h-4 mr-2" />
                 Nossa História
               </Badge>
               
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight px-2">
                 Sobre a
                 <span className="text-secondary block">Lalu Adm</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary-foreground/90 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
                 Incorporadora e administradora de imóveis com tradição, 
                 inovação e compromisso com a excelência.
               </p>
@@ -80,9 +80,9 @@ const About = () => {
         {/* Company Story */}
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center">
               <div className="animate-slide-up">
-                <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-4 sm:mb-6">
                   Nossa Trajetória
                 </h2>
                 <div className="space-y-6 text-muted-foreground">
@@ -124,7 +124,7 @@ const About = () => {
         </section>
 
         {/* Stats Section */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-12 sm:py-16 md:py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
@@ -135,7 +135,7 @@ const About = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
                   <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">
@@ -151,7 +151,7 @@ const About = () => {
         </section>
 
         {/* Values Section */}
-        <section className="py-20 bg-background">
+        <section className="py-12 sm:py-16 md:py-20 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
@@ -162,7 +162,7 @@ const About = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {values.map((value, index) => (
                 <Card key={index} className="text-center p-6 hover:shadow-elegant transition-all duration-500 bg-card border-border animate-slide-up" style={{animationDelay: `${index * 100}ms`}}>
                   <CardContent className="p-0">
@@ -193,7 +193,7 @@ const About = () => {
 
               <Card className="bg-card border-border shadow-elegant">
                 <CardContent className="p-8">
-                  <div className="grid md:grid-cols-2 gap-8 items-center">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center">
                     <div>
                       <div className="flex items-center mb-4">
                         <MapPin className="w-6 h-6 text-secondary mr-3" />
@@ -226,7 +226,7 @@ const About = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-primary text-primary-foreground">
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-primary text-primary-foreground">
           <div className="container mx-auto px-4 text-center">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">

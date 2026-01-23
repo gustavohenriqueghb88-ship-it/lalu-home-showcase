@@ -129,7 +129,7 @@ const Contact = () => {
   ];
 
   return (
-    <section className="py-20 bg-muted/30">
+        <section className="py-12 sm:py-16 md:py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
@@ -137,17 +137,17 @@ const Contact = () => {
             <MessageSquare className="w-4 h-4 mr-2" />
             Entre em Contato
           </Badge>
-          <h2 className="text-3xl md:text-5xl font-bold text-primary mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 sm:mb-6 px-2">
             Vamos Conversar Sobre
             <span className="text-secondary block">Seu Próximo Investimento</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
             Nossa equipe está pronta para apresentar as melhores oportunidades 
             de investimento imobiliário para você.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <Card className="bg-card border-border shadow-elegant animate-slide-up">
@@ -159,7 +159,7 @@ const Contact = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Nome Completo *
@@ -186,7 +186,7 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Telefone *

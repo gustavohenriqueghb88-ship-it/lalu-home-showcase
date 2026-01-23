@@ -37,19 +37,19 @@ const Projects = () => {
       <main>
         {/* Hero Section */}
         <section className="relative pt-10 pb-0 bg-gradient-primary text-primary-foreground">
-          <div className="container mx-auto px-4" style={{ paddingTop: '80px', paddingBottom: '20px' }}>
+          <div className="container mx-auto px-4 pt-16 sm:pt-20 md:pt-24 pb-4 sm:pb-6 md:pb-8">
             <div className="max-w-4xl mx-auto text-center animate-fade-in">
               <Badge variant="outline" className="mb-6 bg-secondary/20 text-secondary border-secondary/30">
                 <Building2 className="w-4 h-4 mr-2" />
                 Incorporação Imobiliária
               </Badge>
               
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight px-2">
                 Nossos
                 <span className="text-secondary block">Empreendimentos</span>
               </h1>
               
-              <p className="text-xl md:text-2xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-primary-foreground/90 mb-6 sm:mb-8 max-w-3xl mx-auto px-4">
                 Descubra os projetos de incorporação da Lalu Adm no Paraná e Santa Catarina. 
                 Qualidade, inovação e valorização patrimonial em cada empreendimento.
               </p>
@@ -58,14 +58,14 @@ const Projects = () => {
         </section>
 
         {/* Projects Grid */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-12 sm:py-16 md:py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             {isLoading ? (
               <div className="flex justify-center items-center py-20">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 {projects?.map((project, index) => (
                   <Card key={project.id} className="group hover:shadow-elegant transition-all duration-500 bg-card border-border animate-slide-up" style={{animationDelay: `${index * 200}ms`}}>
                     <div className="relative overflow-hidden rounded-t-lg">
@@ -114,11 +114,11 @@ const Projects = () => {
                       {project.highlights && project.highlights.length > 0 && (
                         <div className="space-y-3 mb-6">
                           <h4 className="font-semibold text-primary">Principais características:</h4>
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             {project.highlights.slice(0, 4).map((highlight, idx) => (
                               <div key={idx} className="flex items-center text-sm text-muted-foreground">
                                 <div className="w-2 h-2 bg-secondary rounded-full mr-2 flex-shrink-0" />
-                                {highlight}
+                                <span className="break-words">{highlight}</span>
                               </div>
                             ))}
                           </div>
@@ -148,7 +148,7 @@ const Projects = () => {
             {/* CTA Section */}
             <div className="text-center mt-16">
               <div className="max-w-2xl mx-auto">
-                <h2 className="text-3xl font-bold text-primary mb-4">
+                <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3 sm:mb-4 px-2">
                   Interessado em nossos empreendimentos?
                 </h2>
                 <p className="text-muted-foreground mb-8">

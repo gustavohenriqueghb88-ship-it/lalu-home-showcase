@@ -44,7 +44,7 @@ const About = () => {
   ];
 
   return (
-    <section className="py-20 bg-background">
+    <section className="py-12 sm:py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
@@ -52,13 +52,13 @@ const About = () => {
             <Users className="w-4 h-4 mr-2" />
             Sobre a Lalu
           </Badge>
-          <h2 className="text-3xl md:text-5xl font-bold text-primary mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4 sm:mb-6 px-2">
             Construindo
             <span className="text-secondary block">Confiança e Desenvolvimento</span>
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center mb-12 sm:mb-16">
           {/* Content */}
           <div className="space-y-6 animate-slide-up">
             <p className="text-lg text-muted-foreground leading-relaxed">
@@ -89,7 +89,7 @@ const About = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 gap-6 animate-slide-up" style={{animationDelay: '200ms'}}>
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 animate-slide-up" style={{animationDelay: '200ms'}}>
             {stats.map((stat, index) => (
               <Card key={index} className="text-center p-6 hover:shadow-elegant transition-all duration-300 border-border">
                 <CardContent className="p-0">
@@ -104,7 +104,7 @@ const About = () => {
         </div>
 
         {/* Values */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {values.map((value, index) => (
             <Card key={index} className={`text-center p-6 hover:shadow-gold transition-all duration-500 bg-card border-border animate-fade-in`} style={{animationDelay: `${index * 100}ms`}}>
               <CardContent className="p-0">
