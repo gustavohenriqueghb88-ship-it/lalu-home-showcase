@@ -61,15 +61,6 @@ const Contact = () => {
       return;
     }
 
-    if (!GOOGLE_SCRIPT_URL) {
-      toast({
-        title: 'Configuração necessária',
-        description: 'O formulário ainda não está configurado. Entre em contato com o administrador.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -109,6 +100,7 @@ const Contact = () => {
       setLoading(false);
     }
   };
+
   const contactInfo = [
     {
       icon: Phone,
@@ -303,7 +295,6 @@ const Contact = () => {
                 </CardContent>
               </Card>
             ))}
-
           </div>
         </div>
 
