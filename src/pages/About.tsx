@@ -47,11 +47,6 @@ const About = () => {
       number: "100+",
       label: "Projetos Entregues",
       suffix: ""
-    },
-    {
-      number: "50+",
-      label: "Colaboradores",
-      suffix: ""
     }
   ];
 
@@ -99,8 +94,8 @@ const About = () => {
                   <p className="text-lg leading-relaxed">
                     Especializada em incorporação, gestão, venda e locação de imóveis próprios, a Lalu 
                     entrega soluções completas que unem inovação, segurança e valorização patrimonial. 
-                    Nosso diferencial está na experiência da equipe e no cuidado com cada projeto — 
-                    construímos confiança e desenvolvimento por onde passamos.
+                    Nosso diferencial está na experiência da equipe e no cuidado com cada projeto. 
+                    Construímos confiança e desenvolvimento por onde passamos.
                   </p>
                 </div>
 
@@ -140,7 +135,7 @@ const About = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center animate-fade-in" style={{animationDelay: `${index * 100}ms`}}>
                   <div className="text-4xl md:text-5xl font-bold text-secondary mb-2">

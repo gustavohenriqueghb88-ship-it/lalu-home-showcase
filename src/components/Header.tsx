@@ -52,9 +52,11 @@ const Header = () => {
               <Phone size={16} />
               <span>(41) 98430-5403</span>
             </div>
-            <Button variant="cta" size="sm">
-              Fale Conosco
-            </Button>
+            <Link to="/contato">
+              <Button variant="cta" size="sm">
+                Fale Conosco
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -86,9 +88,11 @@ const Header = () => {
               </Link>
             ))}
             <div className="pt-4 border-t border-border">
-              <Button variant="cta" className="w-full">
-                Fale Conosco
-              </Button>
+              <Link to="/contato" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="cta" className="w-full">
+                  Fale Conosco
+                </Button>
+              </Link>
             </div>
           </nav>
         </div>
