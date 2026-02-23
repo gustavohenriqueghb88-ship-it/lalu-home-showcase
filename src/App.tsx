@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import ProjectDetail from "./pages/ProjectDetail";
 import PropertyDetail from "./pages/PropertyDetail";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/sobre" element={<About />} />
             <Route path="/contato" element={<Contact />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
