@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ProjectDetail from "./pages/ProjectDetail";
 import PropertyDetail from "./pages/PropertyDetail";
+import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/portfolio/:slug" element={<PropertyDetail />} />
             <Route path="/sobre" element={<About />} />
             <Route path="/contato" element={<Contact />} />
+            <Route path="/blog" element={<Blog />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
