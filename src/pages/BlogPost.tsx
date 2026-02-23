@@ -1,6 +1,4 @@
 import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import DOMPurify from 'dompurify';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -9,57 +7,12 @@ import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import { ArrowLeft, ArrowRight, Share2, Facebook, Linkedin } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { blogPosts as staticPosts, months } from '@/data/blogPosts';
-
-interface DbBlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  meta_description: string | null;
-  focus_keyword: string | null;
-  image_url: string | null;
-  published_at: string | null;
-}
+import { blogPosts, months } from '@/data/blogPosts';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
-
-  // Try to load from DB
-  const { data: dbPost, isLoading } = useQuery({
-    queryKey: ['blog-post', slug],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('blog_posts' as any)
-        .select('*')
-        .eq('slug', slug!)
-        .eq('published', true)
-        .maybeSingle();
-      if (error) throw error;
-      return data as unknown as DbBlogPost | null;
-    },
-    enabled: !!slug,
-  });
-
-  // Fallback to static
-  const staticIndex = staticPosts.findIndex((p) => p.slug === slug);
-  const staticPost = staticPosts[staticIndex];
-
-  const isDbPost = !!dbPost;
-  const post = dbPost || staticPost;
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 flex items-center justify-center pt-20">
-          <div className="text-muted-foreground">Carregando...</div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  const postIndex = blogPosts.findIndex((p) => p.slug === slug);
+  const post = blogPosts[postIndex];
 
   if (!post) {
     return (
@@ -78,35 +31,13 @@ const BlogPost = () => {
     );
   }
 
-  // Derive common fields
-  const title = isDbPost ? dbPost!.title : staticPost!.title;
-  const image = isDbPost ? (dbPost!.image_url || '/placeholder.svg') : staticPost!.image;
-  const date = isDbPost
-    ? (dbPost!.published_at ? new Date(dbPost!.published_at) : new Date())
-    : staticPost!.date;
-
-  // SEO meta
-  if (isDbPost && dbPost!.meta_description) {
-    const metaEl = document.querySelector('meta[name="description"]');
-    if (metaEl) metaEl.setAttribute('content', dbPost!.meta_description);
-    else {
-      const m = document.createElement('meta');
-      m.name = 'description';
-      m.content = dbPost!.meta_description;
-      document.head.appendChild(m);
-    }
-  }
-
-  // Static post navigation
-  const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
-  const nextStaticPost = !isDbPost && staticIndex < staticPosts.length - 1 ? staticPosts[staticIndex + 1] : null;
+  const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
+  const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
 
   const renderTitle = () => {
-    if (isDbPost) return <span>{title}</span>;
-    const sp = staticPost!;
-    const parts = sp.title.split(new RegExp(`(${sp.highlightWord})`, 'i'));
+    const parts = post.title.split(new RegExp(`(${post.highlightWord})`, 'i'));
     return parts.map((part, i) =>
-      part.toLowerCase() === sp.highlightWord.toLowerCase() ? (
+      part.toLowerCase() === post.highlightWord.toLowerCase() ? (
         <span key={i} className="text-secondary">{part}</span>
       ) : (
         <span key={i}>{part}</span>
@@ -122,6 +53,7 @@ const BlogPost = () => {
       <section className="relative pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-hero opacity-95" />
         <div className="relative z-10 container mx-auto px-4 text-center">
+          {/* Breadcrumb */}
           <Breadcrumb className="mb-6 sm:mb-8 flex justify-center">
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -138,17 +70,20 @@ const BlogPost = () => {
               <BreadcrumbSeparator className="text-primary-foreground/40" />
               <BreadcrumbItem>
                 <BreadcrumbPage className="text-primary-foreground/80 max-w-[200px] sm:max-w-none truncate">
-                  {title}
+                  {post.title}
                 </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
+          <span className="inline-block text-secondary text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3">
+            {post.category}
+          </span>
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 max-w-4xl mx-auto leading-tight">
             {renderTitle()}
           </h1>
           <p className="text-primary-foreground/70 text-sm sm:text-base">
-            {date.getDate()} de {months[date.getMonth()]} de {date.getFullYear()}
+            {post.date.getDate()} de {months[post.date.getMonth()]} de {post.date.getFullYear()}
           </p>
         </div>
       </section>
@@ -158,12 +93,12 @@ const BlogPost = () => {
         <div className="max-w-4xl mx-auto">
           <div className="relative rounded-xl overflow-hidden shadow-elegant">
             <AspectRatio ratio={16 / 9}>
-              <img src={image} alt={title} className="w-full h-full object-cover" />
+              <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
             </AspectRatio>
             <div className="absolute top-4 left-4 bg-primary text-secondary rounded-lg px-3 py-2 text-center shadow-md">
-              <span className="block text-xl font-bold leading-none">{date.getDate()}</span>
+              <span className="block text-xl font-bold leading-none">{post.date.getDate()}</span>
               <span className="block text-[10px] uppercase tracking-wide mt-0.5">
-                {months[date.getMonth()]} {date.getFullYear()}
+                {months[post.date.getMonth()]} {post.date.getFullYear()}
               </span>
             </div>
           </div>
@@ -173,41 +108,35 @@ const BlogPost = () => {
       {/* Content */}
       <article className="container mx-auto px-4 mb-12 sm:mb-16">
         <div className="max-w-3xl mx-auto space-y-6">
-          {isDbPost ? (
-            <div
-              className="prose prose-lg max-w-none text-muted-foreground [&_h2]:text-xl [&_h2]:sm:text-2xl [&_h2]:font-bold [&_h2]:text-primary [&_h2]:mt-10 [&_h3]:text-lg [&_h3]:sm:text-xl [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:mt-6 [&_p]:leading-relaxed [&_p]:text-sm [&_p]:sm:text-base [&_ul]:space-y-2 [&_ul]:pl-5 [&_li]:list-disc [&_li]:marker:text-secondary [&_a]:text-secondary [&_a]:underline"
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(dbPost!.content) }}
-            />
-          ) : (
-            staticPost!.content.map((block, i) => {
-              switch (block.type) {
-                case 'h2':
-                  return <h2 key={i} className="text-xl sm:text-2xl font-bold text-primary mt-10 first:mt-0">{block.text}</h2>;
-                case 'h3':
-                  return <h3 key={i} className="text-lg sm:text-xl font-semibold text-primary mt-6">{block.text}</h3>;
-                case 'p':
-                  return <p key={i} className="text-muted-foreground leading-relaxed text-sm sm:text-base">{block.text}</p>;
-                case 'list':
-                  return (
-                    <ul key={i} className="space-y-2 pl-5">
-                      {block.items?.map((item, j) => (
-                        <li key={j} className="text-muted-foreground text-sm sm:text-base leading-relaxed list-disc marker:text-secondary">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                default:
-                  return null;
-              }
-            })
-          )}
+          {post.content.map((block, i) => {
+            switch (block.type) {
+              case 'h2':
+                return <h2 key={i} className="text-xl sm:text-2xl font-bold text-primary mt-10 first:mt-0">{block.text}</h2>;
+              case 'h3':
+                return <h3 key={i} className="text-lg sm:text-xl font-semibold text-primary mt-6">{block.text}</h3>;
+              case 'p':
+                return <p key={i} className="text-muted-foreground leading-relaxed text-sm sm:text-base">{block.text}</p>;
+              case 'list':
+                return (
+                  <ul key={i} className="space-y-2 pl-5">
+                    {block.items?.map((item, j) => (
+                      <li key={j} className="text-muted-foreground text-sm sm:text-base leading-relaxed list-disc marker:text-secondary">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                );
+              default:
+                return null;
+            }
+          })}
         </div>
       </article>
 
       {/* Social + Navigation */}
       <section className="container mx-auto px-4 mb-12 sm:mb-16">
         <div className="max-w-3xl mx-auto">
+          {/* Share */}
           <div className="flex items-center gap-3 mb-8 pb-8 border-b border-border">
             <span className="text-sm font-medium text-muted-foreground flex items-center gap-1.5">
               <Share2 size={16} /> Compartilhar:
@@ -230,38 +159,27 @@ const BlogPost = () => {
             </a>
           </div>
 
-          {!isDbPost && (
-            <div className="flex justify-between items-center gap-4">
-              {prevStaticPost ? (
-                <Link to={`/blog/${prevStaticPost.slug}`} className="group">
-                  <Button variant="default" className="gap-2">
-                    <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                    <span className="hidden sm:inline">Post Anterior</span>
-                    <span className="sm:hidden">Anterior</span>
-                  </Button>
-                </Link>
-              ) : <div />}
-              {nextStaticPost ? (
-                <Link to={`/blog/${nextStaticPost.slug}`} className="group">
-                  <Button variant="default" className="gap-2">
-                    <span className="hidden sm:inline">Próximo Post</span>
-                    <span className="sm:hidden">Próximo</span>
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              ) : <div />}
-            </div>
-          )}
-
-          {isDbPost && (
-            <div className="flex justify-center">
-              <Link to="/blog">
+          {/* Navigation */}
+          <div className="flex justify-between items-center gap-4">
+            {prevPost ? (
+              <Link to={`/blog/${prevPost.slug}`} className="group">
                 <Button variant="default" className="gap-2">
-                  <ArrowLeft size={16} /> Voltar ao Blog
+                  <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                  <span className="hidden sm:inline">Post Anterior</span>
+                  <span className="sm:hidden">Anterior</span>
                 </Button>
               </Link>
-            </div>
-          )}
+            ) : <div />}
+            {nextPost ? (
+              <Link to={`/blog/${nextPost.slug}`} className="group">
+                <Button variant="default" className="gap-2">
+                  <span className="hidden sm:inline">Próximo Post</span>
+                  <span className="sm:hidden">Próximo</span>
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            ) : <div />}
+          </div>
         </div>
       </section>
 

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,60 +12,14 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { supabase } from '@/integrations/supabase/client';
-import { blogPosts as staticPosts, months } from '@/data/blogPosts';
+import { blogPosts, months } from '@/data/blogPosts';
 
 const POSTS_PER_PAGE = 6;
 
-interface DbBlogPost {
-  title: string;
-  slug: string;
-  meta_description: string | null;
-  image_url: string | null;
-  published_at: string | null;
-}
-
 const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
-
-  const { data: dbPosts = [] } = useQuery({
-    queryKey: ['blog-posts'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('blog_posts' as any)
-        .select('title, slug, meta_description, image_url, published_at')
-        .eq('published', true)
-        .order('published_at', { ascending: false });
-      if (error) throw error;
-      return (data || []) as unknown as DbBlogPost[];
-    },
-  });
-
-  // Merge: DB posts first, then static fallback posts (excluding duplicates by slug)
-  const dbSlugs = new Set(dbPosts.map((p) => p.slug));
-  const mergedPosts = [
-    ...dbPosts.map((p) => ({
-      slug: p.slug,
-      title: p.title,
-      description: p.meta_description || '',
-      image: p.image_url || '/placeholder.svg',
-      date: p.published_at ? new Date(p.published_at) : new Date(),
-      isDb: true as const,
-    })),
-    ...staticPosts
-      .filter((p) => !dbSlugs.has(p.slug))
-      .map((p) => ({
-        slug: p.slug,
-        title: p.title,
-        description: p.description,
-        image: p.image,
-        date: p.date,
-        isDb: false as const,
-      })),
-  ];
-
-  const totalPages = Math.ceil(mergedPosts.length / POSTS_PER_PAGE);
-  const paginatedPosts = mergedPosts.slice(
+  const totalPages = Math.ceil(blogPosts.length / POSTS_PER_PAGE);
+  const paginatedPosts = blogPosts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE
   );
@@ -92,7 +45,7 @@ const Blog = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {paginatedPosts.map((post) => (
-              <Link key={post.slug} to={`/blog/${post.slug}`} className="block">
+              <Link key={post.id} to={`/blog/${post.slug}`} className="block">
                 <Card className="overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
                   <div className="relative">
                     <AspectRatio ratio={16 / 9}>
