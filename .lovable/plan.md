@@ -1,67 +1,12 @@
 
 
-## Plano: Ocultar a Aba Portfólio do Site
+## Plan: Change Project Ordering to Oldest First
 
-### O que será feito
+Currently, both the Projects page and FeaturedProjects component order projects by `created_at` descending (newest first). The request is to show the oldest (first added) project at the top.
 
-Remover o link "Portfólio" de todos os menus de navegação do site, mantendo a rota funcional caso seja necessário acessá-la diretamente via URL.
+### Changes
 
-### Arquivos a serem alterados
+1. **`src/pages/Projects.tsx`** — Change `.order('created_at', { ascending: false })` to `ascending: true`
 
-#### 1. `src/components/Header.tsx`
-Remover o item "Portfólio" do array de navegação:
-
-**Antes:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
-```
-
-**Depois:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
-```
-
-#### 2. `src/components/Footer.tsx`
-Remover o link "Portfólio" da lista de navegação rápida:
-
-**Antes:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-**Depois:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-### Observação
-A rota `/portfolio` continuará existindo no `App.tsx`, permitindo acesso direto via URL se necessário. Se quiser remover a rota completamente, posso fazer isso também.
-
-### Resultado
-Após a implementação:
-- O menu principal (header) não mostrará mais "Portfólio"
-- O rodapé (footer) não mostrará mais o link "Portfólio"
-- A navegação ficará com 4 itens: Início, Empreendimentos, Sobre nós, Contato
+2. **`src/components/FeaturedProjects.tsx`** — Change both `.order('created_at', ...)` calls from `ascending: false` to `ascending: true`
 
