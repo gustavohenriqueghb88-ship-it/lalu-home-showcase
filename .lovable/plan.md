@@ -1,67 +1,17 @@
 
 
-## Plano: Ocultar a Aba Portfólio do Site
+## Diagnosis: Code is Already Correct — Cache Issue
 
-### O que será feito
+The code in both `Projects.tsx` and `FeaturedProjects.tsx` already uses `.order('created_at', { ascending: true })`. The database confirms the correct order:
 
-Remover o link "Portfólio" de todos os menus de navegação do site, mantendo a rota funcional caso seja necessário acessá-la diretamente via URL.
+1. **Loteamento Rotas do Sol** — Jan 20, 2026 18:11
+2. **Condomínio Garden House Residence** — Jan 20, 2026 18:17
+3. **Loteamento Pedras Brancas** — Mar 10, 2026 11:49
 
-### Arquivos a serem alterados
+The preview is likely showing cached data from React Query. 
 
-#### 1. `src/components/Header.tsx`
-Remover o item "Portfólio" do array de navegação:
+### Fix
+Invalidate the React Query cache by adding a small force-refresh mechanism. The simplest approach: change the `queryKey` slightly to bust the cache, or simply do a hard refresh of the preview.
 
-**Antes:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
-```
-
-**Depois:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
-```
-
-#### 2. `src/components/Footer.tsx`
-Remover o link "Portfólio" da lista de navegação rápida:
-
-**Antes:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-**Depois:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-### Observação
-A rota `/portfolio` continuará existindo no `App.tsx`, permitindo acesso direto via URL se necessário. Se quiser remover a rota completamente, posso fazer isso também.
-
-### Resultado
-Após a implementação:
-- O menu principal (header) não mostrará mais "Portfólio"
-- O rodapé (footer) não mostrará mais o link "Portfólio"
-- A navegação ficará com 4 itens: Início, Empreendimentos, Sobre nós, Contato
+**Recommended action**: Try refreshing the preview page. If the order still doesn't update, I can add `staleTime: 0` and `refetchOnMount: 'always'` to both queries to ensure fresh data on every page load.
 
