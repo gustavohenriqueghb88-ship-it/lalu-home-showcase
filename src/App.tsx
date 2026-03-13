@@ -15,6 +15,7 @@ import PropertyDetail from "./pages/PropertyDetail";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
+import RotasDoSol from "./pages/RotasDoSol";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ProjectsList from "./pages/admin/ProjectsList";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/contato" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/rotas-do-sol" element={<RotasDoSol />} />
               
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
