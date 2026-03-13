@@ -111,6 +111,20 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>{title} | Lalu Blog</title>
+        <meta name="description" content={ogDescription} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={ogDescription} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:url" content={postUrl} />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={ogDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        <link rel="canonical" href={postUrl} />
+      </Helmet>
       <Header />
 
       {/* Hero */}
