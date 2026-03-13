@@ -36,7 +36,9 @@ const FeaturedProjects = () => {
       }
       
       return data;
-    }
+    },
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
   const getImageUrl = (images: string[] | null) => {
