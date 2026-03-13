@@ -117,8 +117,11 @@ const BlogPost = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={ogDescription} />
         <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="627" />
         <meta property="og:url" content={postUrl} />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Lalu Incorporadora" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={ogDescription} />
