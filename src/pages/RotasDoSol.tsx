@@ -7,7 +7,7 @@ import {
   Phone, MapPin, MessageCircle, Check, ArrowRight,
   Route, Droplets, CloudRain, Lightbulb, Wrench, Trees,
   Navigation, Car, CreditCard, Handshake,
-  HardHat, Landmark, TrendingUp, LayoutGrid, Ruler, CalendarClock, RoadHorizon
+  HardHat, Landmark, TrendingUp, LayoutGrid, Ruler, CalendarClock, Milestone
 } from "lucide-react";
 import { maskPhone, maskName, submitToGoogleSheets } from "@/utils/formUtils";
 import { useToast } from "@/hooks/use-toast";
