@@ -17,7 +17,7 @@ const Projects = () => {
         .from('projects')
         .select('*')
         .eq('is_active', true)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
       if (error) throw error;
       return data;
     }

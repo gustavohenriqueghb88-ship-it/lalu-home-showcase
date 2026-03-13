@@ -17,7 +17,7 @@ const FeaturedProjects = () => {
         .select('*')
         .eq('is_active', true)
         .eq('is_featured', true)
-        .order('created_at', { ascending: false })
+        .order('created_at', { ascending: true })
         .limit(2);
       
       if (error) throw error;
@@ -28,7 +28,7 @@ const FeaturedProjects = () => {
           .from('projects')
           .select('*')
           .eq('is_active', true)
-          .order('created_at', { ascending: false })
+          .order('created_at', { ascending: true })
           .limit(2);
         
         if (result.error) throw result.error;
