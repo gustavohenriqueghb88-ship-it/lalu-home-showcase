@@ -20,7 +20,9 @@ const Projects = () => {
         .order('created_at', { ascending: true });
       if (error) throw error;
       return data;
-    }
+    },
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
   const getImageUrl = (images: string[] | null) => {
