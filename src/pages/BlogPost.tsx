@@ -86,17 +86,11 @@ const BlogPost = () => {
     ? (dbPost!.published_at ? new Date(dbPost!.published_at) : new Date())
     : staticPost!.date;
 
-  // SEO meta
-  if (isDbPost && dbPost!.meta_description) {
-    const metaEl = document.querySelector('meta[name="description"]');
-    if (metaEl) metaEl.setAttribute('content', dbPost!.meta_description);
-    else {
-      const m = document.createElement('meta');
-      m.name = 'description';
-      m.content = dbPost!.meta_description;
-      document.head.appendChild(m);
-    }
-  }
+  // SEO / Open Graph
+  const siteUrl = 'https://lalu-home-showcase.lovable.app';
+  const postUrl = `${siteUrl}/blog/${slug}`;
+  const ogDescription = isDbPost ? (dbPost!.meta_description || '') : '';
+  const ogImage = isDbPost ? (dbPost!.image_url || '') : '';
 
   // Static post navigation
   const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
