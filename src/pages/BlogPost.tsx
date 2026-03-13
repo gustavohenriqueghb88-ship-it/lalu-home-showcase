@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { Helmet } from 'react-helmet-async';
 import DOMPurify from 'dompurify';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -85,17 +86,11 @@ const BlogPost = () => {
     ? (dbPost!.published_at ? new Date(dbPost!.published_at) : new Date())
     : staticPost!.date;
 
-  // SEO meta
-  if (isDbPost && dbPost!.meta_description) {
-    const metaEl = document.querySelector('meta[name="description"]');
-    if (metaEl) metaEl.setAttribute('content', dbPost!.meta_description);
-    else {
-      const m = document.createElement('meta');
-      m.name = 'description';
-      m.content = dbPost!.meta_description;
-      document.head.appendChild(m);
-    }
-  }
+  // SEO / Open Graph
+  const siteUrl = 'https://lalu-home-showcase.lovable.app';
+  const postUrl = `${siteUrl}/blog/${slug}`;
+  const ogDescription = isDbPost ? (dbPost!.meta_description || '') : '';
+  const ogImage = isDbPost ? (dbPost!.image_url || '') : '';
 
   // Static post navigation
   const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
@@ -116,6 +111,20 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>{title} | Lalu Blog</title>
+        <meta name="description" content={ogDescription} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={ogDescription} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:url" content={postUrl} />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={ogDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        <link rel="canonical" href={postUrl} />
+      </Helmet>
       <Header />
 
       {/* Hero */}
