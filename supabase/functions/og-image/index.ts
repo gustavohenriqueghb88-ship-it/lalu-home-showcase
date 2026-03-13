@@ -1,22 +1,75 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const crawlerPatterns = [
+  'linkedinbot',
+  'facebookexternalhit',
+  'facebookcatalog',
+  'twitterbot',
+  'slackbot',
+  'whatsapp',
+  'telegrambot',
+  'googlebot',
+  'bingbot',
+  'yandexbot',
+  'baiduspider',
+  'duckduckbot',
+  'rogerbot',
+  'embedly',
+  'showyoubot',
+  'outbrain',
+  'pinterestbot',
+  'developers.google.com',
+  'redditbot',
+  'applebot',
+  'discordbot',
+];
+
+function isCrawler(userAgent: string): boolean {
+  const ua = userAgent.toLowerCase();
+  return crawlerPatterns.some((pattern) => ua.includes(pattern));
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response("ok", { headers: corsHeaders });
   }
 
   const url = new URL(req.url);
   const slug = url.searchParams.get("slug");
+  const siteUrl = "https://lalu-home-showcase.lovable.app";
 
   if (!slug) {
     return new Response("Missing slug", { status: 400, headers: corsHeaders });
   }
 
+  const userAgent = req.headers.get("user-agent") || "";
+
+  // If not a crawler, redirect to the SPA
+  if (!isCrawler(userAgent)) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        ...corsHeaders,
+        Location: `${siteUrl}/blog/${slug}`,
+      },
+    });
+  }
+
+  // Crawler: fetch post data and serve static HTML with OG tags
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
   const supabase = createClient(supabaseUrl, supabaseKey);
@@ -29,10 +82,12 @@ Deno.serve(async (req) => {
     .maybeSingle();
 
   if (error || !post) {
-    return new Response("Post not found", { status: 404, headers: corsHeaders });
+    return new Response(null, {
+      status: 302,
+      headers: { ...corsHeaders, Location: `${siteUrl}/blog/${slug}` },
+    });
   }
 
-  const siteUrl = "https://lalu-home-showcase.lovable.app";
   const postUrl = `${siteUrl}/blog/${post.slug}`;
   const title = post.title || "Lalu Blog";
   const description = post.meta_description || "";
@@ -57,10 +112,11 @@ Deno.serve(async (req) => {
   <meta name="twitter:description" content="${escapeHtml(description)}" />
   <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
   <link rel="canonical" href="${escapeHtml(postUrl)}" />
-  <meta http-equiv="refresh" content="0;url=${escapeHtml(postUrl)}" />
 </head>
 <body>
-  <p>Redirecting to <a href="${escapeHtml(postUrl)}">${escapeHtml(title)}</a>...</p>
+  <h1>${escapeHtml(title)}</h1>
+  <p>${escapeHtml(description)}</p>
+  <p><a href="${escapeHtml(postUrl)}">Leia o post completo</a></p>
 </body>
 </html>`;
 
@@ -73,12 +129,3 @@ Deno.serve(async (req) => {
     },
   });
 });
-
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
