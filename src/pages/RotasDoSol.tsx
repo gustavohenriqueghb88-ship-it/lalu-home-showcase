@@ -54,7 +54,7 @@ const stats = [
   { value: "71", label: "Lotes Disponíveis", icon: LayoutGrid },
   { value: "276m²", label: "A partir de", icon: Ruler },
   { value: "180x", label: "Meses para Pagar", icon: CalendarClock },
-  { value: "", label: "Ruas Asfaltadas", icon: RoadHorizon },
+  { value: "", label: "Ruas Asfaltadas", icon: Milestone },
 ];
 
 const WHATSAPP_URL = "https://wa.me/5541984305403?text=Olá! Tenho interesse no Loteamento Rotas do Sol.";
