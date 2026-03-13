@@ -3,7 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { Phone, MapPin, MessageCircle, Check, ArrowRight } from "lucide-react";
+import {
+  Phone, MapPin, MessageCircle, Check, ArrowRight,
+  Route, Droplets, CloudRain, Lightbulb, Wrench, Trees,
+  Navigation, Car, CreditCard, Handshake,
+  HardHat, Landmark, TrendingUp, LayoutGrid, Ruler, CalendarClock, Milestone
+} from "lucide-react";
 import { maskPhone, maskName, submitToGoogleSheets } from "@/utils/formUtils";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
@@ -12,45 +17,44 @@ import Footer from "@/components/Footer";
 import rotasHero from "@/assets/rotas-do-sol-hero.jpg";
 import rotas1 from "@/assets/rotas-do-sol-1.jpg";
 import rotas2 from "@/assets/rotas-do-sol-2.jpg";
-import rotas3 from "@/assets/rotas-do-sol-3.jpg";
 import rotasNew from "@/assets/rotas-do-sol-new.jpg";
 
 const infra = [
-  { icon: "🛣️", label: "Ruas Asfaltadas" },
-  { icon: "💧", label: "Rede de Água" },
-  { icon: "🌧️", label: "Galeria Pluvial" },
-  { icon: "💡", label: "Iluminação Pública" },
-  { icon: "🔧", label: "Rede de Esgoto" },
-  { icon: "🌿", label: "Paisagens Naturais" },
-  { icon: "📍", label: "Excelente Localização" },
-  { icon: "🚗", label: "Próximo à BR-101" },
-  { icon: "💳", label: "Financiamento 180x" },
-  { icon: "🤝", label: "Entrada Facilitada" },
+  { icon: Route, label: "Ruas Asfaltadas" },
+  { icon: Droplets, label: "Rede de Água" },
+  { icon: CloudRain, label: "Galeria Pluvial" },
+  { icon: Lightbulb, label: "Iluminação Pública" },
+  { icon: Wrench, label: "Rede de Esgoto" },
+  { icon: Trees, label: "Paisagens Naturais" },
+  { icon: Navigation, label: "Excelente Localização" },
+  { icon: Car, label: "Próximo à BR-101" },
+  { icon: CreditCard, label: "Financiamento 180x" },
+  { icon: Handshake, label: "Entrada Facilitada" },
 ];
 
 const differentials = [
   {
-    icon: "🏗️",
+    icon: HardHat,
     title: "Infraestrutura completa pronta",
     desc: "Toda a rede urbana instalada com padrões de alta qualidade técnica.",
   },
   {
-    icon: "🏦",
+    icon: Landmark,
     title: "Financiamento próprio facilitado",
     desc: "Condições de parcelamento direto com a loteadora sem burocracia bancária.",
   },
   {
-    icon: "📈",
+    icon: TrendingUp,
     title: "Região em desenvolvimento",
     desc: "Localização estratégica com alto índice de valorização anual.",
   },
 ];
 
 const stats = [
-  { value: "71", label: "Lotes Disponíveis" },
-  { value: "276m²", label: "A partir de" },
-  { value: "180x", label: "Meses para Pagar" },
-  { value: "🛣️", label: "Ruas Asfaltadas", isIcon: true },
+  { value: "71", label: "Lotes Disponíveis", icon: LayoutGrid },
+  { value: "276m²", label: "A partir de", icon: Ruler },
+  { value: "180x", label: "Meses para Pagar", icon: CalendarClock },
+  { value: "", label: "Ruas Asfaltadas", icon: Milestone },
 ];
 
 const WHATSAPP_URL = "https://wa.me/5541984305403?text=Olá! Tenho interesse no Loteamento Rotas do Sol.";
@@ -149,16 +153,21 @@ export default function RotasDoSol() {
       <section className="bg-primary py-0">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-primary-foreground/10">
-            {stats.map((stat, i) => (
-              <div key={i} className="flex flex-col items-center justify-center py-8">
-                <span className={`font-bold text-secondary mb-1 ${stat.isIcon ? "text-3xl" : "text-3xl md:text-4xl"}`}>
-                  {stat.value}
-                </span>
-                <span className="text-xs uppercase tracking-widest text-primary-foreground/60 font-medium">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
+            {stats.map((stat, i) => {
+              const Icon = stat.icon;
+              return (
+                <div key={i} className="flex flex-col items-center justify-center py-8 gap-1">
+                  {stat.value ? (
+                    <span className="font-bold text-secondary text-3xl md:text-4xl">{stat.value}</span>
+                  ) : (
+                    <Icon className="h-8 w-8 text-secondary" />
+                  )}
+                  <span className="text-xs uppercase tracking-widest text-primary-foreground/60 font-medium">
+                    {stat.label}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -193,7 +202,7 @@ export default function RotasDoSol() {
                 className="w-full rounded-xl shadow-elegant object-cover aspect-[4/3]"
               />
               <div className="absolute -bottom-4 -left-4 rounded-lg bg-primary px-5 py-3 shadow-lg flex items-center gap-2">
-                <span className="text-lg">🌿</span>
+                <Trees className="h-5 w-5 text-secondary" />
                 <span className="text-xs text-primary-foreground font-medium">Paisagens naturais preservadas</span>
               </div>
             </div>
@@ -204,14 +213,19 @@ export default function RotasDoSol() {
       {/* Gallery */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[rotas2, rotas3, rotasNew].map((img, i) => (
-              <img
-                key={i}
-                src={img}
-                alt={`Rotas do Sol - Imagem ${i + 1}`}
-                className="w-full rounded-xl object-cover aspect-[4/3] hover:scale-[1.02] transition-transform duration-300"
-              />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { img: rotas2, alt: "Vista aérea do loteamento Rotas do Sol" },
+              { img: rotasNew, alt: "Infraestrutura do loteamento Rotas do Sol" },
+            ].map((item, i) => (
+              <div key={i} className="group relative overflow-hidden rounded-xl">
+                <img
+                  src={item.img}
+                  alt={item.alt}
+                  className="w-full object-cover aspect-[16/10] group-hover:scale-[1.03] transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
             ))}
           </div>
         </div>
@@ -230,14 +244,17 @@ export default function RotasDoSol() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {infra.map((item, i) => (
-              <Card key={i} className="group border border-border hover:border-secondary transition-all duration-200 hover:-translate-y-0.5">
-                <CardContent className="flex flex-col items-center justify-center py-6 px-3 text-center gap-2">
-                  <span className="text-2xl">{item.icon}</span>
-                  <span className="text-xs font-semibold text-foreground uppercase tracking-wide">{item.label}</span>
-                </CardContent>
-              </Card>
-            ))}
+            {infra.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <Card key={i} className="group border border-border hover:border-secondary transition-all duration-200 hover:-translate-y-0.5">
+                  <CardContent className="flex flex-col items-center justify-center py-6 px-3 text-center gap-3">
+                    <Icon className="h-6 w-6 text-secondary group-hover:scale-110 transition-transform" />
+                    <span className="text-xs font-semibold text-foreground uppercase tracking-wide">{item.label}</span>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -250,15 +267,20 @@ export default function RotasDoSol() {
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {differentials.map((d, i) => (
-              <Card key={i} className="bg-primary-foreground/5 border-primary-foreground/10 text-primary-foreground">
-                <CardContent className="pt-8 pb-6 px-6">
-                  <span className="text-3xl mb-4 block">{d.icon}</span>
-                  <h3 className="text-lg font-bold mb-2">{d.title}</h3>
-                  <p className="text-sm text-primary-foreground/70 leading-relaxed">{d.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
+            {differentials.map((d, i) => {
+              const Icon = d.icon;
+              return (
+                <Card key={i} className="bg-primary-foreground/5 border-primary-foreground/10 text-primary-foreground">
+                  <CardContent className="pt-8 pb-6 px-6">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary/15 mb-5">
+                      <Icon className="h-6 w-6 text-secondary" />
+                    </div>
+                    <h3 className="text-lg font-bold mb-2">{d.title}</h3>
+                    <p className="text-sm text-primary-foreground/70 leading-relaxed">{d.desc}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
