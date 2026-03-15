@@ -120,6 +120,9 @@ Deno.serve(async (req) => {
       if (image_url && (typeof image_url !== 'string' || image_url.length > 2000)) {
         return jsonResponse({ error: 'Image URL must be a string with max 2000 characters' }, 400)
       }
+      if (cta_text && (typeof cta_text !== 'string' || cta_text.length > 100)) {
+        return jsonResponse({ error: 'CTA text must be a string with max 100 characters' }, 400)
+      }
 
       // Validate slug format
       if (!isValidSlug(postSlug)) {
