@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           content: string
           created_at: string
+          cta_text: string | null
           focus_keyword: string | null
           id: string
           image_url: string | null
@@ -31,6 +32,7 @@ export type Database = {
         Insert: {
           content: string
           created_at?: string
+          cta_text?: string | null
           focus_keyword?: string | null
           id?: string
           image_url?: string | null
@@ -44,6 +46,7 @@ export type Database = {
         Update: {
           content?: string
           created_at?: string
+          cta_text?: string | null
           focus_keyword?: string | null
           id?: string
           image_url?: string | null
