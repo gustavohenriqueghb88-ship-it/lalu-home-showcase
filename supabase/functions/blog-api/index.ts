@@ -98,7 +98,7 @@ Deno.serve(async (req) => {
       if (!authenticate(req)) return jsonResponse({ error: 'Unauthorized' }, 401)
 
       const body = await req.json()
-      const { title, slug: postSlug, content, meta_description, focus_keyword, image_url, published } = body
+      const { title, slug: postSlug, content, meta_description, focus_keyword, image_url, published, cta_text } = body
 
       if (!title || !postSlug || !content) {
         return jsonResponse({ error: 'title, slug, and content are required' }, 400)
