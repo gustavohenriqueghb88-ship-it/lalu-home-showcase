@@ -22,6 +22,7 @@ interface DbBlogPost {
   focus_keyword: string | null;
   image_url: string | null;
   published_at: string | null;
+  cta_text: string | null;
 }
 
 const BlogPost = () => {
@@ -229,7 +230,7 @@ const BlogPost = () => {
             </p>
             <Link to="/empreendimentos" onClick={() => window.scrollTo(0, 0)}>
               <Button variant="secondary" size="lg" className="text-base font-semibold px-8">
-                Conhecer Empreendimentos
+                {(isDbPost && dbPost?.cta_text) || 'Conhecer Empreendimentos'}
               </Button>
             </Link>
           </div>
