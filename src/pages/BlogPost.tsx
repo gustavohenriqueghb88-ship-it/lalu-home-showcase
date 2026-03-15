@@ -22,6 +22,7 @@ interface DbBlogPost {
   focus_keyword: string | null;
   image_url: string | null;
   published_at: string | null;
+  cta_text: string | null;
 }
 
 const BlogPost = () => {
