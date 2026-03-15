@@ -227,7 +227,7 @@ const BlogPost = () => {
             <p className="text-primary-foreground/70 mb-6 text-sm sm:text-base">
               Descubra oportunidades únicas de investimento no litoral catarinense.
             </p>
-            <Link to="/empreendimentos">
+            <Link to="/empreendimentos" onClick={() => window.scrollTo(0, 0)}>
               <Button variant="secondary" size="lg" className="text-base font-semibold px-8">
                 Conhecer Empreendimentos
               </Button>
