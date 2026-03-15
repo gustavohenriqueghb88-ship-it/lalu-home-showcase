@@ -149,6 +149,7 @@ Deno.serve(async (req) => {
           meta_description: meta_description?.trim() || null,
           focus_keyword: focus_keyword?.trim() || null,
           image_url: image_url || null,
+          cta_text: cta_text?.trim() || null,
           published: published ?? false,
         })
         .select('id, slug')
