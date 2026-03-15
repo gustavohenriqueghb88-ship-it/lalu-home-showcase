@@ -98,7 +98,7 @@ Deno.serve(async (req) => {
       if (!authenticate(req)) return jsonResponse({ error: 'Unauthorized' }, 401)
 
       const body = await req.json()
-      const { title, slug: postSlug, content, meta_description, focus_keyword, image_url, published } = body
+      const { title, slug: postSlug, content, meta_description, focus_keyword, image_url, published, cta_text } = body
 
       if (!title || !postSlug || !content) {
         return jsonResponse({ error: 'title, slug, and content are required' }, 400)
@@ -119,6 +119,9 @@ Deno.serve(async (req) => {
       }
       if (image_url && (typeof image_url !== 'string' || image_url.length > 2000)) {
         return jsonResponse({ error: 'Image URL must be a string with max 2000 characters' }, 400)
+      }
+      if (cta_text && (typeof cta_text !== 'string' || cta_text.length > 100)) {
+        return jsonResponse({ error: 'CTA text must be a string with max 100 characters' }, 400)
       }
 
       // Validate slug format
@@ -146,6 +149,7 @@ Deno.serve(async (req) => {
           meta_description: meta_description?.trim() || null,
           focus_keyword: focus_keyword?.trim() || null,
           image_url: image_url || null,
+          cta_text: cta_text?.trim() || null,
           published: published ?? false,
         })
         .select('id, slug')
