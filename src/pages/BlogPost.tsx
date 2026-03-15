@@ -217,6 +217,25 @@ const BlogPost = () => {
         </div>
       </article>
 
+      {/* CTA */}
+      <section className="container mx-auto px-4 mb-12 sm:mb-16">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-gradient-hero rounded-xl p-8 sm:p-10 text-center shadow-elegant">
+            <h3 className="text-xl sm:text-2xl font-bold text-primary-foreground mb-3">
+              Conheça nossos empreendimentos
+            </h3>
+            <p className="text-primary-foreground/70 mb-6 text-sm sm:text-base">
+              Descubra oportunidades únicas de investimento no litoral catarinense.
+            </p>
+            <Link to="/empreendimentos">
+              <Button variant="secondary" size="lg" className="text-base font-semibold px-8">
+                Conhecer Empreendimentos
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Social + Navigation */}
       <section className="container mx-auto px-4 mb-12 sm:mb-16">
         <div className="max-w-3xl mx-auto">
