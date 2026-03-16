@@ -203,8 +203,6 @@ Deno.serve(async (req) => {
       return jsonResponse(data);
     }
     // GET /blog-api/og/:slug — Open Graph HTML for crawlers
-    // Supabase Edge Runtime forces text/plain on HTML responses.
-    // Workaround: upload HTML to Storage (serves correct Content-Type) and redirect.
     if (resource === "og" && req.method === "GET" && slug) {
       const { data: post } = await supabaseAdmin
         .from("blog_posts")
@@ -219,8 +217,10 @@ Deno.serve(async (req) => {
       const imageUrl = post?.image_url || "";
       const postUrl = `${siteUrl}/blog/${slug}`;
 
-      const html = `<!DOCTYPE html>
-<html lang="pt-BR">
+      // Use XHTML to bypass Supabase gateway HTML sandbox (text/plain override)
+      const xhtml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <title>${escapeHtml(title)} | Lalu Blog</title>
@@ -235,30 +235,19 @@ Deno.serve(async (req) => {
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
 </head>
-<body></body>
+<body>
+  <h1>${escapeHtml(title)}</h1>
+  <p>${escapeHtml(description)}</p>
+</body>
 </html>`;
 
-      const fileName = `og/${slug}.html`;
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from("blog-images")
-        .upload(fileName, new Blob([html], { type: "text/html; charset=utf-8" }), {
-          contentType: "text/html; charset=utf-8",
-          upsert: true,
-        });
-
-      if (uploadError) {
-        console.error("OG HTML upload error:", uploadError);
-        // Fallback: return HTML directly (will be text/plain but better than nothing)
-        return new Response(html, {
-          status: 200,
-          headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8" },
-        });
-      }
-
-      const { data: publicUrl } = supabaseAdmin.storage.from("blog-images").getPublicUrl(fileName);
-      return new Response(null, {
-        status: 302,
-        headers: { ...corsHeaders, "Location": publicUrl.publicUrl },
+      return new Response(xhtml, {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/xhtml+xml; charset=utf-8",
+          "Cache-Control": "public, max-age=3600",
+        },
       });
     }
     return jsonResponse({ error: "Not found" }, 404);
