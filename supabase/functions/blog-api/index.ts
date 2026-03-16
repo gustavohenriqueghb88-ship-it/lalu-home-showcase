@@ -202,8 +202,12 @@ Deno.serve(async (req) => {
       if (!data) return jsonResponse({ error: "Post not found" }, 404);
       return jsonResponse(data);
     }
-    // GET /blog-api/og/:slug — Open Graph HTML for crawlers
+    // GET /blog-api/og/:slug — Always return OG HTML (no crawler detection)
     if (resource === "og" && req.method === "GET" && slug) {
+      if (!isValidSlug(slug)) {
+        return jsonResponse({ error: "Invalid slug" }, 400);
+      }
+
       const { data: post } = await supabaseAdmin
         .from("blog_posts")
         .select("title, meta_description, image_url, slug, published_at")
@@ -216,36 +220,41 @@ Deno.serve(async (req) => {
       const description = post?.meta_description || "";
       const imageUrl = post?.image_url || "";
       const postUrl = `${siteUrl}/blog/${slug}`;
+      const publishedAt = post?.published_at ? new Date(post.published_at).toISOString() : "";
 
-      // Use XHTML to bypass Supabase gateway HTML sandbox (text/plain override)
-      const xhtml = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+      const html = `<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>${escapeHtml(title)} | Lalu Blog</title>
-  <meta property="og:title" content="${escapeHtml(title)}" />
-  <meta property="og:description" content="${escapeHtml(description)}" />
-  <meta property="og:image" content="${escapeHtml(imageUrl)}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="627" />
-  <meta property="og:url" content="${escapeHtml(postUrl)}" />
-  <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Lalu Incorporadora" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
+<meta charset="UTF-8"/>
+<title>${escapeHtml(title)} | Lalu Blog</title>
+<meta name="description" content="${escapeHtml(description)}"/>
+<meta property="og:title" content="${escapeHtml(title)}"/>
+<meta property="og:description" content="${escapeHtml(description)}"/>
+<meta property="og:image" content="${escapeHtml(imageUrl)}"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="627"/>
+<meta property="og:url" content="${escapeHtml(postUrl)}"/>
+<meta property="og:type" content="article"/>
+<meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis"/>
+${publishedAt ? `<meta property="article:published_time" content="${escapeHtml(publishedAt)}"/>` : ""}
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="${escapeHtml(title)}"/>
+<meta name="twitter:description" content="${escapeHtml(description)}"/>
+<meta name="twitter:image" content="${escapeHtml(imageUrl)}"/>
+<link rel="canonical" href="${escapeHtml(postUrl)}"/>
 </head>
 <body>
-  <h1>${escapeHtml(title)}</h1>
-  <p>${escapeHtml(description)}</p>
+<h1>${escapeHtml(title)}</h1>
+<p>${escapeHtml(description)}</p>
+<p><a href="${escapeHtml(postUrl)}">Leia o post completo</a></p>
 </body>
 </html>`;
 
-      return new Response(xhtml, {
+      return new Response(html, {
         status: 200,
         headers: {
           ...corsHeaders,
-          "Content-Type": "application/xhtml+xml; charset=utf-8",
+          "Content-Type": "text/html; charset=utf-8",
           "Cache-Control": "public, max-age=3600",
         },
       });
