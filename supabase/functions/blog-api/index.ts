@@ -43,6 +43,43 @@ function isValidSlug(slug: string): boolean {
   return /^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(slug) && slug.length <= 200
 }
 
+function buildOgFallbackHtml(slug: string) {
+  const siteUrl = 'https://lalu-home-showcase.lovable.app'
+  const postUrl = `${siteUrl}/blog/${slug}`
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lalu Blog</title>
+  <meta name="description" content="Confira este conteúdo da Lalu Blog." />
+  <meta property="og:title" content="Lalu Blog" />
+  <meta property="og:description" content="Confira este conteúdo da Lalu Blog." />
+  <meta property="og:url" content="${escapeHtml(postUrl)}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lalu Blog" />
+  <meta name="twitter:description" content="Confira este conteúdo da Lalu Blog." />
+  <link rel="canonical" href="${escapeHtml(postUrl)}" />
+</head>
+<body>
+  <h1>Lalu Blog</h1>
+  <p>Confira este conteúdo da Lalu Blog.</p>
+  <p><a href="${escapeHtml(postUrl)}">Abrir artigo</a></p>
+</body>
+</html>`
+}
+
+function htmlResponse(html: string, status = 200) {
+  const headers = new Headers()
+  headers.set('Access-Control-Allow-Origin', '*')
+  headers.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type')
+  headers.set('Content-Type', 'text/html; charset=utf-8')
+  headers.set('Cache-Control', 'public, max-age=3600')
+  return new Response(html, { status, headers })
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
