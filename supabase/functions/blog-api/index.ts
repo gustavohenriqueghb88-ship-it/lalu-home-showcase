@@ -236,14 +236,12 @@ Deno.serve(async (req) => {
     <body></body>
     </html>`;
 
-      return new Response(html, {
-        status: 200,
-        headers: {
-          ...corsHeaders,
-          "Content-Type": "text/html; charset=utf-8",
-          "Cache-Control": "public, max-age=3600",
-        },
-      });
+      const headers = new Headers();
+      headers.set("content-type", "text/html; charset=utf-8");
+      headers.set("cache-control", "public, max-age=3600");
+      headers.set("access-control-allow-origin", "*");
+      headers.set("access-control-allow-headers", "authorization, x-client-info, apikey, content-type");
+      return new Response(html, { status: 200, headers });
     }
     return jsonResponse({ error: "Not found" }, 404);
   } catch (err) {
