@@ -201,7 +201,7 @@ export default function RotasDoSol() {
                 alt="Vista do loteamento Rotas do Sol"
                 className="w-full rounded-xl shadow-elegant object-cover aspect-[4/3]"
               />
-              <div className="absolute -bottom-4 -left-4 rounded-lg bg-primary px-5 py-3 shadow-lg flex items-center gap-2">
+              <div className="absolute bottom-4 left-4 rounded-lg bg-primary px-5 py-3 shadow-lg flex items-center gap-2">
                 <Trees className="h-5 w-5 text-secondary" />
                 <span className="text-xs text-primary-foreground font-medium">Paisagens naturais preservadas</span>
               </div>
