@@ -224,6 +224,84 @@ Deno.serve(async (req) => {
       return jsonResponse(data)
     }
 
+    // GET /blog-api/og/:slug — Serve OG meta tags for crawlers
+    if (resource === 'og' && req.method === 'GET' && slug) {
+      const siteUrl = 'https://lalu-home-showcase.lovable.app';
+      const userAgent = req.headers.get('user-agent') || '';
+
+      // If not a crawler, redirect to SPA
+      if (!isCrawler(userAgent)) {
+        return new Response(null, {
+          status: 302,
+          headers: { ...corsHeaders, Location: `${siteUrl}/blog/${slug}` },
+        });
+      }
+
+      if (!isValidSlug(slug)) {
+        return new Response(null, {
+          status: 302,
+          headers: { ...corsHeaders, Location: `${siteUrl}/blog` },
+        });
+      }
+
+      const { data: post, error: ogError } = await supabaseAdmin
+        .from('blog_posts')
+        .select('title, meta_description, image_url, slug, published_at')
+        .eq('slug', slug)
+        .eq('published', true)
+        .maybeSingle();
+
+      if (ogError || !post) {
+        return new Response(null, {
+          status: 302,
+          headers: { ...corsHeaders, Location: `${siteUrl}/blog/${slug}` },
+        });
+      }
+
+      const postUrl = `${siteUrl}/blog/${post.slug}`;
+      const title = post.title || 'Lalu Blog';
+      const description = post.meta_description || '';
+      const imageUrl = post.image_url || '';
+      const publishedAt = post.published_at ? new Date(post.published_at).toISOString() : '';
+
+      const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>${escapeHtml(title)} | Lalu Blog</title>
+  <meta name="description" content="${escapeHtml(description)}" />
+  <meta property="og:title" content="${escapeHtml(title)}" />
+  <meta property="og:description" content="${escapeHtml(description)}" />
+  <meta property="og:image" content="${escapeHtml(imageUrl)}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="627" />
+  <meta property="og:url" content="${escapeHtml(postUrl)}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis" />
+  ${publishedAt ? `<meta property="article:published_time" content="${escapeHtml(publishedAt)}" />` : ''}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${escapeHtml(title)}" />
+  <meta name="twitter:description" content="${escapeHtml(description)}" />
+  <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
+  <link rel="canonical" href="${escapeHtml(postUrl)}" />
+</head>
+<body>
+  <h1>${escapeHtml(title)}</h1>
+  <p>${escapeHtml(description)}</p>
+  <p><a href="${escapeHtml(postUrl)}">Leia o post completo</a></p>
+</body>
+</html>`;
+
+      return new Response(html, {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'public, max-age=3600',
+        },
+      });
+    }
+
     return jsonResponse({ error: 'Not found' }, 404)
   } catch (err) {
     console.error('Blog API unhandled error:', err)
