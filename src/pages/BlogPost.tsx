@@ -91,7 +91,7 @@ const BlogPost = () => {
   const date = isDbPost ? (dbPost!.published_at ? new Date(dbPost!.published_at) : new Date()) : staticPost!.date;
 
   // SEO / Open Graph
-  const siteUrl = "https://lalu-home-showcase.lovable.app";
+  const siteUrl = "https://laluadm.com";
   const postUrl = `${siteUrl}/blog/${slug}`;
   const ogDescription = isDbPost ? dbPost!.meta_description || "" : "";
   const ogImage = isDbPost ? dbPost!.image_url || "" : "";
