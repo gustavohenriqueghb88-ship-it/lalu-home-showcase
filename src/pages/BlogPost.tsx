@@ -92,6 +92,8 @@ const BlogPost = () => {
   const postUrl = `${siteUrl}/blog/${slug}`;
   const ogDescription = isDbPost ? (dbPost!.meta_description || '') : '';
   const ogImage = isDbPost ? (dbPost!.image_url || '') : '';
+  const publishedIso = isDbPost && dbPost!.published_at ? new Date(dbPost!.published_at).toISOString() : '';
+  const ogShareUrl = `https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/og-image?slug=${slug}`;
 
   // Static post navigation
   const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
