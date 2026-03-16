@@ -5,6 +5,26 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+const crawlerPatterns = [
+  'linkedinbot', 'facebookexternalhit', 'facebookcatalog', 'twitterbot',
+  'slackbot', 'whatsapp', 'telegrambot', 'googlebot', 'bingbot',
+  'discordbot', 'pinterestbot', 'applebot', 'redditbot',
+];
+
+function isCrawler(userAgent: string): boolean {
+  const ua = userAgent.toLowerCase();
+  return crawlerPatterns.some((p) => ua.includes(p));
+}
+
 function jsonResponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
