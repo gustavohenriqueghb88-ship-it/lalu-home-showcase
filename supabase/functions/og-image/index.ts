@@ -92,6 +92,7 @@ Deno.serve(async (req) => {
   const title = post.title || "Lalu Blog";
   const description = post.meta_description || "";
   const imageUrl = post.image_url || "";
+  const publishedAt = post.published_at ? new Date(post.published_at).toISOString() : "";
 
   const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -106,7 +107,8 @@ Deno.serve(async (req) => {
   <meta property="og:image:height" content="627" />
   <meta property="og:url" content="${escapeHtml(postUrl)}" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Lalu Incorporadora" />
+  <meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis" />
+  ${publishedAt ? `<meta property="article:published_time" content="${escapeHtml(publishedAt)}" />` : ""}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapeHtml(title)}" />
   <meta name="twitter:description" content="${escapeHtml(description)}" />

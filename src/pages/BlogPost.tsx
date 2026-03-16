@@ -92,6 +92,8 @@ const BlogPost = () => {
   const postUrl = `${siteUrl}/blog/${slug}`;
   const ogDescription = isDbPost ? (dbPost!.meta_description || '') : '';
   const ogImage = isDbPost ? (dbPost!.image_url || '') : '';
+  const publishedIso = isDbPost && dbPost!.published_at ? new Date(dbPost!.published_at).toISOString() : '';
+  const ogShareUrl = `https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/blog-api/og/${slug}`;
 
   // Static post navigation
   const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
@@ -122,7 +124,8 @@ const BlogPost = () => {
         <meta property="og:image:height" content="627" />
         <meta property="og:url" content={postUrl} />
         <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="Lalu Incorporadora" />
+        <meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis" />
+        {publishedIso && <meta property="article:published_time" content={publishedIso} />}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={ogDescription} />
@@ -245,7 +248,7 @@ const BlogPost = () => {
               <Share2 size={16} /> Compartilhar:
             </span>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogShareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
@@ -253,7 +256,7 @@ const BlogPost = () => {
               <Facebook size={16} />
             </a>
             <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(ogShareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
