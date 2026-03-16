@@ -28,8 +28,8 @@ function isValidSlug(slug: string): boolean {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS" || req.method === "HEAD") {
+    return new Response(null, { status: 200, headers: corsHeaders });
   }
 
   const url = new URL(req.url);
