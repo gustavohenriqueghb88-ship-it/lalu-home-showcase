@@ -93,7 +93,8 @@ const BlogPost = () => {
   const ogDescription = isDbPost ? (dbPost!.meta_description || '') : '';
   const ogImage = isDbPost ? (dbPost!.image_url || '') : '';
   const publishedIso = isDbPost && dbPost!.published_at ? new Date(dbPost!.published_at).toISOString() : '';
-  const ogShareUrl = `https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/blog-api/og/${slug}`;
+  const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtrdHNyYWF2dnl0andydHhjZXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgzMTIyNTgsImV4cCI6MjA4Mzg4ODI1OH0.N1dzdkpFKaiga5ekGyyHTsFa66vvdtSR8pndEASA4go';
+  const ogShareUrl = `https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/blog-api/og/${slug}?apikey=${anonKey}`;
 
   // Static post navigation
   const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
