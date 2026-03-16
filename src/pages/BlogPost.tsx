@@ -1,17 +1,22 @@
-import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { Helmet } from 'react-helmet-async';
-import DOMPurify from 'dompurify';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { useParams, Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
+import DOMPurify from "dompurify";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
-  Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage,
-} from '@/components/ui/breadcrumb';
-import { ArrowLeft, ArrowRight, Share2, Facebook, Linkedin } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { blogPosts as staticPosts, months } from '@/data/blogPosts';
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
+import { ArrowLeft, ArrowRight, Share2, Facebook, Linkedin } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { blogPosts as staticPosts, months } from "@/data/blogPosts";
 
 interface DbBlogPost {
   id: string;
@@ -30,13 +35,13 @@ const BlogPost = () => {
 
   // Try to load from DB
   const { data: dbPost, isLoading } = useQuery({
-    queryKey: ['blog-post', slug],
+    queryKey: ["blog-post", slug],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('blog_posts' as any)
-        .select('*')
-        .eq('slug', slug!)
-        .eq('published', true)
+        .from("blog_posts" as any)
+        .select("*")
+        .eq("slug", slug!)
+        .eq("published", true)
         .maybeSingle();
       if (error) throw error;
       return data as unknown as DbBlogPost | null;
@@ -82,19 +87,14 @@ const BlogPost = () => {
 
   // Derive common fields
   const title = isDbPost ? dbPost!.title : staticPost!.title;
-  const image = isDbPost ? (dbPost!.image_url || '/placeholder.svg') : staticPost!.image;
-  const date = isDbPost
-    ? (dbPost!.published_at ? new Date(dbPost!.published_at) : new Date())
-    : staticPost!.date;
+  const image = isDbPost ? dbPost!.image_url || "/placeholder.svg" : staticPost!.image;
+  const date = isDbPost ? (dbPost!.published_at ? new Date(dbPost!.published_at) : new Date()) : staticPost!.date;
 
   // SEO / Open Graph
-  const siteUrl = 'https://laluadm.com';
+  const siteUrl = "https://lalu-home-showcase.lovable.app";
   const postUrl = `${siteUrl}/blog/${slug}`;
-  const ogDescription = isDbPost ? (dbPost!.meta_description || '') : '';
-  const ogImage = isDbPost ? (dbPost!.image_url || '') : '';
-  const publishedIso = isDbPost && dbPost!.published_at ? new Date(dbPost!.published_at).toISOString() : '';
-  const edgeFunctionBase = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1`;
-  const ogShareUrl = `${edgeFunctionBase}/og-proxy/${slug}`;
+  const ogDescription = isDbPost ? dbPost!.meta_description || "" : "";
+  const ogImage = isDbPost ? dbPost!.image_url || "" : "";
 
   // Static post navigation
   const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
@@ -103,13 +103,15 @@ const BlogPost = () => {
   const renderTitle = () => {
     if (isDbPost) return <span>{title}</span>;
     const sp = staticPost!;
-    const parts = sp.title.split(new RegExp(`(${sp.highlightWord})`, 'i'));
+    const parts = sp.title.split(new RegExp(`(${sp.highlightWord})`, "i"));
     return parts.map((part, i) =>
       part.toLowerCase() === sp.highlightWord.toLowerCase() ? (
-        <span key={i} className="text-secondary">{part}</span>
+        <span key={i} className="text-secondary">
+          {part}
+        </span>
       ) : (
         <span key={i}>{part}</span>
-      )
+      ),
     );
   };
 
@@ -125,8 +127,7 @@ const BlogPost = () => {
         <meta property="og:image:height" content="627" />
         <meta property="og:url" content={postUrl} />
         <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis" />
-        {publishedIso && <meta property="article:published_time" content={publishedIso} />}
+        <meta property="og:site_name" content="Lalu Incorporadora" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={ogDescription} />
@@ -143,13 +144,17 @@ const BlogPost = () => {
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/" className="text-primary-foreground/60 hover:text-primary-foreground">Home</Link>
+                  <Link to="/" className="text-primary-foreground/60 hover:text-primary-foreground">
+                    Home
+                  </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="text-primary-foreground/40" />
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                  <Link to="/blog" className="text-primary-foreground/60 hover:text-primary-foreground">Blog</Link>
+                  <Link to="/blog" className="text-primary-foreground/60 hover:text-primary-foreground">
+                    Blog
+                  </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="text-primary-foreground/40" />
@@ -198,17 +203,32 @@ const BlogPost = () => {
           ) : (
             staticPost!.content.map((block, i) => {
               switch (block.type) {
-                case 'h2':
-                  return <h2 key={i} className="text-xl sm:text-2xl font-bold text-primary mt-10 first:mt-0">{block.text}</h2>;
-                case 'h3':
-                  return <h3 key={i} className="text-lg sm:text-xl font-semibold text-primary mt-6">{block.text}</h3>;
-                case 'p':
-                  return <p key={i} className="text-muted-foreground leading-relaxed text-sm sm:text-base">{block.text}</p>;
-                case 'list':
+                case "h2":
+                  return (
+                    <h2 key={i} className="text-xl sm:text-2xl font-bold text-primary mt-10 first:mt-0">
+                      {block.text}
+                    </h2>
+                  );
+                case "h3":
+                  return (
+                    <h3 key={i} className="text-lg sm:text-xl font-semibold text-primary mt-6">
+                      {block.text}
+                    </h3>
+                  );
+                case "p":
+                  return (
+                    <p key={i} className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+                      {block.text}
+                    </p>
+                  );
+                case "list":
                   return (
                     <ul key={i} className="space-y-2 pl-5">
                       {block.items?.map((item, j) => (
-                        <li key={j} className="text-muted-foreground text-sm sm:text-base leading-relaxed list-disc marker:text-secondary">
+                        <li
+                          key={j}
+                          className="text-muted-foreground text-sm sm:text-base leading-relaxed list-disc marker:text-secondary"
+                        >
                           {item}
                         </li>
                       ))}
@@ -230,11 +250,11 @@ const BlogPost = () => {
               Conheça nossos empreendimentos
             </h3>
             <p className="text-primary-foreground/70 mb-6 text-sm sm:text-base">
-              Descubra oportunidades únicas de investimento no litoral catarinense.
+              Descubra oportunidades únicas de investimento conosco.
             </p>
             <Link to="/empreendimentos" onClick={() => window.scrollTo(0, 0)}>
               <Button variant="secondary" size="lg" className="text-base font-semibold px-8">
-                {(isDbPost && dbPost?.cta_text) || 'Conhecer Empreendimentos'}
+                {(isDbPost && dbPost?.cta_text) || "Conhecer Empreendimentos"}
               </Button>
             </Link>
           </div>
@@ -249,7 +269,7 @@ const BlogPost = () => {
               <Share2 size={16} /> Compartilhar:
             </span>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(ogShareUrl)}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
@@ -257,7 +277,7 @@ const BlogPost = () => {
               <Facebook size={16} />
             </a>
             <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(ogShareUrl)}`}
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
@@ -276,7 +296,9 @@ const BlogPost = () => {
                     <span className="sm:hidden">Anterior</span>
                   </Button>
                 </Link>
-              ) : <div />}
+              ) : (
+                <div />
+              )}
               {nextStaticPost ? (
                 <Link to={`/blog/${nextStaticPost.slug}`} className="group">
                   <Button variant="default" className="gap-2">
@@ -285,7 +307,9 @@ const BlogPost = () => {
                     <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-              ) : <div />}
+              ) : (
+                <div />
+              )}
             </div>
           )}
 
