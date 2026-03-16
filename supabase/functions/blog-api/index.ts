@@ -217,30 +217,35 @@ Deno.serve(async (req) => {
       const imageUrl = post?.image_url || "";
       const postUrl = `${siteUrl}/blog/${slug}`;
 
-      const html = `<!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
-      <meta charset="UTF-8" />
-      <title>${escapeHtml(title)} | Lalu Blog</title>
-      <meta property="og:title" content="${escapeHtml(title)}" />
-      <meta property="og:description" content="${escapeHtml(description)}" />
-      <meta property="og:image" content="${escapeHtml(imageUrl)}" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="627" />
-      <meta property="og:url" content="${escapeHtml(postUrl)}" />
-      <meta property="og:type" content="article" />
-      <meta property="og:site_name" content="Lalu Incorporadora" />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
-    </head>
-    <body></body>
-    </html>`;
+      // Use XHTML to bypass Supabase gateway HTML sandbox (text/plain override)
+      const xhtml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>${escapeHtml(title)} | Lalu Blog</title>
+  <meta property="og:title" content="${escapeHtml(title)}" />
+  <meta property="og:description" content="${escapeHtml(description)}" />
+  <meta property="og:image" content="${escapeHtml(imageUrl)}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="627" />
+  <meta property="og:url" content="${escapeHtml(postUrl)}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Lalu Incorporadora" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
+</head>
+<body>
+  <h1>${escapeHtml(title)}</h1>
+  <p>${escapeHtml(description)}</p>
+</body>
+</html>`;
 
-      return new Response(html, {
+      return new Response(xhtml, {
         status: 200,
         headers: {
           ...corsHeaders,
-          "Content-Type": "text/html; charset=utf-8",
+          "Content-Type": "application/xhtml+xml; charset=utf-8",
           "Cache-Control": "public, max-age=3600",
         },
       });
