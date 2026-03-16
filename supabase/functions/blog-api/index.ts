@@ -43,6 +43,43 @@ function isValidSlug(slug: string): boolean {
   return /^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(slug) && slug.length <= 200
 }
 
+function buildOgFallbackHtml(slug: string) {
+  const siteUrl = 'https://lalu-home-showcase.lovable.app'
+  const postUrl = `${siteUrl}/blog/${slug}`
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lalu Blog</title>
+  <meta name="description" content="Confira este conteúdo da Lalu Blog." />
+  <meta property="og:title" content="Lalu Blog" />
+  <meta property="og:description" content="Confira este conteúdo da Lalu Blog." />
+  <meta property="og:url" content="${escapeHtml(postUrl)}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lalu Blog" />
+  <meta name="twitter:description" content="Confira este conteúdo da Lalu Blog." />
+  <link rel="canonical" href="${escapeHtml(postUrl)}" />
+</head>
+<body>
+  <h1>Lalu Blog</h1>
+  <p>Confira este conteúdo da Lalu Blog.</p>
+  <p><a href="${escapeHtml(postUrl)}">Abrir artigo</a></p>
+</body>
+</html>`
+}
+
+function htmlResponse(html: string, status = 200) {
+  const headers = new Headers()
+  headers.set('Access-Control-Allow-Origin', '*')
+  headers.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type')
+  headers.set('Content-Type', 'text/html; charset=utf-8')
+  headers.set('Cache-Control', 'public, max-age=3600')
+  return new Response(html, { status, headers })
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -226,45 +263,52 @@ Deno.serve(async (req) => {
 
     // GET /blog-api/og/:slug — Serve OG meta tags for crawlers
     if (resource === 'og' && req.method === 'GET' && slug) {
-      const siteUrl = 'https://lalu-home-showcase.lovable.app';
-      const userAgent = req.headers.get('user-agent') || '';
+      const siteUrl = 'https://lalu-home-showcase.lovable.app'
+      const userAgent = req.headers.get('user-agent') || ''
 
-      // If not a crawler, redirect to SPA
       if (!isCrawler(userAgent)) {
         return new Response(null, {
           status: 302,
           headers: { ...corsHeaders, Location: `${siteUrl}/blog/${slug}` },
-        });
+        })
       }
 
       if (!isValidSlug(slug)) {
-        return new Response(null, {
-          status: 302,
-          headers: { ...corsHeaders, Location: `${siteUrl}/blog` },
-        });
+        console.error('OG route invalid slug:', { slug, userAgent })
+        return htmlResponse(buildOgFallbackHtml(slug), 200)
       }
 
-      const { data: post, error: ogError } = await supabaseAdmin
-        .from('blog_posts')
-        .select('title, meta_description, image_url, slug, published_at')
-        .eq('slug', slug)
-        .eq('published', true)
-        .maybeSingle();
+      try {
+        const { data: post, error: ogError } = await supabaseAdmin
+          .from('blog_posts')
+          .select('title, meta_description, image_url, slug, published_at')
+          .eq('slug', slug)
+          .eq('published', true)
+          .maybeSingle()
 
-      if (ogError || !post) {
-        return new Response(null, {
-          status: 302,
-          headers: { ...corsHeaders, Location: `${siteUrl}/blog/${slug}` },
-        });
-      }
+        if (ogError) {
+          console.error('OG route database error:', {
+            slug,
+            message: ogError.message,
+            details: ogError.details,
+            hint: ogError.hint,
+            code: ogError.code,
+          })
+          return htmlResponse(buildOgFallbackHtml(slug), 200)
+        }
 
-      const postUrl = `${siteUrl}/blog/${post.slug}`;
-      const title = post.title || 'Lalu Blog';
-      const description = post.meta_description || '';
-      const imageUrl = post.image_url || '';
-      const publishedAt = post.published_at ? new Date(post.published_at).toISOString() : '';
+        if (!post) {
+          console.error('OG route post not found:', { slug })
+          return htmlResponse(buildOgFallbackHtml(slug), 200)
+        }
 
-      const html = `<!DOCTYPE html>
+        const postUrl = `${siteUrl}/blog/${post.slug}`
+        const title = post.title || 'Lalu Blog'
+        const description = post.meta_description || ''
+        const imageUrl = post.image_url || ''
+        const publishedAt = post.published_at ? new Date(post.published_at).toISOString() : ''
+
+        const html = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -290,20 +334,25 @@ Deno.serve(async (req) => {
   <p>${escapeHtml(description)}</p>
   <p><a href="${escapeHtml(postUrl)}">Leia o post completo</a></p>
 </body>
-</html>`;
+</html>`
 
-      const htmlHeaders = new Headers();
-      htmlHeaders.set('Access-Control-Allow-Origin', '*');
-      htmlHeaders.set('Access-Control-Allow-Headers', 'authorization, x-client-info, apikey, content-type');
-      htmlHeaders.set('Content-Type', 'text/html; charset=utf-8');
-      htmlHeaders.set('Cache-Control', 'public, max-age=3600');
-
-      return new Response(html, { status: 200, headers: htmlHeaders });
+        return htmlResponse(html, 200)
+      } catch (ogRouteError) {
+        console.error('OG route unexpected error:', {
+          slug,
+          error: ogRouteError instanceof Error ? ogRouteError.message : String(ogRouteError),
+          stack: ogRouteError instanceof Error ? ogRouteError.stack : undefined,
+        })
+        return htmlResponse(buildOgFallbackHtml(slug), 200)
+      }
     }
 
     return jsonResponse({ error: 'Not found' }, 404)
   } catch (err) {
     console.error('Blog API unhandled error:', err)
+    if (resource === 'og' && req.method === 'GET' && slug) {
+      return htmlResponse(buildOgFallbackHtml(slug), 200)
+    }
     return jsonResponse({ error: 'Internal server error' }, 500)
   }
 })
