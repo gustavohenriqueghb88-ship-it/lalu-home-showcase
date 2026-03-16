@@ -269,7 +269,7 @@ const BlogPost = () => {
               <Share2 size={16} /> Compartilhar:
             </span>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://laluadm.com/blog/${slug}`)}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/og-proxy/${slug}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
@@ -277,7 +277,7 @@ const BlogPost = () => {
               <Facebook size={16} />
             </a>
             <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://laluadm.com/blog/${slug}`)}`}
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/og-proxy/${slug}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"
