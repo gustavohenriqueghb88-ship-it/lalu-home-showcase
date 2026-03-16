@@ -94,7 +94,7 @@ const BlogPost = () => {
   const ogImage = isDbPost ? (dbPost!.image_url || '') : '';
   const publishedIso = isDbPost && dbPost!.published_at ? new Date(dbPost!.published_at).toISOString() : '';
   const edgeFunctionBase = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1`;
-  const ogShareUrl = `${edgeFunctionBase}/blog-api/og/${slug}`;
+  const ogShareUrl = `${edgeFunctionBase}/og-proxy/${slug}`;
 
   // Static post navigation
   const prevStaticPost = !isDbPost && staticIndex > 0 ? staticPosts[staticIndex - 1] : null;
