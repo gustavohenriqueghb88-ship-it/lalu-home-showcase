@@ -30,6 +30,7 @@ interface DbBlogPost {
   image_url: string | null;
   published_at: string | null;
   cta_text: string | null;
+  views: number;
 }
 
 const BlogPost = () => {
