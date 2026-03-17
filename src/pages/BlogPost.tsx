@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
@@ -14,7 +15,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ArrowRight, Share2, Facebook } from "lucide-react";
+import { ArrowLeft, ArrowRight, Share2, Facebook, Eye } from "lucide-react";
 import LinkedInShareButton from "@/components/LinkedInShareButton";
 import { supabase } from "@/integrations/supabase/client";
 import { blogPosts as staticPosts, months } from "@/data/blogPosts";
@@ -29,6 +30,7 @@ interface DbBlogPost {
   image_url: string | null;
   published_at: string | null;
   cta_text: string | null;
+  views: number;
 }
 
 const BlogPost = () => {
@@ -56,6 +58,13 @@ const BlogPost = () => {
 
   const isDbPost = !!dbPost;
   const post = dbPost || staticPost;
+
+  // Increment views once on mount for DB posts
+  useEffect(() => {
+    if (slug && isDbPost) {
+      supabase.rpc('increment_blog_views', { post_slug: slug } as any);
+    }
+  }, [slug, isDbPost]);
 
   if (isLoading) {
     return (
@@ -170,9 +179,17 @@ const BlogPost = () => {
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 max-w-4xl mx-auto leading-tight">
             {renderTitle()}
           </h1>
-          <p className="text-primary-foreground/70 text-sm sm:text-base">
-            {date.getDate()} de {months[date.getMonth()]} de {date.getFullYear()}
-          </p>
+          <div className="flex items-center justify-center gap-4 text-primary-foreground/70 text-sm sm:text-base">
+            <span>
+              {date.getDate()} de {months[date.getMonth()]} de {date.getFullYear()}
+            </span>
+            {isDbPost && (
+              <span className="flex items-center gap-1.5">
+                <Eye size={16} />
+                {(dbPost!.views + 1).toLocaleString('pt-BR')}
+              </span>
+            )}
+          </div>
         </div>
       </section>
 

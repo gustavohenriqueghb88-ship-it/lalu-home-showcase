@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Eye } from 'lucide-react';
 import {
   Pagination,
   PaginationContent,
@@ -24,6 +25,7 @@ interface DbBlogPost {
   meta_description: string | null;
   image_url: string | null;
   published_at: string | null;
+  views: number;
 }
 
 const Blog = () => {
@@ -34,7 +36,7 @@ const Blog = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blog_posts' as any)
-        .select('title, slug, meta_description, image_url, published_at')
+        .select('title, slug, meta_description, image_url, published_at, views')
         .eq('published', true)
         .order('published_at', { ascending: false });
       if (error) throw error;
@@ -51,6 +53,7 @@ const Blog = () => {
       description: p.meta_description || '',
       image: p.image_url || '/placeholder.svg',
       date: p.published_at ? new Date(p.published_at) : new Date(),
+      views: p.views,
       isDb: true as const,
     })),
     ...staticPosts
@@ -61,6 +64,7 @@ const Blog = () => {
         description: p.description,
         image: p.image,
         date: p.date,
+        views: 0,
         isDb: false as const,
       })),
   ];
@@ -116,12 +120,20 @@ const Blog = () => {
                     <h2 className="text-lg sm:text-xl font-bold text-foreground mb-2 line-clamp-2">
                       {post.title}
                     </h2>
-                    <p className="text-muted-foreground text-sm sm:text-base mb-4 line-clamp-3">
-                      {post.description}
-                    </p>
-                    <span className="text-secondary font-semibold text-sm hover:underline transition-smooth">
-                      Leia mais →
-                    </span>
+                     <p className="text-muted-foreground text-sm sm:text-base mb-4 line-clamp-3">
+                       {post.description}
+                     </p>
+                     <div className="flex items-center justify-between">
+                       <span className="text-secondary font-semibold text-sm hover:underline transition-smooth">
+                         Leia mais →
+                       </span>
+                       {post.isDb && post.views > 0 && (
+                         <span className="flex items-center gap-1 text-muted-foreground text-xs">
+                           <Eye size={14} />
+                           {post.views.toLocaleString('pt-BR')}
+                         </span>
+                       )}
+                     </div>
                   </CardContent>
                 </Card>
               </Link>
