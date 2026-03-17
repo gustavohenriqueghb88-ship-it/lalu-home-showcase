@@ -1,67 +1,35 @@
 
 
-## Plano: Ocultar a Aba Portfólio do Site
+## Plan: Add View Counter to Blog Posts
 
-### O que será feito
+### 1. Database Migration
+Add `views` column to `blog_posts` table and create an RPC function for atomic increment (avoids race conditions and works with anon role without needing UPDATE RLS):
 
-Remover o link "Portfólio" de todos os menus de navegação do site, mantendo a rota funcional caso seja necessário acessá-la diretamente via URL.
+```sql
+ALTER TABLE blog_posts ADD COLUMN views integer NOT NULL DEFAULT 0;
 
-### Arquivos a serem alterados
-
-#### 1. `src/components/Header.tsx`
-Remover o item "Portfólio" do array de navegação:
-
-**Antes:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
+CREATE OR REPLACE FUNCTION increment_blog_views(post_slug text)
+RETURNS void
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  UPDATE blog_posts SET views = views + 1 WHERE slug = post_slug AND published = true;
+$$;
 ```
 
-**Depois:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
-```
+### 2. Update `BlogPost.tsx`
+- Add `views` to the `DbBlogPost` interface
+- Add `useEffect` that calls `supabase.rpc('increment_blog_views', { post_slug: slug })` once on mount (only for DB posts)
+- Display Eye icon + view count next to the date in the hero section
 
-#### 2. `src/components/Footer.tsx`
-Remover o link "Portfólio" da lista de navegação rápida:
+### 3. Update `Blog.tsx`
+- Add `views` to the DB query select
+- Add `views` field to the merged post type
+- Display Eye icon + view count in each card's `CardContent`, next to "Leia mais"
 
-**Antes:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-**Depois:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-### Observação
-A rota `/portfolio` continuará existindo no `App.tsx`, permitindo acesso direto via URL se necessário. Se quiser remover a rota completamente, posso fazer isso também.
-
-### Resultado
-Após a implementação:
-- O menu principal (header) não mostrará mais "Portfólio"
-- O rodapé (footer) não mostrará mais o link "Portfólio"
-- A navegação ficará com 4 itens: Início, Empreendimentos, Sobre nós, Contato
+### Files changed
+- New migration — add column + RPC function
+- `src/pages/BlogPost.tsx` — increment on mount + display views
+- `src/pages/Blog.tsx` — fetch and display views
 
