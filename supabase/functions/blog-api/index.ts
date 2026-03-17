@@ -41,7 +41,7 @@ function generateOgHtml(post: { title: string; meta_description?: string | null;
 <meta charset="UTF-8"/>
 <title>${escapeHtml(title)} | Lalu Blog</title>
 <meta name="description" content="${escapeHtml(description)}"/>
-<meta http-equiv="refresh" content="0;url=${escapeHtml(postUrl)}"/>
+
 <meta property="og:title" content="${escapeHtml(title)}"/>
 <meta property="og:description" content="${escapeHtml(description)}"/>
 <meta property="og:image" content="${escapeHtml(imageUrl)}"/>
