@@ -179,9 +179,17 @@ const BlogPost = () => {
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4 max-w-4xl mx-auto leading-tight">
             {renderTitle()}
           </h1>
-          <p className="text-primary-foreground/70 text-sm sm:text-base">
-            {date.getDate()} de {months[date.getMonth()]} de {date.getFullYear()}
-          </p>
+          <div className="flex items-center justify-center gap-4 text-primary-foreground/70 text-sm sm:text-base">
+            <span>
+              {date.getDate()} de {months[date.getMonth()]} de {date.getFullYear()}
+            </span>
+            {isDbPost && (
+              <span className="flex items-center gap-1.5">
+                <Eye size={16} />
+                {(dbPost!.views + 1).toLocaleString('pt-BR')}
+              </span>
+            )}
+          </div>
         </div>
       </section>
 
