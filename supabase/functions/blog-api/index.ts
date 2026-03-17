@@ -32,7 +32,8 @@ function generateOgHtml(post: { title: string; meta_description?: string | null;
   const title = post.title || "Lalu Blog";
   const description = post.meta_description || "";
   const imageUrl = post.image_url || "";
-  const postUrl = `${siteUrl}/blog/${post.slug}`;
+  const canonicalUrl = `${siteUrl}/blog/${post.slug}`;
+  const redirectUrl = `${siteUrl}/artigo/${post.slug}`;
   const publishedAt = post.published_at ? new Date(post.published_at).toISOString() : "";
 
   return `<!DOCTYPE html>
