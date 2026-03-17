@@ -1,22 +1,67 @@
 
 
-## Diagnóstico
+## Plano: Ocultar a Aba Portfólio do Site
 
-O HTML estático no bucket `og-pages` está correto e contém todas as OG tags. Porém, ele inclui um `<meta http-equiv="refresh" content="0;url=..."/>` que faz o **crawler do LinkedIn seguir o redirect instantaneamente** para `laluadm.com/blog/{slug}`, que é uma SPA sem OG tags no HTML inicial. O LinkedIn então não consegue extrair o preview.
+### O que será feito
 
-## Solução
+Remover o link "Portfólio" de todos os menus de navegação do site, mantendo a rota funcional caso seja necessário acessá-la diretamente via URL.
 
-Remover o `<meta http-equiv="refresh">` do template HTML gerado e manter apenas o redirect via JavaScript. Crawlers (LinkedIn, Facebook) **não executam JavaScript**, então vão ler as OG tags normalmente. Usuários reais que abrirem o link serão redirecionados pelo `window.location.replace()`.
+### Arquivos a serem alterados
 
-### Alterações
+#### 1. `src/components/Header.tsx`
+Remover o item "Portfólio" do array de navegação:
 
-1. **`supabase/functions/blog-api/index.ts`** - Na função `generateOgHtml`, remover a linha:
-   ```html
-   <meta http-equiv="refresh" content="0;url=..."/>
-   ```
-   Manter o `<script>window.location.replace(...)</script>` para redirect de usuários reais.
+**Antes:**
+```typescript
+const navigation = [
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Portfólio', href: '/portfolio' },  // Remover
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
+];
+```
 
-2. **Regenerar os HTMLs existentes** - Chamar o endpoint `POST /blog-api/regenerate-og` para recriar os 3 arquivos HTML no bucket sem o meta refresh.
+**Depois:**
+```typescript
+const navigation = [
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
+];
+```
 
-3. **Deploy** da edge function `blog-api` atualizada.
+#### 2. `src/components/Footer.tsx`
+Remover o link "Portfólio" da lista de navegação rápida:
+
+**Antes:**
+```typescript
+{[
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Portfólio', href: '/portfolio' },  // Remover
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' }
+].map((link) => ...)}
+```
+
+**Depois:**
+```typescript
+{[
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' }
+].map((link) => ...)}
+```
+
+### Observação
+A rota `/portfolio` continuará existindo no `App.tsx`, permitindo acesso direto via URL se necessário. Se quiser remover a rota completamente, posso fazer isso também.
+
+### Resultado
+Após a implementação:
+- O menu principal (header) não mostrará mais "Portfólio"
+- O rodapé (footer) não mostrará mais o link "Portfólio"
+- A navegação ficará com 4 itens: Início, Empreendimentos, Sobre nós, Contato
 
