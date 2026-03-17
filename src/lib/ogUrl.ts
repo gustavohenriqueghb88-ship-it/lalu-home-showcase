@@ -1,5 +1,8 @@
-const SUPABASE_PROJECT_ID = "kktsraavvytjwrtxcexc";
-
+/**
+ * Returns the public shareable URL for a blog post.
+ * This URL is intercepted by _redirects and serves OG-rich HTML for crawlers,
+ * while redirecting human visitors to /artigo/:slug via JavaScript.
+ */
 export function getOgShareUrl(slug: string): string {
-  return `https://${SUPABASE_PROJECT_ID}.supabase.co/storage/v1/object/public/og-pages/${slug}.html`;
+  return `https://laluadm.com/blog/${slug}`;
 }
