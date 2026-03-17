@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ArrowLeft, ArrowRight, Share2, Facebook, Eye } from "lucide-react";
 import LinkedInShareButton from "@/components/LinkedInShareButton";
+import { getOgShareUrl } from "@/lib/ogUrl";
 import { supabase } from "@/integrations/supabase/client";
 import { blogPosts as staticPosts, months } from "@/data/blogPosts";
 
@@ -287,7 +288,7 @@ const BlogPost = () => {
               <Share2 size={16} /> Compartilhar:
             </span>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://laluadm.com/og/${slug}`)}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getOgShareUrl(slug!))}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"

@@ -1,5 +1,6 @@
 import { Linkedin } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getOgShareUrl } from "@/lib/ogUrl";
 
 interface LinkedInShareButtonProps {
   slug: string;
@@ -7,9 +8,8 @@ interface LinkedInShareButtonProps {
 }
 
 const LinkedInShareButton = ({ slug, className }: LinkedInShareButtonProps) => {
-  const ogUrl = `https://laluadm.com/og/${slug}`;
-
   const handleShare = () => {
+    const ogUrl = getOgShareUrl(slug);
     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(ogUrl)}`;
     window.open(shareUrl, "linkedin-share", "width=600,height=600,scrollbars=yes");
   };
