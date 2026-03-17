@@ -301,7 +301,7 @@ const BlogPost = () => {
           {!isDbPost && (
             <div className="flex justify-between items-center gap-4">
               {prevStaticPost ? (
-                <Link to={`/blog/${prevStaticPost.slug}`} className="group">
+                <Link to={`/artigo/${prevStaticPost.slug}`} className="group">
                   <Button variant="default" className="gap-2">
                     <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
                     <span className="hidden sm:inline">Post Anterior</span>
