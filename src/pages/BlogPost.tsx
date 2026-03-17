@@ -62,10 +62,9 @@ const BlogPost = () => {
 
   // Increment views once on mount for DB posts
   useEffect(() => {
-    if (slug && isDbPost) {
-      supabase.rpc('increment_blog_views', { post_slug: slug } as any);
-    }
-  }, [slug, isDbPost]);
+    if (!slug) return;
+    supabase.rpc('increment_blog_views', { post_slug: slug } as any);
+  }, [slug]);
 
   if (isLoading) {
     return (
