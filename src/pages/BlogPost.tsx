@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
@@ -61,11 +61,14 @@ const BlogPost = () => {
   const post = dbPost || staticPost;
 
   // Increment views once on mount for DB posts
+  const viewCounted = useRef(false);
   useEffect(() => {
-    if (!slug) return;
-    supabase.rpc('increment_blog_views', { post_slug: slug }).then(({ error }) => {
-      if (error) console.error('Failed to increment views:', error);
-    });
+    if (slug && !viewCounted.current) {
+      viewCounted.current = true;
+      supabase.rpc('increment_blog_views', { post_slug: slug }).then(({ error }) => {
+        if (error) console.error('Failed to increment views:', error);
+      });
+    }
   }, [slug]);
 
   if (isLoading) {
@@ -188,7 +191,7 @@ const BlogPost = () => {
             {isDbPost && (
               <span className="flex items-center gap-1.5">
                 <Eye size={16} />
-                {(dbPost!.views + 1).toLocaleString('pt-BR')}
+                {dbPost!.views.toLocaleString('pt-BR')}
               </span>
             )}
           </div>
