@@ -312,7 +312,7 @@ const BlogPost = () => {
                 <div />
               )}
               {nextStaticPost ? (
-                <Link to={`/blog/${nextStaticPost.slug}`} className="group">
+                <Link to={`/artigo/${nextStaticPost.slug}`} className="group">
                   <Button variant="default" className="gap-2">
                     <span className="hidden sm:inline">Próximo Post</span>
                     <span className="sm:hidden">Próximo</span>
