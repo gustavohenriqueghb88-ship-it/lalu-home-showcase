@@ -96,7 +96,7 @@ const Blog = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {paginatedPosts.map((post) => (
-              <Link key={post.slug} to={`/blog/${post.slug}`} className="block">
+              <Link key={post.slug} to={`/artigo/${post.slug}`} className="block">
                 <Card className="overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
                   <div className="relative">
                     <AspectRatio ratio={16 / 9}>

@@ -43,7 +43,7 @@ const App = () => (
               <Route path="/sobre" element={<About />} />
               <Route path="/contato" element={<Contact />} />
               <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/artigo/:slug" element={<BlogPost />} />
               <Route path="/rotas-do-sol" element={<RotasDoSol />} />
               
               {/* Admin Routes */}

@@ -38,7 +38,8 @@ Deno.serve(async (req) => {
   const title = post?.title || "Lalu Blog";
   const description = post?.meta_description || "";
   const imageUrl = post?.image_url || "";
-  const postUrl = `${siteUrl}/blog/${slug}`;
+  const canonicalUrl = `${siteUrl}/blog/${slug}`;
+  const redirectUrl = `${siteUrl}/artigo/${slug}`;
   const publishedAt = post?.published_at ? new Date(post.published_at).toISOString() : "";
 
   const html = `<!DOCTYPE html>
@@ -52,7 +53,7 @@ Deno.serve(async (req) => {
 <meta property="og:image" content="${escapeHtml(imageUrl)}"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="627"/>
-<meta property="og:url" content="${escapeHtml(postUrl)}"/>
+<meta property="og:url" content="${escapeHtml(canonicalUrl)}"/>
 <meta property="og:type" content="article"/>
 <meta property="og:site_name" content="Lalu - Incorporadora e Administradora de Imóveis"/>
 ${publishedAt ? `<meta property="article:published_time" content="${escapeHtml(publishedAt)}"/>` : ""}
@@ -60,12 +61,13 @@ ${publishedAt ? `<meta property="article:published_time" content="${escapeHtml(p
 <meta name="twitter:title" content="${escapeHtml(title)}"/>
 <meta name="twitter:description" content="${escapeHtml(description)}"/>
 <meta name="twitter:image" content="${escapeHtml(imageUrl)}"/>
-<link rel="canonical" href="${escapeHtml(postUrl)}"/>
+<link rel="canonical" href="${escapeHtml(canonicalUrl)}"/>
 </head>
 <body>
+<script>window.location.replace("${redirectUrl.replace(/"/g, '\\"')}");</script>
 <h1>${escapeHtml(title)}</h1>
 <p>${escapeHtml(description)}</p>
-<p><a href="${escapeHtml(postUrl)}">Leia o post completo</a></p>
+<p><a href="${escapeHtml(redirectUrl)}">Leia o post completo</a></p>
 </body>
 </html>`;
 

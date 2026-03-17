@@ -1,48 +1,67 @@
 
 
-## Plano: Mover rota do artigo para `/artigo/:slug` e usar `/blog/:slug` como proxy OG
+## Plano: Ocultar a Aba Portfólio do Site
 
-### Problema raiz
-Quando alguém cola `https://laluadm.com/blog/slug` no LinkedIn, o servidor entrega `index.html` (SPA) com as OG tags genéricas da homepage. LinkedIn não executa JavaScript, então nunca vê as tags específicas do post.
+### O que será feito
 
-### Estratégia
-- `/blog/:slug` passa a ser interceptado pelo hosting via `_redirects`, servindo HTML estático com OG tags corretas
-- A página React do artigo muda para `/artigo/:slug`
-- Humanos que acessam `/blog/:slug` são redirecionados pelo JS no HTML estático para `/artigo/:slug`
-- Crawlers leem as OG tags e geram preview correto
+Remover o link "Portfólio" de todos os menus de navegação do site, mantendo a rota funcional caso seja necessário acessá-la diretamente via URL.
 
-### Alterações
+### Arquivos a serem alterados
 
-**1. `public/_redirects`** — Adicionar proxy para `/blog/:slug`:
+#### 1. `src/components/Header.tsx`
+Remover o item "Portfólio" do array de navegação:
+
+**Antes:**
+```typescript
+const navigation = [
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Portfólio', href: '/portfolio' },  // Remover
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
+];
 ```
-/blog/:slug  https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/og-proxy/:slug  200
+
+**Depois:**
+```typescript
+const navigation = [
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
+];
 ```
-A regra existente `/og/:slug` pode ser removida.
 
-**2. `src/App.tsx`** — Mudar rota:
-- `/blog/:slug` → `/artigo/:slug`
+#### 2. `src/components/Footer.tsx`
+Remover o link "Portfólio" da lista de navegação rápida:
 
-**3. `supabase/functions/og-proxy/index.ts`** — Atualizar redirect:
-- `postUrl` passa a ser `${siteUrl}/artigo/${slug}` (para onde o JS redireciona humanos)
-- Manter `og:url` e `canonical` como `${siteUrl}/blog/${slug}` (URL pública de compartilhamento)
+**Antes:**
+```typescript
+{[
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Portfólio', href: '/portfolio' },  // Remover
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' }
+].map((link) => ...)}
+```
 
-**4. `supabase/functions/blog-api/index.ts`** — Mesma mudança no `generateOgHtml`:
-- JS redirect → `/artigo/:slug`
-- `og:url` e `canonical` → `/blog/:slug`
+**Depois:**
+```typescript
+{[
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' }
+].map((link) => ...)}
+```
 
-**5. `src/pages/Blog.tsx`** — Links dos cards:
-- `to={/blog/${post.slug}}` → `to={/artigo/${post.slug}}`
-
-**6. `src/pages/BlogPost.tsx`**:
-- Atualizar `canonical` para `/blog/${slug}` (URL pública)
-- Atualizar links de navegação e share para refletir a nova estrutura
-
-**7. Regenerar OG HTMLs** — Chamar `POST /blog-api/regenerate-og` para atualizar os arquivos no bucket com o novo template.
-
-**8. Links internos** — Buscar e atualizar qualquer referência a `/blog/` que aponte para posts individuais (CTA, footer, etc).
+### Observação
+A rota `/portfolio` continuará existindo no `App.tsx`, permitindo acesso direto via URL se necessário. Se quiser remover a rota completamente, posso fazer isso também.
 
 ### Resultado
-- LinkedIn/Facebook: crawlam `/blog/:slug` → recebem HTML com OG tags corretas → preview funciona
-- Usuário humano: acessa `/blog/:slug` → recebe HTML → JS redireciona para `/artigo/:slug` → SPA carrega o artigo
-- Botões de share: continuam compartilhando `/blog/:slug` (ou a URL do storage como fallback)
+Após a implementação:
+- O menu principal (header) não mostrará mais "Portfólio"
+- O rodapé (footer) não mostrará mais o link "Portfólio"
+- A navegação ficará com 4 itens: Início, Empreendimentos, Sobre nós, Contato
 
