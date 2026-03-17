@@ -1,49 +1,67 @@
 
 
-## Plan: LinkedIn Share System for Blog Posts
+## Plano: Ocultar a Aba Portfólio do Site
 
-### Problem
-The current `_redirects` file proxies **all** `/blog/:slug` requests to the OG Edge Function, which breaks the SPA for normal users — they get raw OG HTML instead of the React app. Meanwhile, share buttons use inconsistent URLs.
+### O que será feito
 
-### Solution
+Remover o link "Portfólio" de todos os menus de navegação do site, mantendo a rota funcional caso seja necessário acessá-la diretamente via URL.
 
-**1. Fix `_redirects` — proxy `/og/:slug` instead of `/blog/:slug`**
+### Arquivos a serem alterados
 
-Change the rewrite rule so only `/og/:slug` is proxied to the Edge Function. This keeps the SPA working normally at `/blog/:slug` while providing a dedicated OG-friendly URL for crawlers.
+#### 1. `src/components/Header.tsx`
+Remover o item "Portfólio" do array de navegação:
 
+**Antes:**
+```typescript
+const navigation = [
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Portfólio', href: '/portfolio' },  // Remover
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
+];
 ```
-/og/:slug  https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/blog-api/og/:slug  200
+
+**Depois:**
+```typescript
+const navigation = [
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' },
+];
 ```
 
-**2. Create `LinkedInShareButton` component**
+#### 2. `src/components/Footer.tsx`
+Remover o link "Portfólio" da lista de navegação rápida:
 
-New file: `src/components/LinkedInShareButton.tsx`
-- Reusable button with LinkedIn brand color (`#0077B5`)
-- LinkedIn icon from lucide-react
-- Opens LinkedIn share popup via `window.open`
-- Shares the OG proxy URL: `https://laluadm.com/og/{slug}` (so LinkedIn crawler gets the OG HTML)
-- Hover effect, responsive sizing
-- Props: `slug: string`, optional `className`
+**Antes:**
+```typescript
+{[
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Portfólio', href: '/portfolio' },  // Remover
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' }
+].map((link) => ...)}
+```
 
-**3. Update `BlogPost.tsx`**
+**Depois:**
+```typescript
+{[
+  { name: 'Início', href: '/' },
+  { name: 'Empreendimentos', href: '/empreendimentos' },
+  { name: 'Sobre nós', href: '/sobre' },
+  { name: 'Contato', href: '/contato' }
+].map((link) => ...)}
+```
 
-- Import and place `LinkedInShareButton` in two locations:
-  - **Top**: below the banner image, alongside existing share area
-  - **Bottom**: in the existing social share section
-- Update Facebook share link to also use `/og/:slug` URL
-- Remove hardcoded Supabase function URLs from share links — use `https://laluadm.com/og/${slug}` consistently
-- Keep existing OG meta tags via react-helmet-async (for direct URL sharing)
+### Observação
+A rota `/portfolio` continuará existindo no `App.tsx`, permitindo acesso direto via URL se necessário. Se quiser remover a rota completamente, posso fazer isso também.
 
-### How it works end-to-end
-
-1. User clicks LinkedIn share button → LinkedIn receives URL `https://laluadm.com/og/slug`
-2. Hosting proxies `/og/slug` → Edge Function returns HTML with correct `og:title`, `og:description`, `og:image`, `og:url`
-3. LinkedIn renders the preview with blog-specific image and title
-4. The OG HTML's canonical link points to `https://laluadm.com/blog/slug` for SEO
-5. Normal users visiting `/blog/slug` get the React SPA as expected
-
-### Files changed
-- `public/_redirects` — change path from `/blog/:slug` to `/og/:slug`
-- `src/components/LinkedInShareButton.tsx` — new component
-- `src/pages/BlogPost.tsx` — integrate new button, fix share URLs
+### Resultado
+Após a implementação:
+- O menu principal (header) não mostrará mais "Portfólio"
+- O rodapé (footer) não mostrará mais o link "Portfólio"
+- A navegação ficará com 4 itens: Início, Empreendimentos, Sobre nós, Contato
 
