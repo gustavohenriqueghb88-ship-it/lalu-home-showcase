@@ -28,6 +28,7 @@ export type Database = {
           slug: string
           title: string
           updated_at: string
+          views: number
         }
         Insert: {
           content: string
@@ -42,6 +43,7 @@ export type Database = {
           slug: string
           title: string
           updated_at?: string
+          views?: number
         }
         Update: {
           content?: string
@@ -56,6 +58,7 @@ export type Database = {
           slug?: string
           title?: string
           updated_at?: string
+          views?: number
         }
         Relationships: []
       }
@@ -215,6 +218,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_blog_views: { Args: { post_slug: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "user"
