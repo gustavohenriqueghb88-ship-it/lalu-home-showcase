@@ -53,6 +53,7 @@ const Blog = () => {
       description: p.meta_description || '',
       image: p.image_url || '/placeholder.svg',
       date: p.published_at ? new Date(p.published_at) : new Date(),
+      views: p.views,
       isDb: true as const,
     })),
     ...staticPosts
