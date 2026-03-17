@@ -41,6 +41,7 @@ function generateOgHtml(post: { title: string; meta_description?: string | null;
 <meta charset="UTF-8"/>
 <title>${escapeHtml(title)} | Lalu Blog</title>
 <meta name="description" content="${escapeHtml(description)}"/>
+<meta http-equiv="refresh" content="0;url=${escapeHtml(postUrl)}"/>
 <meta property="og:title" content="${escapeHtml(title)}"/>
 <meta property="og:description" content="${escapeHtml(description)}"/>
 <meta property="og:image" content="${escapeHtml(imageUrl)}"/>
@@ -57,6 +58,7 @@ ${publishedAt ? `<meta property="article:published_time" content="${escapeHtml(p
 <link rel="canonical" href="${escapeHtml(postUrl)}"/>
 </head>
 <body>
+<script>window.location.replace("${postUrl.replace(/"/g, '\\"')}");</script>
 <h1>${escapeHtml(title)}</h1>
 <p>${escapeHtml(description)}</p>
 <p><a href="${escapeHtml(postUrl)}">Leia o post completo</a></p>
