@@ -61,11 +61,14 @@ const BlogPost = () => {
   const post = dbPost || staticPost;
 
   // Increment views once on mount for DB posts
+  const viewCounted = useRef(false);
   useEffect(() => {
-    if (!slug) return;
-    supabase.rpc('increment_blog_views', { post_slug: slug }).then(({ error }) => {
-      if (error) console.error('Failed to increment views:', error);
-    });
+    if (slug && !viewCounted.current) {
+      viewCounted.current = true;
+      supabase.rpc('increment_blog_views', { post_slug: slug }).then(({ error }) => {
+        if (error) console.error('Failed to increment views:', error);
+      });
+    }
   }, [slug]);
 
   if (isLoading) {
