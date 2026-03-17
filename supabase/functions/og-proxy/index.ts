@@ -38,7 +38,8 @@ Deno.serve(async (req) => {
   const title = post?.title || "Lalu Blog";
   const description = post?.meta_description || "";
   const imageUrl = post?.image_url || "";
-  const postUrl = `${siteUrl}/blog/${slug}`;
+  const canonicalUrl = `${siteUrl}/blog/${slug}`;
+  const redirectUrl = `${siteUrl}/artigo/${slug}`;
   const publishedAt = post?.published_at ? new Date(post.published_at).toISOString() : "";
 
   const html = `<!DOCTYPE html>
