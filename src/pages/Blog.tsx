@@ -64,6 +64,7 @@ const Blog = () => {
         description: p.description,
         image: p.image,
         date: p.date,
+        views: 0,
         isDb: false as const,
       })),
   ];
