@@ -14,7 +14,8 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
-import { ArrowLeft, ArrowRight, Share2, Facebook, Linkedin } from "lucide-react";
+import { ArrowLeft, ArrowRight, Share2, Facebook } from "lucide-react";
+import LinkedInShareButton from "@/components/LinkedInShareButton";
 import { supabase } from "@/integrations/supabase/client";
 import { blogPosts as staticPosts, months } from "@/data/blogPosts";
 
