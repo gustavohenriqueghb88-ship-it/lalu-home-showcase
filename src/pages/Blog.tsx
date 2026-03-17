@@ -25,6 +25,7 @@ interface DbBlogPost {
   meta_description: string | null;
   image_url: string | null;
   published_at: string | null;
+  views: number;
 }
 
 const Blog = () => {
