@@ -120,12 +120,20 @@ const Blog = () => {
                     <h2 className="text-lg sm:text-xl font-bold text-foreground mb-2 line-clamp-2">
                       {post.title}
                     </h2>
-                    <p className="text-muted-foreground text-sm sm:text-base mb-4 line-clamp-3">
-                      {post.description}
-                    </p>
-                    <span className="text-secondary font-semibold text-sm hover:underline transition-smooth">
-                      Leia mais →
-                    </span>
+                     <p className="text-muted-foreground text-sm sm:text-base mb-4 line-clamp-3">
+                       {post.description}
+                     </p>
+                     <div className="flex items-center justify-between">
+                       <span className="text-secondary font-semibold text-sm hover:underline transition-smooth">
+                         Leia mais →
+                       </span>
+                       {post.isDb && post.views > 0 && (
+                         <span className="flex items-center gap-1 text-muted-foreground text-xs">
+                           <Eye size={14} />
+                           {post.views.toLocaleString('pt-BR')}
+                         </span>
+                       )}
+                     </div>
                   </CardContent>
                 </Card>
               </Link>
