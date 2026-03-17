@@ -1,1 +1,1 @@
-/og/:slug  https://kktsraavvytjwrtxcexc.supabase.co/functions/v1/blog-api/og/:slug  200
+/og/:slug  https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/og-pages/:slug.html  200
