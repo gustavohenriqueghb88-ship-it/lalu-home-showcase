@@ -117,23 +117,23 @@ const Blog = () => {
                     </div>
                   </div>
                   <CardContent className="p-5 sm:p-6">
-                    <h2 className="text-lg sm:text-xl font-bold text-foreground mb-2 line-clamp-2">
-                      {post.title}
-                    </h2>
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h2 className="text-lg sm:text-xl font-bold text-foreground line-clamp-2">
+                        {post.title}
+                      </h2>
+                      {post.isDb && (
+                        <span className="flex items-center gap-1 text-muted-foreground text-xs shrink-0 mt-1">
+                          <Eye size={14} />
+                          {post.views.toLocaleString('pt-BR')}
+                        </span>
+                      )}
+                    </div>
                      <p className="text-muted-foreground text-sm sm:text-base mb-4 line-clamp-3">
                        {post.description}
                      </p>
-                     <div className="flex items-center justify-between">
-                       <span className="text-secondary font-semibold text-sm hover:underline transition-smooth">
-                         Leia mais →
-                       </span>
-                       {post.isDb && post.views > 0 && (
-                         <span className="flex items-center gap-1 text-muted-foreground text-xs">
-                           <Eye size={14} />
-                           {post.views.toLocaleString('pt-BR')}
-                         </span>
-                       )}
-                     </div>
+                     <span className="text-secondary font-semibold text-sm hover:underline transition-smooth">
+                       Leia mais →
+                     </span>
                   </CardContent>
                 </Card>
               </Link>
