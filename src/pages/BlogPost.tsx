@@ -191,7 +191,7 @@ const BlogPost = () => {
             {isDbPost && (
               <span className="flex items-center gap-1.5">
                 <Eye size={16} />
-                {(dbPost!.views + 1).toLocaleString('pt-BR')}
+                {dbPost!.views.toLocaleString('pt-BR')}
               </span>
             )}
           </div>
