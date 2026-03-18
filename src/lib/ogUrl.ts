@@ -4,5 +4,5 @@
  * while redirecting human visitors to /artigo/:slug via JavaScript.
  */
 export function getOgShareUrl(slug: string): string {
-  return `https://laluadm.com/blog/${slug}`;
+  return `https://og.laluadm.com/${slug}`;
 }
