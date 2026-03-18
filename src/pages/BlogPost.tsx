@@ -292,7 +292,7 @@ const BlogPost = () => {
               <Share2 size={16} /> Compartilhar:
             </span>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getOgShareUrl(slug!))}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://og.laluadm.com/artigo/${slug}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-smooth"

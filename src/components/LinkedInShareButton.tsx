@@ -9,7 +9,7 @@ interface LinkedInShareButtonProps {
 
 const LinkedInShareButton = ({ slug, className }: LinkedInShareButtonProps) => {
   const handleShare = () => {
-    const ogUrl = getOgShareUrl(slug);
+    const ogUrl = `https://og.laluadm.com/artigo/${slug}`;
     const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(ogUrl)}`;
     window.open(shareUrl, "linkedin-share", "width=600,height=600,scrollbars=yes");
   };
