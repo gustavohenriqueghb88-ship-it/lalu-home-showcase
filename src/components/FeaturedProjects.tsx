@@ -18,7 +18,7 @@ const FeaturedProjects = () => {
         .eq('is_active', true)
         .eq('is_featured', true)
         .order('created_at', { ascending: true })
-        .limit(2);
+        .limit(10);
       
       if (error) throw error;
       
@@ -29,7 +29,7 @@ const FeaturedProjects = () => {
           .select('*')
           .eq('is_active', true)
           .order('created_at', { ascending: true })
-          .limit(2);
+          .limit(10);
         
         if (result.error) throw result.error;
         data = result.data;
@@ -73,7 +73,7 @@ const FeaturedProjects = () => {
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {projects?.map((project, index) => (
               <Card key={project.id} className={`group hover:shadow-elegant transition-all duration-500 bg-card border-border animate-slide-up`} style={{animationDelay: `${index * 200}ms`}}>
                 <div className="relative overflow-hidden rounded-t-lg">
