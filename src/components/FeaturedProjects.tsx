@@ -29,7 +29,7 @@ const FeaturedProjects = () => {
           .select('*')
           .eq('is_active', true)
           .order('created_at', { ascending: true })
-          .limit(2);
+          .limit(10);
         
         if (result.error) throw result.error;
         data = result.data;
