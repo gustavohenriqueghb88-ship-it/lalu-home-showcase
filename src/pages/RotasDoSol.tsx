@@ -1,4 +1,5 @@
 import { useState } from "react";
+import GoogleMap from "@/components/GoogleMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -318,6 +319,11 @@ export default function RotasDoSol() {
                   </div>
                 </div>
               </div>
+
+              <GoogleMap 
+                address="Estr. Geral Barra do Itapocu, Araquari, SC" 
+                height="200px" 
+              />
 
               <Button asChild variant="whatsapp" size="lg" className="w-full sm:w-auto">
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
