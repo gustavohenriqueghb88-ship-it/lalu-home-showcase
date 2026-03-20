@@ -320,6 +320,11 @@ export default function RotasDoSol() {
                 </div>
               </div>
 
+              <GoogleMap 
+                address="Estr. Geral Barra do Itapocu, Araquari, SC" 
+                height="200px" 
+              />
+
               <Button asChild variant="whatsapp" size="lg" className="w-full sm:w-auto">
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-2 h-4 w-4" /> Abrir WhatsApp
