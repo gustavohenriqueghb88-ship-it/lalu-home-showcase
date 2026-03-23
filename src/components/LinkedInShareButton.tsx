@@ -19,9 +19,8 @@ const LinkedInShareButton = ({ slug, className }: LinkedInShareButtonProps) => {
       onClick={handleShare}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-full",
-        "bg-[#0077B5] text-white hover:bg-[#005f8d]",
+        "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground",
         "transition-all duration-300 ease-in-out",
-        "hover:scale-105 hover:shadow-lg active:scale-95",
         "w-9 h-9 text-sm font-medium",
         className
       )}
