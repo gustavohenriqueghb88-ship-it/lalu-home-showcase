@@ -117,7 +117,7 @@ export default function GardenHouse() {
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${gardenHero})` }}
+          style={{ backgroundImage: `url(${gardenArea})` }}
         />
         <div className="absolute inset-0 bg-primary/80" />
 
