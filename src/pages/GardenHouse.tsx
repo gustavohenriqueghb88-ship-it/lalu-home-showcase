@@ -8,7 +8,8 @@ import {
   Phone, MapPin, MessageCircle, Check, ArrowRight,
   Shield, Droplets, CloudRain, Lightbulb, Wrench, Trees,
   Navigation, Waves, CreditCard, Handshake,
-  HardHat, Landmark, TrendingUp, LayoutGrid, Ruler, CalendarClock, Lock
+  HardHat, Landmark, TrendingUp, LayoutGrid, Ruler, CalendarClock, Lock,
+  Camera, Compass, MapPinned, Plane, Building2, ShoppingBag, Car, Umbrella
 } from "lucide-react";
 import { maskPhone, maskName, submitToGoogleSheets } from "@/utils/formUtils";
 import { useToast } from "@/hooks/use-toast";
