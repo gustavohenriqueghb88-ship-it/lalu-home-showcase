@@ -15,8 +15,10 @@ import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-import heroImg from "@/assets/hero-building.jpg";
-import galleryImg from "@/assets/commercial-building.jpg";
+const heroImg = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773143327985-gpz8a.jpeg";
+const galleryImg1 = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773146235478-3sim6.jpeg";
+const galleryImg2 = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773146238826-4va5g.jpeg";
+const galleryImg3 = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773146245902-vgr9l.jpeg";
 
 const infra = [
   { icon: Route, label: "Ruas Asfaltadas" },
@@ -196,7 +198,7 @@ export default function PedrasBrancas() {
 
             <div className="relative">
               <img
-                src={heroImg}
+                src={galleryImg2}
                 alt="Vista do loteamento Pedras Brancas"
                 className="w-full rounded-xl shadow-elegant object-cover aspect-[4/3]"
               />
@@ -212,10 +214,11 @@ export default function PedrasBrancas() {
       {/* Gallery */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { img: galleryImg, alt: "Vista do loteamento Pedras Brancas" },
-              { img: heroImg, alt: "Infraestrutura do loteamento Pedras Brancas" },
+              { img: galleryImg1, alt: "Vista do loteamento Pedras Brancas" },
+              { img: galleryImg2, alt: "Infraestrutura do loteamento Pedras Brancas" },
+              { img: galleryImg3, alt: "Área verde do loteamento Pedras Brancas" },
             ].map((item, i) => (
               <div key={i} className="group relative overflow-hidden rounded-xl">
                 <img
