@@ -80,6 +80,12 @@ const ProjectDetail = () => {
   const highlights = project.highlights || [];
   const details = (project.details as Record<string, string | number>) || {};
 
+  const landingPageMap: Record<string, string> = {
+    'loteamento-rotas-do-sol': '/rotas-do-sol',
+    'condominio-garden-house-residence': '/garden-house',
+    'loteamento-pedras-brancas': '/pedras-brancas',
+  };
+  const landingPageRoute = slug ? landingPageMap[slug] : undefined;
   return (
     <div className="min-h-screen">
       <Header />
@@ -129,6 +135,14 @@ const ProjectDetail = () => {
                     <MessageSquare className="w-5 h-5 mr-2" />
                     WhatsApp
                   </Button>
+                  {landingPageRoute && (
+                    <Link to={landingPageRoute}>
+                      <Button variant="outline" size="lg" className="group">
+                        Conheça Mais
+                        <ArrowLeft className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform rotate-180" />
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
