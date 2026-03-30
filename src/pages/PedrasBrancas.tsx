@@ -315,7 +315,7 @@ export default function PedrasBrancas() {
                   </div>
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Localização</p>
-                    <p className="font-semibold text-foreground">Santa Catarina</p>
+                    <p className="font-semibold text-foreground">Rodovia BR-101, Barra Velha – SC</p>
                   </div>
                 </div>
               </div>
