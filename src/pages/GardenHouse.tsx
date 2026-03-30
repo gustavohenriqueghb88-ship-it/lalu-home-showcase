@@ -8,7 +8,8 @@ import {
   Phone, MapPin, MessageCircle, Check, ArrowRight,
   Shield, Droplets, CloudRain, Lightbulb, Wrench, Trees,
   Navigation, Waves, CreditCard, Handshake,
-  HardHat, Landmark, TrendingUp, LayoutGrid, Ruler, CalendarClock, Lock
+  HardHat, Landmark, TrendingUp, LayoutGrid, Ruler, CalendarClock, Lock,
+  Camera, Compass, MapPinned, Plane, Building2, ShoppingBag, Car, Umbrella
 } from "lucide-react";
 import { maskPhone, maskName, submitToGoogleSheets } from "@/utils/formUtils";
 import { useToast } from "@/hooks/use-toast";
@@ -16,20 +17,26 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 import gardenHero from "@/assets/garden-house-hero.png";
-import garden2 from "@/assets/garden-house-2.jpg";
+import gardenArea from "@/assets/garden-house-area.png";
 import garden3 from "@/assets/garden-house-3.jpg";
 
 const infra = [
   { icon: Shield, label: "Condomínio Fechado" },
-  { icon: Droplets, label: "Rede de Água" },
-  { icon: CloudRain, label: "Galeria Pluvial" },
-  { icon: Lightbulb, label: "Iluminação Pública" },
-  { icon: Wrench, label: "Rede de Esgoto" },
-  { icon: Trees, label: "Área Verde" },
-  { icon: Navigation, label: "Perto da Praia" },
-  { icon: Waves, label: "Próximo à Lagoa" },
-  { icon: CreditCard, label: "Condições Especiais" },
-  { icon: Handshake, label: "Entrada Facilitada" },
+  { icon: Lock, label: "Portal com Segurança 24h" },
+  { icon: Building2, label: "Muros com 2,30m de Altura" },
+  { icon: Camera, label: "Monitoramento por Câmeras" },
+  { icon: Compass, label: "Projeto de Alto Padrão" },
+  { icon: MapPinned, label: "Localização Privilegiada" },
+  { icon: Navigation, label: "Entre Joinville e Baln. Camboriú" },
+  { icon: Plane, label: "Próximo a 2 Aeroportos" },
+  { icon: Landmark, label: "No Centro da Cidade" },
+  { icon: ShoppingBag, label: "Perto de Centros Comerciais" },
+  { icon: Wrench, label: "Infraestrutura Completa" },
+  { icon: Lightbulb, label: "Ruas Padronizadas" },
+  { icon: Umbrella, label: "A 3 min da Praia" },
+  { icon: Waves, label: "A 600m da Lagoa" },
+  { icon: TrendingUp, label: "Local de Alta Valorização" },
+  { icon: Car, label: "Fácil Acesso" },
 ];
 
 const differentials = [
@@ -110,7 +117,7 @@ export default function GardenHouse() {
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${gardenHero})` }}
+          style={{ backgroundImage: `url(${gardenArea})` }}
         />
         <div className="absolute inset-0 bg-primary/80" />
 
@@ -197,7 +204,7 @@ export default function GardenHouse() {
 
             <div className="relative">
               <img
-                src={garden2}
+                src={gardenHero}
                 alt="Vista do condomínio Garden House Residence"
                 className="w-full rounded-xl shadow-elegant object-cover aspect-[4/3]"
               />
@@ -243,7 +250,7 @@ export default function GardenHouse() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {infra.map((item, i) => {
               const Icon = item.icon;
               return (
