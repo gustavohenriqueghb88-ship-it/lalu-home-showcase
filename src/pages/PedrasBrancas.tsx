@@ -15,8 +15,10 @@ import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-import heroImg from "@/assets/hero-building.jpg";
-import galleryImg from "@/assets/commercial-building.jpg";
+const heroImg = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773143327985-gpz8a.jpeg";
+const galleryImg1 = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773146235478-3sim6.jpeg";
+const galleryImg2 = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773146238826-4va5g.jpeg";
+const galleryImg3 = "https://kktsraavvytjwrtxcexc.supabase.co/storage/v1/object/public/property-images/projects/1773146245902-vgr9l.jpeg";
 
 const infra = [
   { icon: Route, label: "Ruas Asfaltadas" },
