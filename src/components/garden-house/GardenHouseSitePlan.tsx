@@ -1,11 +1,14 @@
 import { ArrowRight } from "lucide-react";
 import gardenArea from "@/assets/garden-house-area.png";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function GardenHouseSitePlan() {
+  const [ref, visible] = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="py-24 md:py-32 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-14">
+      <div ref={ref} className="container mx-auto px-4">
+        <div className={`text-center mb-14 transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">
             Planta
           </span>
@@ -18,7 +21,7 @@ export default function GardenHouseSitePlan() {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          <div className="rounded-2xl overflow-hidden shadow-2xl border border-[#1B3A2D]/10">
+          <div className={`rounded-2xl overflow-hidden shadow-2xl border border-[#1B3A2D]/10 transition-all duration-700 ease-out delay-200 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
             <img
               src={gardenArea}
               alt="Planta do Garden House Residence"
@@ -26,7 +29,7 @@ export default function GardenHouseSitePlan() {
             />
           </div>
 
-          <div className="text-center mt-10">
+          <div className={`text-center mt-10 transition-all duration-700 ease-out delay-400 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <a
               href="#contact"
               className="inline-flex items-center gap-2 bg-[#C8922A] hover:bg-[#b07e22] text-[#1B3A2D] font-bold px-8 py-3 rounded-full text-sm uppercase tracking-wider transition-colors font-['DM_Sans']"

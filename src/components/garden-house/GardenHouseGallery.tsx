@@ -4,6 +4,7 @@ import gardenAerialCity from "@/assets/garden-house-aerial-city.png";
 import gardenAerialBack from "@/assets/garden-house-aerial-back.png";
 import gardenCoast from "@/assets/garden-house-coast.png";
 import gardenBridge from "@/assets/garden-house-bridge.png";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const images = [
   { img: gardenAerialCity, alt: "Vista aérea do Garden House com a cidade e o mar" },
@@ -15,10 +16,12 @@ const images = [
 ];
 
 export default function GardenHouseGallery() {
+  const [ref, visible] = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="py-20 bg-[#f7f5f0]">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-14">
+      <div ref={ref} className="container mx-auto px-4">
+        <div className={`text-center mb-14 transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">
             Galeria
           </span>
@@ -28,7 +31,7 @@ export default function GardenHouseGallery() {
         </div>
 
         {/* Video */}
-        <div className="max-w-4xl mx-auto mb-10">
+        <div className={`max-w-4xl mx-auto mb-10 transition-all duration-700 ease-out delay-150 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: "56.25%" }}>
             <iframe
               src="https://www.youtube.com/embed/4oy_-3ybHF8"
@@ -42,7 +45,11 @@ export default function GardenHouseGallery() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {images.map((item, i) => (
-            <div key={i} className="group relative overflow-hidden rounded-xl">
+            <div
+              key={i}
+              className={`group relative overflow-hidden rounded-xl transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              style={{ transitionDelay: `${200 + i * 100}ms` }}
+            >
               <img
                 src={item.img}
                 alt={item.alt}
@@ -53,7 +60,7 @@ export default function GardenHouseGallery() {
           ))}
         </div>
 
-        <div className="text-center mt-10">
+        <div className={`text-center mt-10 transition-all duration-700 ease-out delay-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <a
             href="#contact"
             className="inline-flex items-center gap-2 bg-[#C8922A] hover:bg-[#b07e22] text-[#1B3A2D] font-bold px-8 py-3 rounded-full text-sm uppercase tracking-wider transition-colors font-['DM_Sans']"

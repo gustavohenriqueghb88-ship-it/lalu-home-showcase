@@ -1,12 +1,19 @@
 import { Check, Shield } from "lucide-react";
 import gardenHero from "@/assets/garden-house-hero.png";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function GardenHouseAbout() {
+  const [refLeft, leftVisible] = useScrollReveal<HTMLDivElement>();
+  const [refRight, rightVisible] = useScrollReveal<HTMLDivElement>();
+
   return (
     <section id="about" className="py-24 md:py-32 bg-white">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-          <div className="animate-fade-in">
+          <div
+            ref={refLeft}
+            className={`transition-all duration-700 ease-out ${leftVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}
+          >
             <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">
               Empreendimento
             </span>
@@ -29,7 +36,10 @@ export default function GardenHouseAbout() {
             </div>
           </div>
 
-          <div className="relative">
+          <div
+            ref={refRight}
+            className={`relative transition-all duration-700 ease-out delay-200 ${rightVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}
+          >
             <img
               src={gardenHero}
               alt="Vista do condomínio Garden House Residence"

@@ -3,6 +3,7 @@ import {
   Navigation, Plane, Landmark, ShoppingBag, Wrench,
   Lightbulb, Umbrella, Waves, TrendingUp, Car
 } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const infra = [
   { icon: Shield, label: "Condomínio Fechado" },
@@ -24,10 +25,12 @@ const infra = [
 ];
 
 export default function GardenHouseInfra() {
+  const [ref, visible] = useScrollReveal<HTMLDivElement>();
+
   return (
     <section id="infra" className="py-24 md:py-32 bg-[#f2f0eb]">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+      <div ref={ref} className="container mx-auto px-4">
+        <div className={`text-center mb-16 transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">
             Estrutura
           </span>
@@ -45,7 +48,8 @@ export default function GardenHouseInfra() {
             return (
               <div
                 key={i}
-                className="group bg-white border border-[#1B3A2D]/8 rounded-xl hover:border-[#C8922A]/40 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                className={`group bg-white border border-[#1B3A2D]/8 rounded-xl hover:border-[#C8922A]/40 hover:shadow-lg transition-all duration-500 ease-out hover:-translate-y-1 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                style={{ transitionDelay: `${100 + i * 60}ms` }}
               >
                 <div className="flex flex-col items-center justify-center py-7 px-4 text-center gap-3">
                   <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#C8922A]/10">

@@ -3,6 +3,7 @@ import GoogleMap from "@/components/GoogleMap";
 import gardenSunset from "@/assets/garden-house-sunset.png";
 import gardenBarraVelha from "@/assets/garden-house-barra-velha.png";
 import gardenCoast from "@/assets/garden-house-coast.png";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const proximities = [
   { icon: Waves, text: "A 3 minutos da praia" },
@@ -19,10 +20,13 @@ const regionImages = [
 ];
 
 export default function GardenHouseLocation() {
+  const [ref, visible] = useScrollReveal<HTMLDivElement>();
+  const [refGallery, galleryVisible] = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="py-24 md:py-32 bg-[#f7f5f0]">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-14">
+        <div className={`text-center mb-14 transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">
             Localização
           </span>
@@ -31,12 +35,12 @@ export default function GardenHouseLocation() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 items-start max-w-5xl mx-auto mb-14">
-          <div className="rounded-2xl overflow-hidden shadow-lg">
+        <div ref={ref} className="grid md:grid-cols-2 gap-10 items-start max-w-5xl mx-auto mb-14">
+          <div className={`rounded-2xl overflow-hidden shadow-lg transition-all duration-700 ease-out ${visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}>
             <GoogleMap address="Barra Velha, SC" height="350px" />
           </div>
 
-          <div>
+          <div className={`transition-all duration-700 ease-out delay-200 ${visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}>
             <h3 className="font-['Playfair_Display'] text-2xl font-bold text-[#1B3A2D] mb-4">
               Barra Velha – SC
             </h3>
@@ -72,9 +76,13 @@ export default function GardenHouseLocation() {
         </div>
 
         {/* Region gallery */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-5xl mx-auto">
+        <div ref={refGallery} className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-5xl mx-auto">
           {regionImages.map((item, i) => (
-            <div key={i} className="group relative overflow-hidden rounded-xl">
+            <div
+              key={i}
+              className={`group relative overflow-hidden rounded-xl transition-all duration-700 ease-out ${galleryVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              style={{ transitionDelay: `${i * 150}ms` }}
+            >
               <img
                 src={item.img}
                 alt={item.alt}
