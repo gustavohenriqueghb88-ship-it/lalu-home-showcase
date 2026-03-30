@@ -93,7 +93,7 @@ export default function GardenHouseContact() {
           </div>
 
           {/* Form */}
-          <div className="bg-white rounded-2xl shadow-2xl p-7 sm:p-9">
+          <div ref={refRight} className={`bg-white rounded-2xl shadow-2xl p-7 sm:p-9 transition-all duration-700 ease-out delay-200 ${rightVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}>
             {sent ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#C8922A]/10 text-[#C8922A] mb-5">
