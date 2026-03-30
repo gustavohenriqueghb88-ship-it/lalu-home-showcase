@@ -198,7 +198,7 @@ export default function PedrasBrancas() {
 
             <div className="relative">
               <img
-                src={heroImg}
+                src={galleryImg2}
                 alt="Vista do loteamento Pedras Brancas"
                 className="w-full rounded-xl shadow-elegant object-cover aspect-[4/3]"
               />
