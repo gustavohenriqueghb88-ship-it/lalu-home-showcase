@@ -129,6 +129,14 @@ const ProjectDetail = () => {
                     <MessageSquare className="w-5 h-5 mr-2" />
                     WhatsApp
                   </Button>
+                  {landingPageRoute && (
+                    <Link to={landingPageRoute}>
+                      <Button variant="outline" size="lg" className="group">
+                        Conheça Mais
+                        <ArrowLeft className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform rotate-180" />
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
