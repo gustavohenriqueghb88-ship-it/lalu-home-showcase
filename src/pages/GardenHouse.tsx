@@ -17,7 +17,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 import gardenHero from "@/assets/garden-house-hero.png";
-import garden2 from "@/assets/garden-house-2.jpg";
+import gardenArea from "@/assets/garden-house-area.png";
 import garden3 from "@/assets/garden-house-3.jpg";
 
 const infra = [
