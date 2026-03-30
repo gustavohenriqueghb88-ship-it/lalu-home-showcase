@@ -321,7 +321,7 @@ export default function PedrasBrancas() {
               </div>
 
               <GoogleMap 
-                address="Santa Catarina, Brazil" 
+                address="Rodovia BR-101, Barra Velha, SC, Brazil" 
                 height="180px" 
               />
 
