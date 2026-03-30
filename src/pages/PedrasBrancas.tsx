@@ -132,7 +132,7 @@ export default function PedrasBrancas() {
 
           <div className="flex items-center justify-center gap-2 text-secondary mb-10">
             <MapPin className="h-5 w-5" />
-            <span className="text-sm font-medium tracking-wide">Santa Catarina</span>
+            <span className="text-sm font-medium tracking-wide">Barra Velha – SC</span>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
