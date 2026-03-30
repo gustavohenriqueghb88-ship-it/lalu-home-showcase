@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { ArrowRight } from "lucide-react";
 import implantationImg from "@/assets/garden-house-implantation.png";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -10,60 +10,81 @@ const STATUS_COLORS: Record<LotStatus, { color: string; label: string; cssColor:
   "VENDIDO": { color: "#6C757D", label: "Vendido", cssColor: "text-[#6C757D]" },
 };
 
-function LotHotspot({ lot, onSelect, isSelected }: { lot: Lot; onSelect: (lot: Lot | null) => void; isSelected: boolean }) {
+function LotHotspot({
+  lot,
+  isActive,
+  onActivate,
+  onDeactivate,
+}: {
+  lot: Lot;
+  isActive: boolean;
+  onActivate: (lot: Lot) => void;
+  onDeactivate: () => void;
+}) {
   const { color } = STATUS_COLORS[lot.status];
 
   return (
-    <button
+    <div
+      onMouseEnter={() => onActivate(lot)}
+      onMouseLeave={() => onDeactivate()}
       onClick={(e) => {
         e.stopPropagation();
-        onSelect(isSelected ? null : lot);
+        onActivate(lot);
       }}
-      className="absolute z-10 flex items-center justify-center w-5 h-5 md:w-7 md:h-7 -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
-      style={{ left: `${lot.left}%`, top: `${lot.top}%`, color }}
-      aria-label={`Lote ${lot.number}`}
+      className="absolute flex flex-col items-center cursor-pointer"
+      style={{
+        left: `${lot.left}%`,
+        top: `${lot.top}%`,
+        transform: "translate(-50%, -50%)",
+        zIndex: isActive ? 50 : 10,
+      }}
     >
-      {/* Ping ring */}
+      {/* Lot number label */}
       <span
-        className="absolute w-full h-full rounded-full border-2 opacity-75"
-        style={{
-          borderColor: color,
-          animation: "hotspot-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
-        }}
-      />
-      {/* Solid circle */}
-      <span
-        className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full shadow-md"
-        style={{ backgroundColor: color }}
-      />
+        className="text-[6px] md:text-[8px] font-bold leading-none mb-0.5 select-none font-['DM_Sans'] drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]"
+        style={{ color: "#fff" }}
+      >
+        {lot.number}
+      </span>
 
-      {/* Popover */}
-      {isSelected && (
+      {/* Hotspot dot */}
+      <div className="relative flex items-center justify-center w-4 h-4 md:w-5 md:h-5">
+        <span
+          className="absolute w-full h-full rounded-full border-2 opacity-75"
+          style={{
+            borderColor: color,
+            animation: "hotspot-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
+          }}
+        />
+        <span
+          className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full shadow-md"
+          style={{ backgroundColor: color }}
+        />
+      </div>
+
+      {/* Tooltip popover */}
+      {isActive && (
         <div
-          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 whitespace-nowrap bg-white rounded-lg shadow-xl border border-[#1B3A2D]/10 px-4 py-2.5 z-50 pointer-events-auto font-['DM_Sans']"
-          onClick={(e) => e.stopPropagation()}
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 whitespace-nowrap bg-white rounded-lg shadow-2xl border border-[#1B3A2D]/15 px-3.5 py-2 font-['DM_Sans'] pointer-events-none"
+          style={{ zIndex: 100 }}
         >
-          <div className="text-xs font-bold text-[#1B3A2D] mb-0.5">Lote {lot.number}</div>
-          <div className="text-xs text-[#1B3A2D]/70">{lot.area}m²</div>
-          <div className={`text-xs font-semibold mt-1 ${STATUS_COLORS[lot.status].cssColor}`}>
+          <div className="text-[11px] font-bold text-[#1B3A2D]">Lote {lot.number}</div>
+          <div className="text-[10px] text-[#1B3A2D]/70">{lot.area}m²</div>
+          <div className={`text-[10px] font-semibold mt-0.5 ${STATUS_COLORS[lot.status].cssColor}`}>
             {STATUS_COLORS[lot.status].label}
           </div>
-          {/* Arrow */}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-l-transparent border-r-transparent border-t-white" />
+          <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-white" />
         </div>
       )}
-    </button>
+    </div>
   );
 }
 
 export default function GardenHouseSitePlan() {
   const [ref, visible] = useScrollReveal<HTMLDivElement>();
-  const [selectedLot, setSelectedLot] = useState<Lot | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeLot, setActiveLot] = useState<Lot | null>(null);
 
-  const handleClickOutside = useCallback(() => {
-    setSelectedLot(null);
-  }, []);
+  const handleDeactivate = useCallback(() => setActiveLot(null), []);
 
   const counts = lots.reduce(
     (acc, l) => {
@@ -75,7 +96,6 @@ export default function GardenHouseSitePlan() {
 
   return (
     <section className="py-24 md:py-32 bg-white">
-      {/* Ping animation */}
       <style>{`
         @keyframes hotspot-ping {
           0% { transform: scale(1); opacity: 0.75; }
@@ -92,28 +112,28 @@ export default function GardenHouseSitePlan() {
             Mapa de Implantação
           </h2>
           <p className="text-[#1B3A2D]/60 max-w-xl mx-auto font-['DM_Sans']">
-            Clique nos lotes para ver detalhes como área e disponibilidade.
+            Passe o mouse sobre os lotes para ver detalhes como área e disponibilidade.
           </p>
         </div>
 
         <div className="max-w-5xl mx-auto">
           <div
-            ref={containerRef}
-            onClick={handleClickOutside}
-            className={`relative rounded-2xl overflow-hidden shadow-2xl border border-[#1B3A2D]/10 transition-all duration-700 ease-out delay-200 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+            onClick={() => setActiveLot(null)}
+            className={`relative rounded-2xl overflow-visible shadow-2xl border border-[#1B3A2D]/10 transition-all duration-700 ease-out delay-200 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
           >
             <img
               src={implantationImg}
               alt="Planta do Garden House Residence"
-              className="w-full block"
+              className="w-full block rounded-2xl"
               draggable={false}
             />
             {lots.map((lot) => (
               <LotHotspot
                 key={lot.number}
                 lot={lot}
-                onSelect={setSelectedLot}
-                isSelected={selectedLot?.number === lot.number}
+                isActive={activeLot?.number === lot.number}
+                onActivate={setActiveLot}
+                onDeactivate={handleDeactivate}
               />
             ))}
           </div>
