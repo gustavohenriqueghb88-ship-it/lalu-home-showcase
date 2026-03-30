@@ -16,6 +16,8 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
 import RotasDoSol from "./pages/RotasDoSol";
+import GardenHouse from "./pages/GardenHouse";
+import PedrasBrancas from "./pages/PedrasBrancas";
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ProjectsList from "./pages/admin/ProjectsList";
@@ -45,6 +47,8 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/artigo/:slug" element={<BlogPost />} />
               <Route path="/rotas-do-sol" element={<RotasDoSol />} />
+              <Route path="/garden-house" element={<GardenHouse />} />
+              <Route path="/pedras-brancas" element={<PedrasBrancas />} />
               
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
