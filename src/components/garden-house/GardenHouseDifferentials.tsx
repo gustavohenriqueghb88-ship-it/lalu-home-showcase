@@ -1,4 +1,5 @@
 import { HardHat, Landmark, TrendingUp } from "lucide-react";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const differentials = [
   {
@@ -19,9 +20,10 @@ const differentials = [
 ];
 
 export default function GardenHouseDifferentials() {
+  const [ref, visible] = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="py-24 md:py-32 bg-[#1B3A2D] relative overflow-hidden">
-      {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute inset-0"
@@ -32,8 +34,8 @@ export default function GardenHouseDifferentials() {
         />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4">
-        <div className="text-center mb-16">
+      <div ref={ref} className="relative z-10 container mx-auto px-4">
+        <div className={`text-center mb-16 transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">
             Diferenciais
           </span>
@@ -48,7 +50,8 @@ export default function GardenHouseDifferentials() {
             return (
               <div
                 key={i}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 group"
+                className={`bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-700 ease-out group ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+                style={{ transitionDelay: `${200 + i * 150}ms` }}
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#C8922A]/15 mb-6 group-hover:bg-[#C8922A]/25 transition-colors">
                   <Icon className="h-7 w-7 text-[#C8922A]" />

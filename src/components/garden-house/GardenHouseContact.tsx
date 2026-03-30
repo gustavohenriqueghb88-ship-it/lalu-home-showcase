@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { maskPhone, maskName, submitToGoogleSheets } from "@/utils/formUtils";
 import { useToast } from "@/hooks/use-toast";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const WHATSAPP_URL = "https://wa.me/5541984305403?text=Olá! Tenho interesse no Condomínio Garden House Residence.";
 
@@ -38,12 +39,15 @@ export default function GardenHouseContact() {
     }
   };
 
+  const [refLeft, leftVisible] = useScrollReveal<HTMLDivElement>();
+  const [refRight, rightVisible] = useScrollReveal<HTMLDivElement>();
+
   return (
     <section id="contact" className="py-24 md:py-32 bg-[#1B3A2D]">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start max-w-5xl mx-auto">
           {/* Left column */}
-          <div>
+          <div ref={refLeft} className={`transition-all duration-700 ease-out ${leftVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}>
             <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">
               Contato
             </span>
@@ -89,7 +93,7 @@ export default function GardenHouseContact() {
           </div>
 
           {/* Form */}
-          <div className="bg-white rounded-2xl shadow-2xl p-7 sm:p-9">
+          <div ref={refRight} className={`bg-white rounded-2xl shadow-2xl p-7 sm:p-9 transition-all duration-700 ease-out delay-200 ${rightVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}>
             {sent ? (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#C8922A]/10 text-[#C8922A] mb-5">
