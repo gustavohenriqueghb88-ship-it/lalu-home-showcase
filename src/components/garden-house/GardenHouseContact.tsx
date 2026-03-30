@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { maskPhone, maskName, submitToGoogleSheets } from "@/utils/formUtils";
 import { useToast } from "@/hooks/use-toast";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const WHATSAPP_URL = "https://wa.me/5541984305403?text=Olá! Tenho interesse no Condomínio Garden House Residence.";
 
