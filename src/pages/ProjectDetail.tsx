@@ -80,6 +80,12 @@ const ProjectDetail = () => {
   const highlights = project.highlights || [];
   const details = (project.details as Record<string, string | number>) || {};
 
+  const landingPageMap: Record<string, string> = {
+    'loteamento-rotas-do-sol': '/rotas-do-sol',
+    'condominio-garden-house-residence': '/garden-house',
+    'loteamento-pedras-brancas': '/pedras-brancas',
+  };
+  const landingPageRoute = slug ? landingPageMap[slug] : undefined;
   return (
     <div className="min-h-screen">
       <Header />
