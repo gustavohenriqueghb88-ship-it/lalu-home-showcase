@@ -216,8 +216,9 @@ export default function PedrasBrancas() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { img: galleryImg, alt: "Vista do loteamento Pedras Brancas" },
-              { img: heroImg, alt: "Infraestrutura do loteamento Pedras Brancas" },
+              { img: galleryImg1, alt: "Vista do loteamento Pedras Brancas" },
+              { img: galleryImg2, alt: "Infraestrutura do loteamento Pedras Brancas" },
+              { img: galleryImg3, alt: "Área verde do loteamento Pedras Brancas" },
             ].map((item, i) => (
               <div key={i} className="group relative overflow-hidden rounded-xl">
                 <img
