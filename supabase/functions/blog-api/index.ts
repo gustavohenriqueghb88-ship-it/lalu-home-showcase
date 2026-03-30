@@ -170,14 +170,9 @@ Deno.serve(async (req) => {
         return jsonResponse({ error: "Invalid slug format. Use lowercase letters, numbers, and hyphens only." }, 400);
       }
 
-      const { data: existing } = await supabaseAdmin.from("blog_posts").select("id").eq("slug", postSlug).maybeSingle();
-      if (existing) {
-        return jsonResponse({ error: "Slug already exists" }, 409);
-      }
-
       const { data, error } = await supabaseAdmin
         .from("blog_posts")
-        .insert({
+        .upsert({
           title: title.trim(),
           slug: postSlug,
           content,
@@ -186,13 +181,13 @@ Deno.serve(async (req) => {
           image_url: image_url || null,
           cta_text: cta_text?.trim() || null,
           published: published ?? false,
-        })
+        }, { onConflict: "slug" })
         .select("id, slug, title, meta_description, image_url, published_at")
         .single();
 
       if (error) {
-        console.error("Post creation error:", error);
-        return jsonResponse({ error: "Failed to create post. Please try again." }, 500);
+        console.error("Post upsert error:", error);
+        return jsonResponse({ error: "Failed to create/update post. Please try again." }, 500);
       }
 
       // Generate and upload OG HTML to storage
