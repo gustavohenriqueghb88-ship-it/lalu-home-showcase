@@ -22,15 +22,21 @@ import garden3 from "@/assets/garden-house-3.jpg";
 
 const infra = [
   { icon: Shield, label: "Condomínio Fechado" },
-  { icon: Droplets, label: "Rede de Água" },
-  { icon: CloudRain, label: "Galeria Pluvial" },
-  { icon: Lightbulb, label: "Iluminação Pública" },
-  { icon: Wrench, label: "Rede de Esgoto" },
-  { icon: Trees, label: "Área Verde" },
-  { icon: Navigation, label: "Perto da Praia" },
-  { icon: Waves, label: "Próximo à Lagoa" },
-  { icon: CreditCard, label: "Condições Especiais" },
-  { icon: Handshake, label: "Entrada Facilitada" },
+  { icon: Lock, label: "Portal com Segurança 24h" },
+  { icon: Building2, label: "Muros com 2,30m de Altura" },
+  { icon: Camera, label: "Monitoramento por Câmeras" },
+  { icon: Compass, label: "Projeto de Alto Padrão" },
+  { icon: MapPinned, label: "Localização Privilegiada" },
+  { icon: Navigation, label: "Entre Joinville e Baln. Camboriú" },
+  { icon: Plane, label: "Próximo a 2 Aeroportos" },
+  { icon: Landmark, label: "No Centro da Cidade" },
+  { icon: ShoppingBag, label: "Perto de Centros Comerciais" },
+  { icon: Wrench, label: "Infraestrutura Completa" },
+  { icon: Lightbulb, label: "Ruas Padronizadas" },
+  { icon: Umbrella, label: "A 3 min da Praia" },
+  { icon: Waves, label: "A 600m da Lagoa" },
+  { icon: TrendingUp, label: "Local de Alta Valorização" },
+  { icon: Car, label: "Fácil Acesso" },
 ];
 
 const differentials = [
