@@ -1,5 +1,8 @@
 import { MapPin, Navigation, Plane, Waves, Landmark, ExternalLink } from "lucide-react";
 import GoogleMap from "@/components/GoogleMap";
+import gardenSunset from "@/assets/garden-house-sunset.png";
+import gardenBarraVelha from "@/assets/garden-house-barra-velha.png";
+import gardenCoast from "@/assets/garden-house-coast.png";
 
 const proximities = [
   { icon: Waves, text: "A 3 minutos da praia" },
@@ -7,6 +10,12 @@ const proximities = [
   { icon: Navigation, text: "Entre Joinville e Balneário Camboriú" },
   { icon: Plane, text: "Próximo a 2 aeroportos" },
   { icon: Landmark, text: "No centro de Barra Velha" },
+];
+
+const regionImages = [
+  { img: gardenSunset, alt: "Pôr do sol em Barra Velha" },
+  { img: gardenBarraVelha, alt: "Vista aérea de Barra Velha" },
+  { img: gardenCoast, alt: "Litoral de Barra Velha" },
 ];
 
 export default function GardenHouseLocation() {
@@ -22,7 +31,7 @@ export default function GardenHouseLocation() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10 items-start max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-10 items-start max-w-5xl mx-auto mb-14">
           <div className="rounded-2xl overflow-hidden shadow-lg">
             <GoogleMap address="Barra Velha, SC" height="350px" />
           </div>
@@ -60,6 +69,20 @@ export default function GardenHouseLocation() {
               <ExternalLink className="h-4 w-4" /> Abrir no Google Maps
             </a>
           </div>
+        </div>
+
+        {/* Region gallery */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-5xl mx-auto">
+          {regionImages.map((item, i) => (
+            <div key={i} className="group relative overflow-hidden rounded-xl">
+              <img
+                src={item.img}
+                alt={item.alt}
+                className="w-full object-cover aspect-[4/3] group-hover:scale-[1.05] transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1B3A2D]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+          ))}
         </div>
       </div>
     </section>

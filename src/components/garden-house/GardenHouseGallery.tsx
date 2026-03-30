@@ -1,16 +1,17 @@
 import gardenHero from "@/assets/garden-house-hero.png";
 import gardenArea from "@/assets/garden-house-area.png";
-import garden1 from "@/assets/garden-house-1.jpg";
-import garden2 from "@/assets/garden-house-2.jpg";
-import garden3 from "@/assets/garden-house-3.jpg";
+import gardenAerialCity from "@/assets/garden-house-aerial-city.png";
+import gardenAerialBack from "@/assets/garden-house-aerial-back.png";
+import gardenCoast from "@/assets/garden-house-coast.png";
+import gardenBridge from "@/assets/garden-house-bridge.png";
 
 const images = [
-  { img: gardenArea, alt: "Vista aérea do Garden House Residence" },
-  { img: gardenHero, alt: "Render do Garden House Residence" },
-  { img: garden1, alt: "Infraestrutura do Garden House" },
-  { img: garden2, alt: "Área verde do Garden House" },
-  { img: garden3, alt: "Detalhes do Garden House Residence" },
+  { img: gardenAerialCity, alt: "Vista aérea do Garden House com a cidade e o mar" },
+  { img: gardenHero, alt: "Render das casas do Garden House Residence" },
+  { img: gardenAerialBack, alt: "Vista aérea posterior do Garden House" },
   { img: gardenArea, alt: "Planta do Garden House Residence" },
+  { img: gardenCoast, alt: "Litoral de Barra Velha" },
+  { img: gardenBridge, alt: "Ponte da região de Barra Velha" },
 ];
 
 export default function GardenHouseGallery() {
@@ -24,6 +25,19 @@ export default function GardenHouseGallery() {
           <h2 className="font-['Playfair_Display'] text-3xl md:text-4xl font-bold text-[#1B3A2D]">
             Conheça o Empreendimento
           </h2>
+        </div>
+
+        {/* Video */}
+        <div className="max-w-4xl mx-auto mb-10">
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: "56.25%" }}>
+            <iframe
+              src="https://www.youtube.com/embed/4oy_-3ybHF8"
+              title="Garden House Residence"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -44,7 +58,7 @@ export default function GardenHouseGallery() {
             href="#contact"
             className="inline-flex items-center gap-2 bg-[#C8922A] hover:bg-[#b07e22] text-[#1B3A2D] font-bold px-8 py-3 rounded-full text-sm uppercase tracking-wider transition-colors font-['DM_Sans']"
           >
-            Ver mais fotos
+            Solicitar mais informações
           </a>
         </div>
       </div>
