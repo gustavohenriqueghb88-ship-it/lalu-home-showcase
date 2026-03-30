@@ -214,7 +214,7 @@ export default function PedrasBrancas() {
       {/* Gallery */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { img: galleryImg1, alt: "Vista do loteamento Pedras Brancas" },
               { img: galleryImg2, alt: "Infraestrutura do loteamento Pedras Brancas" },
