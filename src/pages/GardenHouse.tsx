@@ -204,7 +204,7 @@ export default function GardenHouse() {
 
             <div className="relative">
               <img
-                src={garden2}
+                src={gardenHero}
                 alt="Vista do condomínio Garden House Residence"
                 className="w-full rounded-xl shadow-elegant object-cover aspect-[4/3]"
               />
