@@ -27,7 +27,13 @@ function isValidSlug(slug: string): boolean {
   return /^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(slug) && slug.length <= 200;
 }
 
-function generateOgHtml(post: { title: string; meta_description?: string | null; image_url?: string | null; slug: string; published_at?: string | null }): string {
+function generateOgHtml(post: {
+  title: string;
+  meta_description?: string | null;
+  image_url?: string | null;
+  slug: string;
+  published_at?: string | null;
+}): string {
   const siteUrl = "https://laluadm.com";
   const title = post.title || "Lalu Blog";
   const description = post.meta_description || "";
@@ -69,10 +75,12 @@ ${publishedAt ? `<meta property="article:published_time" content="${escapeHtml(p
 
 async function uploadOgHtml(supabaseAdmin: ReturnType<typeof createClient>, slug: string, html: string) {
   const fileName = `${slug}.html`;
-  const { error } = await supabaseAdmin.storage.from("og-pages").upload(fileName, new Blob([html], { type: "text/html" }), {
-    contentType: "text/html; charset=utf-8",
-    upsert: true,
-  });
+  const { error } = await supabaseAdmin.storage
+    .from("og-pages")
+    .upload(fileName, new Blob([html], { type: "text/html" }), {
+      contentType: "text/html; charset=utf-8",
+      upsert: true,
+    });
   if (error) {
     console.error("OG HTML upload error:", error);
   }
@@ -172,16 +180,19 @@ Deno.serve(async (req) => {
 
       const { data, error } = await supabaseAdmin
         .from("blog_posts")
-        .upsert({
-          title: title.trim(),
-          slug: postSlug,
-          content,
-          meta_description: meta_description?.trim() || null,
-          focus_keyword: focus_keyword?.trim() || null,
-          image_url: image_url || null,
-          cta_text: cta_text?.trim() || null,
-          published: published ?? false,
-        }, { onConflict: "slug" })
+        .upsert(
+          {
+            title: title.trim(),
+            slug: postSlug,
+            content,
+            meta_description: meta_description?.trim() || null,
+            focus_keyword: focus_keyword?.trim() || null,
+            image_url: image_url || null,
+            cta_text: cta_text?.trim() || null,
+            published: published ?? false,
+          },
+          { onConflict: "slug" },
+        )
         .select("id, slug, title, meta_description, image_url, published_at")
         .single();
 
@@ -196,7 +207,7 @@ Deno.serve(async (req) => {
         await uploadOgHtml(supabaseAdmin, data.slug, ogHtml);
       }
 
-      return jsonResponse({ id: data.id, slug: data.slug, url: `/blog/${data.slug}` }, 201);
+      return jsonResponse({ id: data.id, slug: data.slug, url: `/artigo/${data.slug}` }, 201);
     }
 
     // GET /blog-api/posts — List published posts
@@ -251,7 +262,11 @@ Deno.serve(async (req) => {
       const html = generateOgHtml(post || { title: "Lalu Blog", slug });
       return new Response(html, {
         status: 200,
-        headers: { ...corsHeaders, "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=3600" },
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "public, max-age=3600",
+        },
       });
     }
 
