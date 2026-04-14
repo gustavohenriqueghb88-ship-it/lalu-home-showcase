@@ -171,25 +171,38 @@ export default function RotasDoSol() {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section className="py-24 md:py-32 bg-[#f8f7f4]">
+      {/* VIDEO SECTION */}
+      <section className="py-24 md:py-32 bg-[#1B3A2D]">
         <div className="container mx-auto px-4">
           <RevealSection className="text-center mb-14">
-            <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">Galeria</span>
-            <h2 className="font-['Playfair_Display'] text-3xl md:text-4xl font-bold text-[#1B3A2D] mb-4">Conheça o Empreendimento</h2>
+            <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">Vídeo</span>
+            <h2 className="font-['Playfair_Display'] text-3xl md:text-4xl font-bold text-white mb-4">Veja de Perto</h2>
+            <p className="text-white/60 max-w-xl mx-auto font-['DM_Sans']">Conheça o loteamento através de imagens aéreas exclusivas.</p>
           </RevealSection>
 
-          {/* Video */}
-          <RevealSection className="max-w-sm mx-auto mb-10">
-            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: "179.31%" }}>
+          <RevealSection className="max-w-md mx-auto">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] ring-1 ring-white/10" style={{ paddingBottom: "179.31%" }}>
               <video
                 src="/videos/rotas-do-sol-instagram.mp4"
                 controls
                 playsInline
                 preload="metadata"
                 className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  colorScheme: "dark",
+                }}
               />
             </div>
+          </RevealSection>
+        </div>
+      </section>
+
+      {/* GALLERY */}
+      <section className="py-24 md:py-32 bg-[#f8f7f4]">
+        <div className="container mx-auto px-4">
+          <RevealSection className="text-center mb-14">
+            <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">Galeria</span>
+            <h2 className="font-['Playfair_Display'] text-3xl md:text-4xl font-bold text-[#1B3A2D] mb-4">Conheça o Empreendimento</h2>
           </RevealSection>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -210,6 +223,12 @@ export default function RotasDoSol() {
               </RevealSection>
             ))}
           </div>
+
+          <RevealSection className="text-center mt-12">
+            <a href="#contact" className="inline-flex items-center gap-2 bg-[#C8922A] hover:bg-[#b07e22] text-[#1B3A2D] font-bold px-8 py-3 rounded-full text-sm uppercase tracking-wider transition-colors font-['DM_Sans']">
+              Solicitar mais informações
+            </a>
+          </RevealSection>
         </div>
       </section>
 
