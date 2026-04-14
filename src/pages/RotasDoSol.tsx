@@ -180,15 +180,14 @@ export default function RotasDoSol() {
           </RevealSection>
 
           {/* Video */}
-          <RevealSection className="max-w-4xl mx-auto mb-10">
-            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: "177.78%" }}>
+          <RevealSection className="max-w-sm mx-auto mb-10">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: "179.31%" }}>
               <video
                 src="/videos/rotas-do-sol-instagram.mp4"
                 controls
                 playsInline
                 preload="metadata"
                 className="absolute inset-0 w-full h-full object-cover"
-                poster=""
               />
             </div>
           </RevealSection>
