@@ -178,6 +178,21 @@ export default function RotasDoSol() {
             <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">Galeria</span>
             <h2 className="font-['Playfair_Display'] text-3xl md:text-4xl font-bold text-[#1B3A2D] mb-4">Conheça o Empreendimento</h2>
           </RevealSection>
+
+          {/* Video */}
+          <RevealSection className="max-w-4xl mx-auto mb-10">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: "177.78%" }}>
+              <video
+                src="/videos/rotas-do-sol-instagram.mp4"
+                controls
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-cover"
+                poster=""
+              />
+            </div>
+          </RevealSection>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { img: rotasAerial1, alt: "Vista aérea do loteamento Rotas do Sol com mar ao fundo" },
