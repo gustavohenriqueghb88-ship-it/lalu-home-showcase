@@ -1,6 +1,13 @@
+import { useMemo } from "react";
 import { MapPin, ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useHeroCarousel } from "@/hooks/useHeroCarousel";
 import gardenArea from "@/assets/garden-house-area.png";
+import gardenHero from "@/assets/garden-house-hero.png";
+import gardenAerialBack from "@/assets/garden-house-aerial-back.png";
+import gardenAerialCity from "@/assets/garden-house-aerial-city.png";
+import gardenCoast from "@/assets/garden-house-coast.png";
+import gardenSunset from "@/assets/garden-house-sunset.png";
 import laluLogo from "@/assets/lalu-logo.png";
 
 const WHATSAPP_URL = "https://wa.me/5541984305403?text=Olá! Tenho interesse no Condomínio Garden House Residence.";

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useHeroCarousel } from "@/hooks/useHeroCarousel";
 import {
   MessageCircle,
   MapPin,

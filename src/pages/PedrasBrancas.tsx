@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useHeroCarousel } from "@/hooks/useHeroCarousel";
 import { MessageCircle, MapPin, ArrowRight, LayoutGrid, Ruler, CalendarClock, Mountain, Route, Droplets, CloudRain, Lightbulb, Wrench, Trees, Navigation, Car, CreditCard, Handshake, HardHat, Landmark, TrendingUp, Phone, Mail, Check } from "lucide-react";
 import GoogleMap from "@/components/GoogleMap";
 import { Input } from "@/components/ui/input";
