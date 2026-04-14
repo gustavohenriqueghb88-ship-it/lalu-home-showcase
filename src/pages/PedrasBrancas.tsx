@@ -53,6 +53,9 @@ function RevealSection({ children, className = "", delay = 0 }: { children: Reac
 }
 
 export default function PedrasBrancas() {
+  const heroImages = useMemo(() => [heroImg, galleryImg1, galleryImg2, galleryImg3], []);
+  const pedrasCarousel = useHeroCarousel(heroImages, 30000);
+
   const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "" });
   const [sent, setSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
