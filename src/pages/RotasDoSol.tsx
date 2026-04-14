@@ -12,6 +12,11 @@ import rotasHero from "@/assets/rotas-do-sol-hero.jpg";
 import rotas1 from "@/assets/rotas-do-sol-1.jpg";
 import rotas2 from "@/assets/rotas-do-sol-2.jpg";
 import rotasNew from "@/assets/rotas-do-sol-new.jpg";
+import rotasAerial1 from "@/assets/rotas-do-sol-aerial-1.png";
+import rotasAerial2 from "@/assets/rotas-do-sol-aerial-2.png";
+import rotasAerial3 from "@/assets/rotas-do-sol-aerial-3.png";
+import rotasAerial4 from "@/assets/rotas-do-sol-aerial-4.png";
+import rotasAerial5 from "@/assets/rotas-do-sol-aerial-5.png";
 
 const WHATSAPP_URL = "https://wa.me/5541984305403?text=Olá! Tenho interesse no Loteamento Rotas do Sol.";
 
@@ -173,14 +178,19 @@ export default function RotasDoSol() {
             <span className="text-xs uppercase tracking-[0.25em] text-[#C8922A] font-semibold mb-4 block font-['DM_Sans']">Galeria</span>
             <h2 className="font-['Playfair_Display'] text-3xl md:text-4xl font-bold text-[#1B3A2D] mb-4">Conheça o Empreendimento</h2>
           </RevealSection>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
+              { img: rotasAerial1, alt: "Vista aérea do loteamento Rotas do Sol com mar ao fundo" },
+              { img: rotasAerial2, alt: "Vista panorâmica aérea do Rotas do Sol" },
+              { img: rotasAerial3, alt: "Vista aérea do loteamento com praia e lagoa" },
+              { img: rotasAerial4, alt: "Vista aérea geral do Rotas do Sol" },
+              { img: rotasAerial5, alt: "Vista aérea frontal do Rotas do Sol com oceano" },
               { img: rotas2, alt: "Vista aérea do loteamento Rotas do Sol" },
               { img: rotasNew, alt: "Infraestrutura do loteamento Rotas do Sol" },
             ].map((item, i) => (
-              <RevealSection key={i} delay={i * 150}>
+              <RevealSection key={i} delay={i * 100}>
                 <div className="group relative overflow-hidden rounded-2xl">
-                  <img src={item.img} alt={item.alt} className="w-full object-cover aspect-[16/10] group-hover:scale-105 transition-transform duration-500" />
+                  <img src={item.img} alt={item.alt} className="w-full object-cover aspect-[16/11] group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#1B3A2D]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </RevealSection>
