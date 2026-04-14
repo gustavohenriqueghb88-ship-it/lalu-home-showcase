@@ -1,17 +1,30 @@
+import { useMemo } from "react";
 import { MapPin, ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useHeroCarousel } from "@/hooks/useHeroCarousel";
 import gardenArea from "@/assets/garden-house-area.png";
+import gardenHero from "@/assets/garden-house-hero.png";
+import gardenAerialBack from "@/assets/garden-house-aerial-back.png";
+import gardenAerialCity from "@/assets/garden-house-aerial-city.png";
+import gardenCoast from "@/assets/garden-house-coast.png";
+import gardenSunset from "@/assets/garden-house-sunset.png";
 import laluLogo from "@/assets/lalu-logo.png";
 
 const WHATSAPP_URL = "https://wa.me/5541984305403?text=Olá! Tenho interesse no Condomínio Garden House Residence.";
 
 export default function GardenHouseHero() {
+  const heroImages = useMemo(() => [gardenArea, gardenHero, gardenAerialBack, gardenAerialCity, gardenCoast, gardenSunset], []);
+  const carousel = useHeroCarousel(heroImages, 30000);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${gardenArea})` }}
-      />
+      {heroImages.map((img, i) => (
+        <div
+          key={i}
+          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+          style={{ backgroundImage: `url(${img})`, opacity: i === carousel.currentIndex ? 1 : 0 }}
+        />
+      ))}
       <div className="absolute inset-0 bg-[#1B3A2D]/85" />
 
       <div className="relative z-10 container mx-auto px-4 text-center text-white">

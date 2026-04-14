@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useHeroCarousel } from "@/hooks/useHeroCarousel";
 import {
   MessageCircle,
   MapPin,
@@ -104,6 +105,9 @@ function RevealSection({
 }
 
 export default function RotasDoSol() {
+  const heroImages = useMemo(() => [rotasAerial1, rotasAerial2, rotasAerial3, rotasAerial4, rotasAerial5, rotasHero], []);
+  const rotasCarousel = useHeroCarousel(heroImages, 30000);
+
   const [form, setForm] = useState({ nome: "", email: "", telefone: "", mensagem: "" });
   const [sent, setSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -152,7 +156,13 @@ export default function RotasDoSol() {
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${rotasHero})` }} />
+        {heroImages.map((img, i) => (
+          <div
+            key={i}
+            className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+            style={{ backgroundImage: `url(${img})`, opacity: i === rotasCarousel.currentIndex ? 1 : 0 }}
+          />
+        ))}
         <div className="absolute inset-0 bg-[#1B3A2D]/85" />
         <div className="relative z-10 container mx-auto px-4 text-center text-white">
           <img src={laluLogo} alt="Lalu Incorporadora" className="h-16 mx-auto mb-8 brightness-0 invert opacity-80" />
@@ -249,8 +259,8 @@ export default function RotasDoSol() {
             <RevealSection delay={200}>
               <div className="relative">
                 <img
-                  src={rotas1}
-                  alt="Vista do loteamento Rotas do Sol"
+                  src={rotasAerial3}
+                  alt="Vista aérea do loteamento Rotas do Sol"
                   className="w-full rounded-2xl shadow-2xl object-cover aspect-[4/3]"
                 />
                 <div className="absolute bottom-4 left-4 rounded-xl bg-[#1B3A2D] px-5 py-3 shadow-lg flex items-center gap-2">
