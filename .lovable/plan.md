@@ -1,67 +1,21 @@
+## Objetivo
+Adicionar os ícones de redes sociais (Instagram e LinkedIn) no rodapé principal do site, com link para os perfis oficiais da Lalu Adm.
 
+## Links
+- Instagram: https://www.instagram.com/lalu.adm/
+- LinkedIn: https://www.linkedin.com/company/lalu-adm
 
-## Plano: Ocultar a Aba Portfólio do Site
+## Alterações
 
-### O que será feito
+### `src/components/Footer.tsx`
+- Importar ícones `Instagram` e `Linkedin` do `lucide-react`.
+- Adicionar uma nova linha de ícones sociais logo abaixo do parágrafo institucional na coluna "Company Info".
+- Cada ícone será um `<a>` com `target="_blank"`, `rel="noopener noreferrer"`, `aria-label`, estilizado com cor dourada (`text-secondary`), hover suave e tamanho consistente (~w-5 h-5 dentro de um botão circular sutil).
 
-Remover o link "Portfólio" de todos os menus de navegação do site, mantendo a rota funcional caso seja necessário acessá-la diretamente via URL.
+### `src/components/garden-house/GardenHouseFooter.tsx` (rodapé da landing Garden House)
+- Avaliar se também deve receber os ícones. Por padrão **não** será alterado, já que o pedido foi "no rodapé" (rodapé global). Posso incluir se desejar — confirmar se necessário.
 
-### Arquivos a serem alterados
-
-#### 1. `src/components/Header.tsx`
-Remover o item "Portfólio" do array de navegação:
-
-**Antes:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
-```
-
-**Depois:**
-```typescript
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' },
-];
-```
-
-#### 2. `src/components/Footer.tsx`
-Remover o link "Portfólio" da lista de navegação rápida:
-
-**Antes:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Portfólio', href: '/portfolio' },  // Remover
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-**Depois:**
-```typescript
-{[
-  { name: 'Início', href: '/' },
-  { name: 'Empreendimentos', href: '/empreendimentos' },
-  { name: 'Sobre nós', href: '/sobre' },
-  { name: 'Contato', href: '/contato' }
-].map((link) => ...)}
-```
-
-### Observação
-A rota `/portfolio` continuará existindo no `App.tsx`, permitindo acesso direto via URL se necessário. Se quiser remover a rota completamente, posso fazer isso também.
-
-### Resultado
-Após a implementação:
-- O menu principal (header) não mostrará mais "Portfólio"
-- O rodapé (footer) não mostrará mais o link "Portfólio"
-- A navegação ficará com 4 itens: Início, Empreendimentos, Sobre nós, Contato
-
+## Observações
+- Mantém paleta semântica (verde escuro + dourado).
+- Nenhum impacto em backend, dados ou rotas.
+- Sem mudanças nos rodapés das landing pages individuais (Garden House, Rotas do Sol, Pedras Brancas) salvo confirmação.
