@@ -4,7 +4,9 @@ import {
   Phone, 
   Mail, 
   MapPin, 
-  ArrowUp 
+  ArrowUp,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 import laluLogo from '@/assets/lalu-logo.png';
 import PrivacyPolicyModal from '@/components/PrivacyPolicyModal';
@@ -36,6 +38,26 @@ const Footer = () => {
               Incorporadora com quase 20 anos de experiência no Paraná e Santa Catarina. 
               Especializada em soluções completas que unem inovação, segurança e valorização patrimonial.
             </p>
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.instagram.com/lalu.adm/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram da Lalu Adm"
+                className="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-secondary hover:text-primary text-secondary flex items-center justify-center transition-smooth"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/lalu-adm"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn da Lalu Adm"
+                className="w-10 h-10 rounded-full bg-primary-foreground/10 hover:bg-secondary hover:text-primary text-secondary flex items-center justify-center transition-smooth"
+              >
+                <Linkedin className="w-5 h-5" />
+              </a>
+            </div>
           </div>
 
           {/* Quick Links */}
