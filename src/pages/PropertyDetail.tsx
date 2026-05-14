@@ -236,7 +236,7 @@ const PropertyDetail = () => {
                   {/* Description */}
                   <div>
                     <h2 className="text-2xl font-bold text-primary mb-4">Sobre o Imóvel</h2>
-                    <p className="text-muted-foreground leading-relaxed">{property.description}</p>
+                    <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{property.description}</p>
                   </div>
 
                   {/* Property Specs */}
