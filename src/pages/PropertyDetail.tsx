@@ -164,15 +164,20 @@ const PropertyDetail = () => {
                   <img 
                     src={getImageUrl(images[0] || null)}
                     alt={property.title}
-                    className="w-full h-96 object-cover rounded-lg shadow-elegant cursor-pointer"
-                    onClick={() => images.length > 0 && setGalleryOpen(true)}
+                    className="w-full h-96 object-cover rounded-lg shadow-elegant cursor-zoom-in"
+                    onClick={() => { if (images.length > 0) { setLightboxIndex(0); setGalleryOpen(true); } }}
                   />
+                  {images.length > 0 && (
+                    <div className="absolute bottom-3 left-3 bg-black/50 backdrop-blur text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn className="w-3 h-3" /> Ampliar
+                    </div>
+                  )}
                   {images.length > 3 && (
                     <div className="absolute top-4 right-4">
                       <Button
                         variant="secondary"
                         size="sm"
-                        onClick={() => setGalleryOpen(true)}
+                        onClick={() => { setLightboxIndex(0); setGalleryOpen(true); }}
                         className="bg-background/90 hover:bg-background"
                       >
                         <Images className="w-4 h-4 mr-2" />
@@ -186,8 +191,8 @@ const PropertyDetail = () => {
                     <img 
                       src={getImageUrl(images[1])}
                       alt={`${property.title} - Imagem 2`}
-                      className="w-full h-44 object-cover rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
-                      onClick={() => setGalleryOpen(true)}
+                      className="w-full h-44 object-cover rounded-lg shadow-lg cursor-zoom-in hover:opacity-90 transition-opacity"
+                      onClick={() => { setLightboxIndex(1); setGalleryOpen(true); }}
                     />
                   )}
                   {images[2] ? (
@@ -195,11 +200,11 @@ const PropertyDetail = () => {
                       <img 
                         src={getImageUrl(images[2])}
                         alt={`${property.title} - Imagem 3`}
-                        className="w-full h-44 object-cover rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
-                        onClick={() => setGalleryOpen(true)}
+                        className="w-full h-44 object-cover rounded-lg shadow-lg cursor-zoom-in hover:opacity-90 transition-opacity"
+                        onClick={() => { setLightboxIndex(2); setGalleryOpen(true); }}
                       />
                       {images.length > 3 && (
-                        <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors" onClick={() => setGalleryOpen(true)}>
+                        <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center cursor-zoom-in hover:bg-black/50 transition-colors" onClick={() => { setLightboxIndex(2); setGalleryOpen(true); }}>
                           <span className="text-white font-bold text-lg">+{images.length - 3}</span>
                         </div>
                       )}
@@ -211,7 +216,7 @@ const PropertyDetail = () => {
                 <div className="mt-4 text-center">
                   <Button
                     variant="outline"
-                    onClick={() => setGalleryOpen(true)}
+                    onClick={() => { setLightboxIndex(0); setGalleryOpen(true); }}
                     className="group"
                   >
                     <Images className="w-4 h-4 mr-2" />
