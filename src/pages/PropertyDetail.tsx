@@ -509,49 +509,13 @@ const PropertyDetail = () => {
 
       <Footer />
 
-      {/* Image Gallery Dialog */}
-      <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
-        <DialogContent className="max-w-6xl w-full p-0 flex flex-col" style={{ maxHeight: '90vh' }}>
-          <DialogHeader className="px-6 pt-6 pb-4 flex-shrink-0">
-            <DialogTitle className="text-2xl">{property.title} - Galeria de Fotos ({images.length})</DialogTitle>
-          </DialogHeader>
-          <div className="px-6 pb-6" style={{ height: 'calc(90vh - 120px)', minHeight: '400px' }}>
-            {images.length > 0 ? (
-              <div className="relative w-full h-full flex flex-col">
-                <div className="flex-1 relative">
-                  <Carousel setApi={setApi} className="w-full h-full">
-                    <CarouselContent>
-                      {images.map((image, index) => (
-                        <CarouselItem key={index}>
-                          <div className="flex items-center justify-center w-full h-full p-4" style={{ minHeight: '400px' }}>
-                            <img
-                              src={getImageUrl(image)}
-                              alt={`${property.title} - Foto ${index + 1}`}
-                              className="max-h-[600px] max-w-full object-contain rounded-lg"
-                              loading="eager"
-                            />
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-2 lg:left-4 bg-background/80 hover:bg-background" />
-                    <CarouselNext className="right-2 lg:right-4 bg-background/80 hover:bg-background" />
-                  </Carousel>
-                </div>
-                
-                {/* Indicador de página */}
-                <div className="text-center py-3 text-sm text-muted-foreground font-medium">
-                  {images.length > 0 ? `Total: ${images.length} fotos` : 'Nenhuma foto'}
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-full text-muted-foreground">
-                Nenhuma imagem disponível
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ImageLightbox
+        images={images.map((img) => getImageUrl(img)!).filter(Boolean) as string[]}
+        open={galleryOpen}
+        initialIndex={lightboxIndex}
+        onOpenChange={setGalleryOpen}
+        alt={property.title}
+      />
     </div>
   );
 };
