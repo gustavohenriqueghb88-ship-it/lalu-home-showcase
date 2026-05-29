@@ -7,9 +7,8 @@ import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
-import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images, Send } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images, Send, ZoomIn } from 'lucide-react';
+import ImageLightbox from '@/components/ImageLightbox';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -19,7 +18,7 @@ const PropertyDetail = () => {
   const { slug } = useParams();
   const { toast } = useToast();
   const [galleryOpen, setGalleryOpen] = useState(false);
-  const [api, setApi] = useState<CarouselApi>();
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({
     nome: '',
@@ -165,15 +164,20 @@ const PropertyDetail = () => {
                   <img 
                     src={getImageUrl(images[0] || null)}
                     alt={property.title}
-                    className="w-full h-96 object-cover rounded-lg shadow-elegant cursor-pointer"
-                    onClick={() => images.length > 0 && setGalleryOpen(true)}
+                    className="w-full h-96 object-cover rounded-lg shadow-elegant cursor-zoom-in"
+                    onClick={() => { if (images.length > 0) { setLightboxIndex(0); setGalleryOpen(true); } }}
                   />
+                  {images.length > 0 && (
+                    <div className="absolute bottom-3 left-3 bg-black/50 backdrop-blur text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn className="w-3 h-3" /> Ampliar
+                    </div>
+                  )}
                   {images.length > 3 && (
                     <div className="absolute top-4 right-4">
                       <Button
                         variant="secondary"
                         size="sm"
-                        onClick={() => setGalleryOpen(true)}
+                        onClick={() => { setLightboxIndex(0); setGalleryOpen(true); }}
                         className="bg-background/90 hover:bg-background"
                       >
                         <Images className="w-4 h-4 mr-2" />
@@ -187,8 +191,8 @@ const PropertyDetail = () => {
                     <img 
                       src={getImageUrl(images[1])}
                       alt={`${property.title} - Imagem 2`}
-                      className="w-full h-44 object-cover rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
-                      onClick={() => setGalleryOpen(true)}
+                      className="w-full h-44 object-cover rounded-lg shadow-lg cursor-zoom-in hover:opacity-90 transition-opacity"
+                      onClick={() => { setLightboxIndex(1); setGalleryOpen(true); }}
                     />
                   )}
                   {images[2] ? (
@@ -196,11 +200,11 @@ const PropertyDetail = () => {
                       <img 
                         src={getImageUrl(images[2])}
                         alt={`${property.title} - Imagem 3`}
-                        className="w-full h-44 object-cover rounded-lg shadow-lg cursor-pointer hover:opacity-90 transition-opacity"
-                        onClick={() => setGalleryOpen(true)}
+                        className="w-full h-44 object-cover rounded-lg shadow-lg cursor-zoom-in hover:opacity-90 transition-opacity"
+                        onClick={() => { setLightboxIndex(2); setGalleryOpen(true); }}
                       />
                       {images.length > 3 && (
-                        <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors" onClick={() => setGalleryOpen(true)}>
+                        <div className="absolute inset-0 bg-black/40 rounded-lg flex items-center justify-center cursor-zoom-in hover:bg-black/50 transition-colors" onClick={() => { setLightboxIndex(2); setGalleryOpen(true); }}>
                           <span className="text-white font-bold text-lg">+{images.length - 3}</span>
                         </div>
                       )}
@@ -212,7 +216,7 @@ const PropertyDetail = () => {
                 <div className="mt-4 text-center">
                   <Button
                     variant="outline"
-                    onClick={() => setGalleryOpen(true)}
+                    onClick={() => { setLightboxIndex(0); setGalleryOpen(true); }}
                     className="group"
                   >
                     <Images className="w-4 h-4 mr-2" />
@@ -505,49 +509,13 @@ const PropertyDetail = () => {
 
       <Footer />
 
-      {/* Image Gallery Dialog */}
-      <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
-        <DialogContent className="max-w-6xl w-full p-0 flex flex-col" style={{ maxHeight: '90vh' }}>
-          <DialogHeader className="px-6 pt-6 pb-4 flex-shrink-0">
-            <DialogTitle className="text-2xl">{property.title} - Galeria de Fotos ({images.length})</DialogTitle>
-          </DialogHeader>
-          <div className="px-6 pb-6" style={{ height: 'calc(90vh - 120px)', minHeight: '400px' }}>
-            {images.length > 0 ? (
-              <div className="relative w-full h-full flex flex-col">
-                <div className="flex-1 relative">
-                  <Carousel setApi={setApi} className="w-full h-full">
-                    <CarouselContent>
-                      {images.map((image, index) => (
-                        <CarouselItem key={index}>
-                          <div className="flex items-center justify-center w-full h-full p-4" style={{ minHeight: '400px' }}>
-                            <img
-                              src={getImageUrl(image)}
-                              alt={`${property.title} - Foto ${index + 1}`}
-                              className="max-h-[600px] max-w-full object-contain rounded-lg"
-                              loading="eager"
-                            />
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-2 lg:left-4 bg-background/80 hover:bg-background" />
-                    <CarouselNext className="right-2 lg:right-4 bg-background/80 hover:bg-background" />
-                  </Carousel>
-                </div>
-                
-                {/* Indicador de página */}
-                <div className="text-center py-3 text-sm text-muted-foreground font-medium">
-                  {images.length > 0 ? `Total: ${images.length} fotos` : 'Nenhuma foto'}
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-full text-muted-foreground">
-                Nenhuma imagem disponível
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
+      <ImageLightbox
+        images={images.map((img) => getImageUrl(img)!).filter(Boolean) as string[]}
+        open={galleryOpen}
+        initialIndex={lightboxIndex}
+        onOpenChange={setGalleryOpen}
+        alt={property.title}
+      />
     </div>
   );
 };
