@@ -7,7 +7,8 @@ import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Loader2, Send } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Loader2, Send, ZoomIn } from 'lucide-react';
+import ImageLightbox from '@/components/ImageLightbox';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -17,6 +18,8 @@ const ProjectDetail = () => {
   const { slug } = useParams();
   const { toast } = useToast();
   const [formLoading, setFormLoading] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -154,24 +157,36 @@ const ProjectDetail = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 relative group">
                   <img 
                     src={getImageUrl(images[0] || null)}
                     alt={project.title}
-                    className="w-full h-96 object-cover rounded-lg shadow-elegant"
+                    className="w-full h-96 object-cover rounded-lg shadow-elegant cursor-zoom-in"
+                    onClick={() => { if (images.length > 0) { setLightboxIndex(0); setGalleryOpen(true); } }}
                   />
+                  {images.length > 0 && (
+                    <div className="absolute bottom-3 left-3 bg-black/50 backdrop-blur text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ZoomIn className="w-3 h-3" /> Ampliar
+                    </div>
+                  )}
                 </div>
                 <div className="grid grid-rows-2 gap-4">
-                  <img 
-                    src={getImageUrl(images[1] || null)}
-                    alt={`${project.title} - Imagem 2`}
-                    className="w-full h-44 object-cover rounded-lg shadow-lg"
-                  />
-                  <img 
-                    src={getImageUrl(images[2] || null)}
-                    alt={`${project.title} - Imagem 3`}
-                    className="w-full h-44 object-contain rounded-lg shadow-lg bg-white p-4"
-                  />
+                  {images[1] && (
+                    <img 
+                      src={getImageUrl(images[1])}
+                      alt={`${project.title} - Imagem 2`}
+                      className="w-full h-44 object-cover rounded-lg shadow-lg cursor-zoom-in hover:opacity-90 transition-opacity"
+                      onClick={() => { setLightboxIndex(1); setGalleryOpen(true); }}
+                    />
+                  )}
+                  {images[2] && (
+                    <img 
+                      src={getImageUrl(images[2])}
+                      alt={`${project.title} - Imagem 3`}
+                      className="w-full h-44 object-contain rounded-lg shadow-lg bg-white p-4 cursor-zoom-in hover:opacity-90 transition-opacity"
+                      onClick={() => { setLightboxIndex(2); setGalleryOpen(true); }}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -416,6 +431,13 @@ const ProjectDetail = () => {
       </main>
 
       <Footer />
+      <ImageLightbox
+        images={images.map((img) => getImageUrl(img)!).filter(Boolean) as string[]}
+        open={galleryOpen}
+        initialIndex={lightboxIndex}
+        onOpenChange={setGalleryOpen}
+        alt={project.title}
+      />
     </div>
   );
 };
