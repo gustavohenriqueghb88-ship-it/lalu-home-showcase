@@ -7,9 +7,8 @@ import GoogleMap from '@/components/GoogleMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
-import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images, Send } from 'lucide-react';
+import { ArrowLeft, MapPin, Phone, MessageSquare, Check, Bed, Bath, Car, Square, Loader2, Images, Send, ZoomIn } from 'lucide-react';
+import ImageLightbox from '@/components/ImageLightbox';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -19,7 +18,7 @@ const PropertyDetail = () => {
   const { slug } = useParams();
   const { toast } = useToast();
   const [galleryOpen, setGalleryOpen] = useState(false);
-  const [api, setApi] = useState<CarouselApi>();
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({
     nome: '',
